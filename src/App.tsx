@@ -3,6 +3,8 @@ import imagenNoticia from "./Components/Images/PartidoHoy.jpeg";
 import imagenHaramball from "./Components/Images/HaramballSimeone.jpeg";
 import SearchBar from "./Components/SearchBar";
 import TeamsGrid from "./Components/TeamsGrid/TeamsGrid";
+import PaisSelector from "./Components/PaisSelector";
+import { useState } from "react";
 
 const buttons = [
   { label: "INICIO", action: "inicio" },
@@ -13,18 +15,27 @@ const buttons = [
 ];
 
 function App() {
+  const [mostrarFenix, setMostrarFenix] = useState(false);
+
   const handleNavClick = (action: string) => {
     if (action === "inicio") {
       window.scrollTo({ top: 0, behavior: "smooth" });
     } else if (action === "buscador") {
       const buscador = document.getElementById("buscador");
       if (buscador) {
-        window.scrollTo({ top: buscador.offsetTop - 80, behavior: "smooth" });
+        window.scrollTo({ top: buscador.offsetTop - 100, behavior: "smooth" });
       }
     } else if (action === "equipos") {
       const equipos = document.getElementById("equipos");
       if (equipos) {
-        window.scrollTo({ top: equipos.offsetTop - 80, behavior: "smooth" });
+        window.scrollTo({ top: equipos.offsetTop - 100, behavior: "smooth" });
+      }
+    } else if (action === "leyendas") {
+      const leyendas = document.getElementById("leyendas");
+      if (leyendas) {
+        window.scrollTo({ top: leyendas.offsetTop - 380, behavior: "smooth" });
+        setTimeout(() => setMostrarFenix(true), 700);
+        setTimeout(() => setMostrarFenix(false), 4000);
       }
     }
   };
@@ -54,9 +65,9 @@ function App() {
           <div className="noticia-texto">
             <h2>Máxima Exhibición de Futbol 5-4</h2>
             <p>
-              el dia de hoy 28/04/2026 se jugó la semifinal de la UEFA CHAMPIONS
-              LEAGUE el partido del FC Bayern Munich vs Paris Saint Germain, dió
-              una increible demostración de lo que es el máximo nivel en este
+              el dia 28/04/2026 se jugó la semifinal de la UEFA CHAMPIONS LEAGUE
+              el partido del FC Bayern Munich vs Paris Saint Germain, dió una
+              increible demostración de lo que es el máximo nivel en este
               deporte.
             </p>
           </div>
@@ -68,11 +79,13 @@ function App() {
         </div>
         <div className="noticia">
           <div className="noticia-texto">
-            <h2>Mañana Haramball</h2>
+            <h2>Empate de Mrd</h2>
             <p>
-              Mañana 29/04/2026 se viene el partido de los pechos frios de Atletico De
-              Madrid vs Arsenal, un partido de Haramball sin precedentes, se esperan
-              máximo 3 tiros a puerta en todo este partido.
+              Como era de esperarse el partido de Atletico de Madrid vs Arsenal,
+              fué extremadamente aburrido, hubo 6 tiros a puerta nomás, 4
+              paradas de portero pff y los unicos dos goles del partido fueron
+              de penal, un partido completamente para el olvido y la vuelta va a
+              ser mucho peor.
             </p>
           </div>
           <img
@@ -83,6 +96,18 @@ function App() {
         </div>
         <SearchBar id="buscador" />
         <TeamsGrid />
+        <div id="leyendas" className="leyendas-container">
+          <img
+            src="/Images/fenixLeyenda.png"
+            alt="Fénix"
+            className={`fenix ${mostrarFenix ? "visible" : ""}`}
+          />
+          <h2 className="leyendas">LEYENDAS</h2>
+          <div className="MiniIndexLeyendas">
+            <h3 className="pais-titulo">Selecciona un país para buscar sus Leyendas:</h3>
+            <PaisSelector />
+          </div>
+        </div>
       </main>
     </div>
   );

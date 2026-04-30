@@ -17,7 +17,8 @@ function SearchBar({ id }: SearchBarProps) {
         player.nombre.toLowerCase().includes(term) ||
         player.equipo.toLowerCase().includes(term) ||
         player.nacionalidad.toLowerCase().includes(term) ||
-        player.posicion.toLowerCase().includes(term)
+        player.posicion.toLowerCase().includes(term) ||
+        player.edad.toString().includes(term),
     );
   }, [searchTerm]);
 
