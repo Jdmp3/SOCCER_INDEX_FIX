@@ -1,73 +1,151 @@
 # React + TypeScript + Vite
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Soccer Index by: JDMP3 🍊
 
-Currently, two official plugins are available:
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
 
-## React Compiler
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
 
-## Expanding the ESLint configuration
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+
+
+🧑‍💼 Return completo de la aplicación: 
+
 
 ```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+
+
+
+
+
+<div>
+      <nav className="navbar">
+        {buttons.map((btn, index) => (
+          <button
+            key={index}
+            className="nav-button"
+            onClick={() => handleNavClick(btn.action)}
+          >
+            {btn.label}
+          </button>
+        ))}
+      </nav>
+      <main className="main-content">
+        <div className="header-title">
+          <h1>JDMP3&apos;s INDEX</h1>
+          <p>
+            [Index creado personalmente por mi sobre equipos, jugadores,
+            competiciones e historias sobre el futbol que me gustan mucho]
+          </p>
+        </div>
+        <div className="noticia">
+          <div className="noticia-texto">
+            <h2>Máxima Exhibición de Futbol 5-4</h2>
+            <p>
+              el dia 28/04/2026 se jugó la semifinal de la UEFA CHAMPIONS LEAGUE
+              el partido del FC Bayern Munich vs Paris Saint Germain, dió una
+              increible demostración de lo que es el máximo nivel en este
+              deporte.
+            </p>
+          </div>
+          <img
+            className="noticia-imagen"
+            src={imagenNoticia}
+            alt="Imagen de la noticia"
+          />
+        </div>
+        <div className="noticia">
+          <div className="noticia-texto">
+            <h2>Empate de Mrd</h2>
+            <p>
+              Como era de esperarse el partido de Atletico de Madrid vs Arsenal,
+              fué extremadamente aburrido, hubo 6 tiros a puerta nomás, 4
+              paradas de portero pff y los unicos dos goles del partido fueron
+              de penal, un partido completamente para el olvido y la vuelta va a
+              ser mucho peor.
+            </p>
+          </div>
+          <img
+            className="noticia-imagen"
+            src={imagenHaramball}
+            alt="Imagen de la noticia"
+          />
+        </div>
+        <SearchBar id="buscador" />
+        <TeamsGrid />
+      </main>
+    </div>
+
+
+
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 ```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+window.scrollTo( top:numero , left:numero , behavior:string)  🇮🇱 👎
+
+
+
+
+
+```
+
+```js
+
+
+
+Las Pansas
+
+
+
 ```
