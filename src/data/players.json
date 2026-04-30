@@ -1,0 +1,226 @@
+[
+  {
+    "id": 1,
+    "nombre": "David de Gea",
+    "posicion": "Portero",
+    "equipo": "Fiorentina",
+    "nacionalidad": "España",
+    "edad": 35
+  },
+  {
+    "id": 2,
+    "nombre": "Moise Kean",
+    "posicion": "Delantero",
+    "equipo": "Fiorentina",
+    "nacionalidad": "Italia",
+    "edad": 26
+  },
+  {
+    "id": 3,
+    "nombre": "Albert Gudmundsson",
+    "posicion": "Delantero",
+    "equipo": "Fiorentina",
+    "nacionalidad": "Islandia",
+    "edad": 28
+  },
+  {
+    "id": 4,
+    "nombre": "Robin Gosens",
+    "posicion": "Defensa",
+    "equipo": "Fiorentina",
+    "nacionalidad": "Alemania",
+    "edad": 31
+  },
+  {
+    "id": 5,
+    "nombre": "Lucas Beltrán",
+    "posicion": "Delantero",
+    "equipo": "Fiorentina",
+    "nacionalidad": "Argentina",
+    "edad": 23
+  },
+  {
+    "id": 6,
+    "nombre": "Nicolò Zaniolo",
+    "posicion": "Mediocampista",
+    "equipo": "Fiorentina",
+    "nacionalidad": "Italia",
+    "edad": 25
+  },
+  {
+    "id": 7,
+    "nombre": "Manuel Neuer",
+    "posicion": "Portero",
+    "equipo": "Bayern Munich",
+    "nacionalidad": "Alemania",
+    "edad": 39
+  },
+  {
+    "id": 8,
+    "nombre": "Harry Kane",
+    "posicion": "Delantero",
+    "equipo": "Bayern Munich",
+    "nacionalidad": "Inglaterra",
+    "edad": 31
+  },
+  {
+    "id": 9,
+    "nombre": "Jamal Musiala",
+    "posicion": "Mediocampista",
+    "equipo": "Bayern Munich",
+    "nacionalidad": "Alemania",
+    "edad": 22
+  },
+  {
+    "id": 10,
+    "nombre": "Joshua Kimmich",
+    "posicion": "Mediocampista",
+    "equipo": "Bayern Munich",
+    "nacionalidad": "Alemania",
+    "edad": 30
+  },
+  {
+    "id": 11,
+    "nombre": "Alphonso Davies",
+    "posicion": "Defensa",
+    "equipo": "Bayern Munich",
+    "nacionalidad": "Canadá",
+    "edad": 24
+  },
+  {
+    "id": 12,
+    "nombre": "Florian Wirtz",
+    "posicion": "Mediocampista",
+    "equipo": "Bayer Leverkusen",
+    "nacionalidad": "Alemania",
+    "edad": 22
+  },
+  {
+    "id": 13,
+    "nombre": "Jeremie Frimpong",
+    "posicion": "Defensa",
+    "equipo": "Bayer Leverkusen",
+    "nacionalidad": "Países Bajos",
+    "edad": 24
+  },
+  {
+    "id": 14,
+    "nombre": "Granit Xhaka",
+    "posicion": "Mediocampista",
+    "equipo": "Bayer Leverkusen",
+    "nacionalidad": "Suiza",
+    "edad": 32
+  },
+  {
+    "id": 15,
+    "nombre": "Alejandro Grimaldo",
+    "posicion": "Defensa",
+    "equipo": "Bayer Leverkusen",
+    "nacionalidad": "España",
+    "edad": 29
+  },
+  {
+    "id": 16,
+    "nombre": "Jonathan Tah",
+    "posicion": "Defensa",
+    "equipo": "Bayer Leverkusen",
+    "nacionalidad": "Alemania",
+    "edad": 29
+  },
+  {
+    "id": 17,
+    "nombre": "Edmond Tapsoba",
+    "posicion": "Defensa",
+    "equipo": "Bayer Leverkusen",
+    "nacionalidad": "Burkina Faso",
+    "edad": 26
+  },
+  {
+    "id": 18,
+    "nombre": "Patrik Schick",
+    "posicion": "Delantero",
+    "equipo": "Bayer Leverkusen",
+    "nacionalidad": "República Checa",
+    "edad": 29
+  },
+  {
+    "id": 19,
+    "nombre": "Robert Andrich",
+    "posicion": "Mediocampista",
+    "equipo": "Bayer Leverkusen",
+    "nacionalidad": "Alemania",
+    "edad": 31
+  },
+  {
+    "id": 20,
+    "nombre": "Lamine Yamal",
+    "posicion": "Delantero",
+    "equipo": "FC Barcelona",
+    "nacionalidad": "España",
+    "edad": 18
+  },
+  {
+    "id": 21,
+    "nombre": "Raphinha",
+    "posicion": "Delantero",
+    "equipo": "FC Barcelona",
+    "nacionalidad": "Brasil",
+    "edad": 29
+  },
+  {
+    "id": 22,
+    "nombre": "Robert Lewandowski",
+    "posicion": "Delantero",
+    "equipo": "FC Barcelona",
+    "nacionalidad": "Polonia",
+    "edad": 36
+  },
+  {
+    "id": 23,
+    "nombre": "Kylian Mbappé",
+    "posicion": "Delantero",
+    "equipo": "Real Madrid",
+    "nacionalidad": "Francia",
+    "edad": 26
+  },
+  {
+    "id": 24,
+    "nombre": "Vinícius Jr.",
+    "posicion": "Delantero",
+    "equipo": "Real Madrid",
+    "nacionalidad": "Brasil",
+    "edad": 24
+  },
+  {
+    "id": 25,
+    "nombre": "Erling Haaland",
+    "posicion": "Delantero",
+    "equipo": "Manchester City",
+    "nacionalidad": "Noruega",
+    "edad": 25
+  },
+  {
+    "id": 26,
+    "nombre": "Kevin De Bruyne",
+    "posicion": "Mediocampista",
+    "equipo": "Manchester City",
+    "nacionalidad": "Bélgica",
+    "edad": 33
+  },
+  {
+    "id": 27,
+    "nombre": "Mohamed Salah",
+    "posicion": "Delantero",
+    "equipo": "Liverpool",
+    "nacionalidad": "Egipto",
+    "edad": 32
+  },
+  {
+    "id": 28,
+    "nombre": "Virgil van Dijk",
+    "posicion": "Defensa",
+    "equipo": "Liverpool",
+    "nacionalidad": "Países Bajos",
+    "edad": 34
+  }
+]

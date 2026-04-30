@@ -1,0 +1,107 @@
+[
+  {
+    "id": 1,
+    "nombre": "Barcelona",
+    "pais": "España",
+    "descripcion": "Club fundado en 1899, múltiples Champions League, La Masía forma talentos. Eterno rey de España, Madrid son unos peos.",
+    "logo": "barcelona.png"
+  },
+  {
+    "id": 2,
+    "nombre": "Atlético Bucaramanga",
+    "pais": "Colombia",
+    "descripcion": "Club colombiano fundado en 1949, 'Los Leopardos' de Santander. Merecimos más.",
+    "logo": "atletico_bucaramanga.png"
+  },
+  {
+    "id": 3,
+    "nombre": "Fiorentina",
+    "pais": "Italia",
+    "descripcion": "Club italiano fundado en 1926, históricamente conocido como 'Los Violetas'.",
+    "logo": "fiorentina.png"
+  },
+  {
+    "id": 4,
+    "nombre": "Brighton & Hove Albion",
+    "pais": "Inglaterra",
+    "descripcion": "Club inglés fundado en 1901, 'The Seagulls' de la costa sur de Inglaterra.",
+    "logo": "brighton.png"
+  },
+  {
+    "id": 5,
+    "nombre": "AC Milan",
+    "pais": "Italia",
+    "descripcion": "Club italiano fundado en 1899, 7 Champions League, uno de los más exitosos.",
+    "logo": "milan.png"
+  },
+  {
+    "id": 6,
+    "nombre": "Atlético Nacional",
+    "pais": "Colombia",
+    "descripcion": "Club colombiano de Medellín, el más exitoso de Colombia con múltiples títulos.",
+    "logo": "atletico_nacional.png"
+  },
+  {
+    "id": 7,
+    "nombre": "Arsenal",
+    "pais": "Inglaterra",
+    "descripcion": "Club inglés fundado en 1886, 'The Gunners' de Londres, 13 Premier Leagues.",
+    "logo": "arsenal.png"
+  },
+  {
+    "id": 8,
+    "nombre": "Borussia Dortmund",
+    "pais": "Alemania",
+    "descripcion": "Club alemán fundado en 1909, 'Die Schwarzgelben' de Dortmund.",
+    "logo": "dortmund.png"
+  },
+  {
+    "id": 9,
+    "nombre": "Bayern Munich",
+    "pais": "Alemania",
+    "descripcion": "Club alemán fundado en 1900, el más exitoso de Alemania con múltiples Champions.",
+    "logo": "bayern.png"
+  },
+  {
+    "id": 10,
+    "nombre": "Empoli",
+    "pais": "Italia",
+    "descripcion": "Club italiano fundado en 1920, club revelación con muchos juveniles talentosos.",
+    "logo": "empoli.png"
+  },
+  {
+    "id": 11,
+    "nombre": "Cagliari",
+    "pais": "Italia",
+    "descripcion": "Club italiano de Cerdeña, único equipo del sur de Italia en ganar Serie A (1970).",
+    "logo": "cagliari.png"
+  },
+  {
+    "id": 12,
+    "nombre": "PSG",
+    "pais": "Francia",
+    "descripcion": "Club francés fundado en 1970, dominan Ligue 1, estrella mundial del fútbol.",
+    "logo": "psg.png"
+  },
+  {
+    "id": 13,
+    "nombre": "Atlético de Madrid",
+    "pais": "España",
+    "descripcion": "Club español fundado en 1903, 'Los Colchoneros' de Madrid.",
+    "logo": "atletico_madrid.png"
+  },
+  {
+    "id": 14,
+    "nombre": "Galatasaray",
+    "pais": "Turquía",
+    "descripcion": "Club turco fundado en 1905, 'Los Leones' de Estambul, 23 ligas turcas.",
+    "logo": "galatasaray.png"
+  },
+  {
+    "id": 15,
+    "nombre": "Boca Juniors",
+    "pais": "Argentina",
+    "descripcion": "Club argentino fundado en 1905, 'Los Xeneizes' de Buenos Aires, 6 Libertadores.",
+    "logo": "boca_juniors.png"
+  }
+]
