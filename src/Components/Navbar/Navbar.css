@@ -45,14 +45,10 @@
   color: #ffcc80;
 }
 
-.nav-button:nth-child(4):hover {
+.nav-button.leyendas:hover {
   animation: arcoiris 1.5s infinite;
 }
 
-.nav-button:nth-child(4) {
-  border-left: 2px solid #cc6600;
-  border-radius: 5px;
-}
 
 .hamburger {
   display: none;
