@@ -1,44 +1,41 @@
 import { useRef, useState, useEffect } from "react";
 import paises from "../data/paises.json";
 
-const flagEmojis: Record<string, string> = {
-  España: "🇪🇸",
-  Colombia: "🇨🇴",
-  Italia: "🇮🇹",
-  Inglaterra: "🏴󠁧󠁢󠁥󠁮󠁧󠁿",
-  Alemania: "🇩🇪",
-  Francia: "🇫🇷",
-  Turquía: "🇹🇷",
-  Argentina: "🇦🇷",
-  Marruecos: "🇲🇦",
-  Brasil: "🇧🇷",
-  Paraguay: "🇵🇾",
-};
-
-interface PaisSelectorProps {
-  onSelect: (pais: string) => void;
+interface Club {
+  nombre: string;
+  logo: string;
 }
 
-function PaisSelector({ onSelect }: PaisSelectorProps) {
+interface ClubSelectorProps {
+  pais: string;
+  onSelect?: (club: string | null) => void;
+}
+
+function ClubSelector({ pais, onSelect }: ClubSelectorProps) {
   const scrollRef = useRef<HTMLDivElement>(null);
   const [isDragging, setIsDragging] = useState(false);
   const [startX, setStartX] = useState(0);
   const [scrollLeft, setScrollLeft] = useState(0);
   const [imagenesCargadas, setImagenesCargadas] = useState<Record<string, boolean>>({});
-  const [paisSelected, setPaisSelected] = useState<string | null>(null);
+  const [clubSelected, setClubSelected] = useState<string | null>(null);
+
+  const paisData = paises.find((p) => p.nombre === pais);
+  const clubs: Club[] = paisData?.clubs || [];
 
   useEffect(() => {
-    paises.forEach((paisObj) => {
+    if (clubs.length === 0) return;
+    
+    clubs.forEach((club) => {
       const img = new Image();
-      img.src = `/Images/Flags/${paisObj.nombre}.png`;
+      img.src = `/Images/Teams/${club.logo}`;
       img.onload = () => {
-        setImagenesCargadas((prev) => ({ ...prev, [paisObj.nombre]: true }));
+        setImagenesCargadas((prev) => ({ ...prev, [club.nombre]: true }));
       };
       img.onerror = () => {
-        setImagenesCargadas((prev) => ({ ...prev, [paisObj.nombre]: false }));
+        setImagenesCargadas((prev) => ({ ...prev, [club.nombre]: false }));
       };
     });
-  }, []);
+  }, [pais]);
 
   useEffect(() => {
     const handleMouseUp = () => {
@@ -68,38 +65,42 @@ function PaisSelector({ onSelect }: PaisSelectorProps) {
     setScrollLeft(scrollRef.current?.scrollLeft || 0);
   };
 
-  const handlePaisClick = (pais: string) => {
-    const newPais = pais === paisSelected ? null : pais;
-    setPaisSelected(newPais);
-    onSelect(newPais || "");
+  const handleClubClick = (club: string) => {
+    const newClub = club === clubSelected ? null : club;
+    setClubSelected(newClub);
+    onSelect?.(newClub);
   };
+
+  if (!pais || clubs.length === 0) {
+    return null;
+  }
 
   return (
     <div
-      className="pais-selector"
+      className="club-selector"
       ref={scrollRef}
       onMouseDown={handleMouseDown}
     >
-      {paises.map((paisObj) => (
+      {clubs.map((club) => (
         <div
-          key={paisObj.nombre}
-          className={`pais-item ${paisSelected === paisObj.nombre ? "selected" : ""}`}
-          onClick={() => handlePaisClick(paisObj.nombre)}
+          key={club.nombre}
+          className={`club-item ${clubSelected === club.nombre ? "selected" : ""}`}
+          onClick={() => handleClubClick(club.nombre)}
         >
-          {imagenesCargadas[paisObj.nombre] ? (
+          {imagenesCargadas[club.nombre] ? (
             <img
-              src={`/Images/Flags/${paisObj.nombre}.png`}
-              alt={paisObj.nombre}
-              className="pais-flag"
+              src={`/Images/Teams/${club.logo}`}
+              alt={club.nombre}
+              className="club-logo"
             />
           ) : (
-            <span className="pais-emoji">{flagEmojis[paisObj.nombre]}</span>
+            <span className="club-emoji">⚽</span>
           )}
-          <span className="pais-nombre">{paisObj.nombre}</span>
+          <span className="club-nombre">{club.nombre}</span>
         </div>
       ))}
     </div>
   );
 }
 
-export default PaisSelector;
+export default ClubSelector;
