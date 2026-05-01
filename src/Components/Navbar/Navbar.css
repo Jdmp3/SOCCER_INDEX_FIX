@@ -45,7 +45,7 @@
   color: #ffcc80;
 }
 
-.nav-button.leyendas:hover {
+.nav-button.nav-leyendas:hover {
   animation: arcoiris 1.5s infinite;
 }
 
@@ -112,7 +112,7 @@
 }
 
 @media (max-width: 768px) {
-  .nav-button.leyendas {
+  .nav-button.nav-leyendas {
     animation: arcoiris 1.5s infinite;
   }
 }

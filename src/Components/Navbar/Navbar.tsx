@@ -51,7 +51,7 @@ function Navbar({ buttons, onNavClick }: NavbarProps) {
         {buttons.map((btn, index) => (
           <button
             key={index}
-            className={`nav-button ${index === 3 ? "leyendas" : ""}`}
+            className={`nav-button ${index === 3 ? "nav-leyendas" : ""}`}
             onClick={() => handleButtonClick(btn.action)}
           >
             {btn.label}
