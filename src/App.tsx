@@ -2,6 +2,7 @@ import "./index.css";
 import imagenNoticia from "./Components/Images/PartidoHoy.jpeg";
 import imagenHaramball from "./Components/Images/HaramballSimeone.jpeg";
 import SearchBar from "./Components/SearchBar";
+import Navbar from "./Components/Navbar/Navbar";
 import TeamsGrid from "./Components/TeamsGrid/TeamsGrid";
 import PaisSelector from "./Components/PaisSelector";
 import { useState } from "react";
@@ -42,17 +43,7 @@ function App() {
 
   return (
     <div>
-      <nav className="navbar">
-        {buttons.map((btn, index) => (
-          <button
-            key={index}
-            className="nav-button"
-            onClick={() => handleNavClick(btn.action)}
-          >
-            {btn.label}
-          </button>
-        ))}
-      </nav>
+      <Navbar buttons={buttons} onNavClick={handleNavClick} />
       <main className="main-content">
         <div className="header-title">
           <h1>JDMP3&apos;s INDEX</h1>
