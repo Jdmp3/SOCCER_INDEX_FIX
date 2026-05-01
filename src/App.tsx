@@ -23,6 +23,11 @@ function App() {
   const [paisSeleccionado, setPaisSeleccionado] = useState("");
   const [clubSeleccionado, setClubSeleccionado] = useState<string | null>(null);
 
+  const handlePaisSelect = (pais: string) => {
+    setPaisSeleccionado(pais);
+    setClubSeleccionado(null);
+  };
+
   const handleNavClick = (action: string) => {
     if (action === "inicio") {
       window.scrollTo({ top: 0, behavior: "smooth" });
@@ -118,7 +123,7 @@ function App() {
             <h3 className="pais-titulo">
               Selecciona un país para buscar sus Leyendas:
             </h3>
-            <PaisSelector onSelect={setPaisSeleccionado} />
+            <PaisSelector onSelect={handlePaisSelect} />
             <h3 className={`pais-titulo ${!paisSeleccionado ? "disabled" : ""}`}>
               (Opcional) Selecciona Un Club:
             </h3>

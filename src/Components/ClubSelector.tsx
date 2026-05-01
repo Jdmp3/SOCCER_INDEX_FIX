@@ -38,6 +38,10 @@ function ClubSelector({ pais, onSelect }: ClubSelectorProps) {
   }, [pais]);
 
   useEffect(() => {
+    setClubSelected(null);
+  }, [pais]);
+
+  useEffect(() => {
     const handleMouseUp = () => {
       setIsDragging(false);
     };
