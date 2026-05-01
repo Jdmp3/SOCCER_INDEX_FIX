@@ -63,6 +63,16 @@ body {
   margin-bottom: 10px;
 }
 
+@media (max-width: 600px) {
+  .header-title h1 {
+    font-size: 1.8rem;
+  }
+  .header-title p {
+    font-size: 12px;
+    padding: 0 10px;
+  }
+}
+
 .header-title p {
   color: #cc6600;
   font-size: 14px;
@@ -79,6 +89,23 @@ body {
   background-color: #ffffff;
   border-radius: 10px;
   border: 2px solid #ffb347;
+}
+
+@media (max-width: 768px) {
+  .noticia {
+    flex-direction: column-reverse;
+    padding: 15px;
+  }
+  .noticia-texto {
+    padding-right: 0;
+    padding-top: 15px;
+    text-align: center;
+  }
+  .noticia-imagen {
+    width: 100%;
+    max-width: 300px;
+    height: auto;
+  }
 }
 
 .noticia-texto {
@@ -111,6 +138,16 @@ body {
   margin-top: 650px;
   padding: 30px;
   text-align: center;
+}
+
+@media (max-width: 768px) {
+  .leyendas-container {
+    margin-top: 400px;
+    padding: 15px;
+  }
+  .leyendas {
+    font-size: 2rem;
+  }
 }
 
 .leyendas {
@@ -185,6 +222,16 @@ body {
   background-color: #ffffff;
   border-radius: 10px;
   border: 2px solid #ffb347;
+}
+
+@media (max-width: 768px) {
+  .MiniIndexLeyendas {
+    height: auto;
+    min-height: 800px;
+    width: 95%;
+    padding: 15px;
+    margin: 40px auto 20px;
+  }
 }
 
 .pais-titulo {
