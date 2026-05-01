@@ -4,6 +4,10 @@ import imagenHaramball from "./Components/Images/HaramballSimeone.jpeg";
 import SearchBar from "./Components/SearchBar";
 import TeamsGrid from "./Components/TeamsGrid/TeamsGrid";
 import PaisSelector from "./Components/PaisSelector";
+import ClubSelector from "./Components/ClubSelector";
+import CompetitionsGrid from "./Components/CompetitionsGrid/CompetitionsGrid";
+import paisesInfo from "./data/paisesInfo.json";
+import clubesInfo from "./data/clubesInfo.json";
 import { useState } from "react";
 
 const buttons = [
@@ -16,6 +20,8 @@ const buttons = [
 
 function App() {
   const [mostrarFenix, setMostrarFenix] = useState(false);
+  const [paisSeleccionado, setPaisSeleccionado] = useState("");
+  const [clubSeleccionado, setClubSeleccionado] = useState<string | null>(null);
 
   const handleNavClick = (action: string) => {
     if (action === "inicio") {
@@ -36,6 +42,11 @@ function App() {
         window.scrollTo({ top: leyendas.offsetTop - 380, behavior: "smooth" });
         setTimeout(() => setMostrarFenix(true), 700);
         setTimeout(() => setMostrarFenix(false), 4000);
+      }
+    } else if (action === "competiciones") {
+      const competiciones = document.getElementById("competiciones");
+      if (competiciones) {
+        window.scrollTo({ top: competiciones.offsetTop - 100, behavior: "smooth" });
       }
     }
   };
@@ -104,10 +115,36 @@ function App() {
           />
           <h2 className="leyendas">LEYENDAS</h2>
           <div className="MiniIndexLeyendas">
-            <h3 className="pais-titulo">Selecciona un país para buscar sus Leyendas:</h3>
-            <PaisSelector />
+            <h3 className="pais-titulo">
+              Selecciona un país para buscar sus Leyendas:
+            </h3>
+            <PaisSelector onSelect={setPaisSeleccionado} />
+            <h3 className={`pais-titulo ${!paisSeleccionado ? "disabled" : ""}`}>
+              (Opcional) Selecciona Un Club:
+            </h3>
+            {paisSeleccionado && (
+              <ClubSelector pais={paisSeleccionado} onSelect={setClubSeleccionado} />
+            )}
+            {clubSeleccionado && (
+              <div className="info-panel">
+                <h3>{clubSeleccionado}</h3>
+                <p>{clubesInfo.find((c) => c.nombre === clubSeleccionado)?.descripcion}</p>
+                <p>Títulos: {clubesInfo.find((c) => c.nombre === clubSeleccionado)?.titulos}</p>
+              </div>
+            )}
+            {!clubSeleccionado && paisSeleccionado && (
+              <div className="info-panel">
+                <h3>{paisSeleccionado}</h3>
+                <p>{paisesInfo.find((p) => p.nombre === paisSeleccionado)?.descripcion}</p>
+                <p>Títulos: {paisesInfo.find((p) => p.nombre === paisSeleccionado)?.titulos}</p>
+              </div>
+            )}
+            {!clubSeleccionado && !paisSeleccionado && (
+              <div className="info-panel"></div>
+            )}
           </div>
         </div>
+        <CompetitionsGrid />
       </main>
     </div>
   );
