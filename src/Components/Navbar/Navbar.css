@@ -73,6 +73,11 @@
 }
 
 @media (max-width: 768px) {
+  .navbar {
+    height: 54px;
+    padding: 0 20px;
+  }
+
   .hamburger {
     display: flex;
     left: 30px;

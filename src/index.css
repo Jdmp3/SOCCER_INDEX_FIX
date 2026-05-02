@@ -15,6 +15,7 @@ body {
   overflow-x: hidden;
 }
 
+
 @keyframes arcoiris {
   0% {
     background-color: #ff6b6b;
@@ -45,7 +46,7 @@ body {
 
 
 .main-content {
-  margin-top: 70px;
+  margin-top: 54px;
   padding: 20px;
   min-height: 100vh;
   background-color: #fff5e6;
