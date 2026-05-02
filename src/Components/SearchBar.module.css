@@ -1,7 +1,21 @@
 .container {
   margin: 400px auto 20px;
   width: 35%;
-  max-width: 35%;
+  max-width: 800px;
+}
+
+@media (min-width: 769px) and (max-width: 1024px) {
+  .container {
+    width: 75%;
+  }
+}
+
+@media (max-width: 768px) {
+  .container {
+    width: 90%;
+    max-width: 90%;
+    margin: 300px auto 20px;
+  }
 }
 
 .searchWrapper {
