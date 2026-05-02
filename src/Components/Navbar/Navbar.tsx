@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect } from "react";
+import { Menu, X } from "lucide-react";
 import "./Navbar.css";
 
 interface NavButton {
@@ -43,9 +44,7 @@ function Navbar({ buttons, onNavClick }: NavbarProps) {
   return (
     <nav className="navbar">
       <button className="hamburger" onClick={toggleMenu} aria-label="Menu">
-        <span className={`hamburger-line ${isOpen ? "open" : ""}`}></span>
-        <span className={`hamburger-line ${isOpen ? "open" : ""}`}></span>
-        <span className={`hamburger-line ${isOpen ? "open" : ""}`}></span>
+        {isOpen ? <X size={24} /> : <Menu size={24} />}
       </button>
       <div className={`nav-links ${isOpen ? "open" : ""}`} ref={menuRef}>
         {buttons.map((btn, index) => (
@@ -58,6 +57,7 @@ function Navbar({ buttons, onNavClick }: NavbarProps) {
           </button>
         ))}
       </div>
+      <div className={`overlay ${isOpen ? "visible" : ""}`} onClick={() => setIsOpen(false)}></div>
     </nav>
   );
 }
