@@ -23,6 +23,10 @@ function ClubSelector({ pais, onSelect }: ClubSelectorProps) {
   const clubs: Club[] = paisData?.clubs || [];
 
   useEffect(() => {
+    setClubSelected(null);
+  }, [pais]);
+
+  useEffect(() => {
     if (clubs.length === 0) return;
     
     clubs.forEach((club) => {
