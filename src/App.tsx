@@ -7,6 +7,7 @@ import TeamsGrid from "./Components/TeamsGrid/TeamsGrid";
 import PaisSelector from "./Components/PaisSelector";
 import ClubSelector from "./Components/ClubSelector";
 import CompetitionsGrid from "./Components/CompetitionsGrid/CompetitionsGrid";
+import NewsCard from "./Components/NewsCard/NewsCard";
 import paisesInfo from "./data/paisesInfo.json";
 import clubesInfo from "./data/clubesInfo.json";
 import { useState } from "react";
@@ -52,7 +53,10 @@ function App() {
     } else if (action === "competiciones") {
       const competiciones = document.getElementById("competiciones");
       if (competiciones) {
-        window.scrollTo({ top: competiciones.offsetTop - 100, behavior: "smooth" });
+        window.scrollTo({
+          top: competiciones.offsetTop - 100,
+          behavior: "smooth",
+        });
       }
     }
   };
@@ -68,39 +72,16 @@ function App() {
             competiciones e historias sobre el futbol que me gustan mucho]
           </p>
         </div>
-        <div className="noticia">
-          <div className="noticia-texto">
-            <h2>Máxima Exhibición de Futbol 5-4</h2>
-            <p>
-              el dia 28/04/2026 se jugó la semifinal de la UEFA CHAMPIONS LEAGUE
-              el partido del FC Bayern Munich vs Paris Saint Germain, dió una
-              increible demostración de lo que es el máximo nivel en este
-              deporte.
-            </p>
-          </div>
-          <img
-            className="noticia-imagen"
-            src={imagenNoticia}
-            alt="Imagen de la noticia"
-          />
-        </div>
-        <div className="noticia">
-          <div className="noticia-texto">
-            <h2>Empate de Mrd</h2>
-            <p>
-              Como era de esperarse el partido de Atletico de Madrid vs Arsenal,
-              fué extremadamente aburrido, hubo 6 tiros a puerta nomás, 4
-              paradas de portero pff y los unicos dos goles del partido fueron
-              de penal, un partido completamente para el olvido y la vuelta va a
-              ser mucho peor.
-            </p>
-          </div>
-          <img
-            className="noticia-imagen"
-            src={imagenHaramball}
-            alt="Imagen de la noticia"
-          />
-        </div>
+        <NewsCard
+          title="Máxima Exhibición de Futbol 5-4"
+          description="el dia 28/04/2026 se jugó la semifinal de la UEFA CHAMPIONS LEAGUE el partido del FC Bayern Munich vs Paris Saint Germain, dió una increible demostración de lo que es el máximo nivel en este deporte."
+          image={imagenNoticia}
+        />
+        <NewsCard
+          title="Empate de Mrd"
+          description="Como era de esperarse el partido de Atletico de Madrid vs Arsenal, fué extremadamente aburrido, hubo 6 tiros a puerta nomás, 4 paradas de portero pff y los unicos dos goles del partido fueron de penal, un partido completamente para el olvido y la vuelta va a ser mucho peor."
+          image={imagenHaramball}
+        />
         <SearchBar id="buscador" />
         <TeamsGrid />
         <div id="leyendas" className="leyendas-container">
@@ -115,24 +96,51 @@ function App() {
               Selecciona un país para buscar sus Leyendas:
             </h3>
             <PaisSelector onSelect={handlePaisSelect} />
-            <h3 className={`pais-titulo ${!paisSeleccionado ? "disabled" : ""}`}>
+            <h3
+              className={`pais-titulo ${!paisSeleccionado ? "disabled" : ""}`}
+            >
               (Opcional) Selecciona Un Club:
             </h3>
             {paisSeleccionado && (
-              <ClubSelector pais={paisSeleccionado} onSelect={setClubSeleccionado} />
+              <ClubSelector
+                pais={paisSeleccionado}
+                onSelect={setClubSeleccionado}
+              />
             )}
             {clubSeleccionado && (
               <div className="info-panel">
                 <h3>{clubSeleccionado}</h3>
-                <p>{clubesInfo.find((c) => c.nombre === clubSeleccionado)?.descripcion}</p>
-                <p>Títulos: {clubesInfo.find((c) => c.nombre === clubSeleccionado)?.titulos}</p>
+                <p>
+                  {
+                    clubesInfo.find((c) => c.nombre === clubSeleccionado)
+                      ?.descripcion
+                  }
+                </p>
+                <p>
+                  Títulos:{" "}
+                  {
+                    clubesInfo.find((c) => c.nombre === clubSeleccionado)
+                      ?.titulos
+                  }
+                </p>
               </div>
             )}
             {!clubSeleccionado && paisSeleccionado && (
               <div className="info-panel">
                 <h3>{paisSeleccionado}</h3>
-                <p>{paisesInfo.find((p) => p.nombre === paisSeleccionado)?.descripcion}</p>
-                <p>Títulos: {paisesInfo.find((p) => p.nombre === paisSeleccionado)?.titulos}</p>
+                <p>
+                  {
+                    paisesInfo.find((p) => p.nombre === paisSeleccionado)
+                      ?.descripcion
+                  }
+                </p>
+                <p>
+                  Títulos:{" "}
+                  {
+                    paisesInfo.find((p) => p.nombre === paisSeleccionado)
+                      ?.titulos
+                  }
+                </p>
               </div>
             )}
             {!clubSeleccionado && !paisSeleccionado && (
