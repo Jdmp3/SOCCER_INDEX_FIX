@@ -5,7 +5,7 @@ interface Club {
   nombre: string;
   logo: string;
 }
-
+  
 interface ClubSelectorProps {
   pais: string;
   onSelect?: (club: string | null) => void;

@@ -25,7 +25,7 @@
   {
     "nombre": "Inglaterra",
     "clubs": [
-      { "nombre": "Brighton & Hove Albion", "logo": "brighton.png" },
+      { "nombre": "Brighton", "logo": "brighton.png" },
       { "nombre": "Arsenal", "logo": "arsenal.png" },
       { "nombre": "Liverpool", "logo": "liverpool.png" }
     ]
