@@ -103,6 +103,7 @@ function App() {
             </h3>
             {paisSeleccionado && (
               <ClubSelector
+                key={paisSeleccionado}
                 pais={paisSeleccionado}
                 onSelect={setClubSeleccionado}
               />
@@ -134,7 +135,7 @@ function App() {
                       ?.descripcion
                   }
                 </p>
-                <p>
+                <p className="titulos">
                   Títulos:{" "}
                   {
                     paisesInfo.find((p) => p.nombre === paisSeleccionado)

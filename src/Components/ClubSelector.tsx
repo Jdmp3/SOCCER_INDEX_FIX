@@ -1,11 +1,6 @@
-import { useRef, useState, useEffect } from "react";
+import { useRef, useState, useEffect, useMemo } from "react";
 import paises from "../data/paises.json";
 
-interface Club {
-  nombre: string;
-  logo: string;
-}
-  
 interface ClubSelectorProps {
   pais: string;
   onSelect?: (club: string | null) => void;
@@ -20,15 +15,11 @@ function ClubSelector({ pais, onSelect }: ClubSelectorProps) {
   const [clubSelected, setClubSelected] = useState<string | null>(null);
 
   const paisData = paises.find((p) => p.nombre === pais);
-  const clubs: Club[] = paisData?.clubs || [];
-
-  useEffect(() => {
-    setClubSelected(null);
-  }, [pais]);
+  const clubs = useMemo(() => paisData?.clubs || [], [paisData]);
 
   useEffect(() => {
     if (clubs.length === 0) return;
-    
+
     clubs.forEach((club) => {
       const img = new Image();
       img.src = `/Images/Teams/${club.logo}`;
@@ -39,7 +30,7 @@ function ClubSelector({ pais, onSelect }: ClubSelectorProps) {
         setImagenesCargadas((prev) => ({ ...prev, [club.nombre]: false }));
       };
     });
-  }, [pais]);
+  }, [pais, clubs]);
 
   useEffect(() => {
     const handleMouseUp = () => {
