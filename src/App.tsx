@@ -6,6 +6,7 @@ import Navbar from "./Components/Navbar/Navbar";
 import TeamsGrid from "./Components/TeamsGrid/TeamsGrid";
 import PaisSelector from "./Components/PaisSelector";
 import ClubSelector from "./Components/ClubSelector";
+import InfoCard from "./Components/InfoCard";
 import CompetitionsGrid from "./Components/CompetitionsGrid/CompetitionsGrid";
 import NewsCard from "./Components/NewsCard/NewsCard";
 import paisesInfo from "./data/paisesInfo.json";
@@ -21,8 +22,8 @@ const buttons = [
 ];
 
 function App() {
-  const [mostrarFenix, setMostrarFenix] = useState(false);
-  const [paisSeleccionado, setPaisSeleccionado] = useState("");
+  const [mostrarFenix, setMostrarFenix] = useState<boolean>(false);
+  const [paisSeleccionado, setPaisSeleccionado] = useState<string>("");
   const [clubSeleccionado, setClubSeleccionado] = useState<string | null>(null);
 
   const handlePaisSelect = (pais: string) => {
@@ -109,44 +110,32 @@ function App() {
               />
             )}
             {clubSeleccionado && (
-              <div className="info-panel">
-                <h3>{clubSeleccionado}</h3>
-                <p>
-                  {
-                    clubesInfo.find((c) => c.nombre === clubSeleccionado)
-                      ?.descripcion
-                  }
-                </p>
-                <p>
-                  Títulos:{" "}
-                  {
-                    clubesInfo.find((c) => c.nombre === clubSeleccionado)
-                      ?.titulos
-                  }
-                </p>
-              </div>
+              <InfoCard
+                titulo={clubSeleccionado}
+                descripcion={
+                  clubesInfo.find((c) => c.nombre === clubSeleccionado)
+                    ?.descripcion || ""
+                }
+                titulos={
+                  clubesInfo.find((c) => c.nombre === clubSeleccionado)
+                    ?.titulos || 0
+                }
+              />
             )}
             {!clubSeleccionado && paisSeleccionado && (
-              <div className="info-panel">
-                <h3>{paisSeleccionado}</h3>
-                <p>
-                  {
-                    paisesInfo.find((p) => p.nombre === paisSeleccionado)
-                      ?.descripcion
-                  }
-                </p>
-                <p className="titulos">
-                  Títulos:{" "}
-                  {
-                    paisesInfo.find((p) => p.nombre === paisSeleccionado)
-                      ?.titulos
-                  }
-                </p>
-              </div>
+              <InfoCard
+                titulo={paisSeleccionado}
+                descripcion={
+                  paisesInfo.find((p) => p.nombre === paisSeleccionado)
+                    ?.descripcion || ""
+                }
+                titulos={
+                  paisesInfo.find((p) => p.nombre === paisSeleccionado)
+                    ?.titulos || 0
+                }
+              />
             )}
-            {!clubSeleccionado && !paisSeleccionado && (
-              <div className="info-panel"></div>
-            )}
+            {!clubSeleccionado && !paisSeleccionado && <div className="info-panel" />}
           </div>
         </div>
         <CompetitionsGrid />
