@@ -1,13 +1,79 @@
 [
-  "España",
-  "Colombia",
-  "Italia",
-  "Inglaterra",
-  "Alemania",
-  "Francia",
-  "Turquía",
-  "Argentina",
-  "Marruecos",
-  "Brasil",
-  "Paraguay"
+  {
+    "nombre": "España",
+    "clubs": [
+      { "nombre": "Barcelona", "logo": "barcelona.png" },
+      { "nombre": "Atlético de Madrid", "logo": "atletico_madrid.png" }
+    ]
+  },
+  {
+    "nombre": "Colombia",
+    "clubs": [
+      { "nombre": "Atlético Bucaramanga", "logo": "atletico_bucaramanga.png" },
+      { "nombre": "Atlético Nacional", "logo": "atletico_nacional.png" }
+    ]
+  },
+  {
+    "nombre": "Italia",
+    "clubs": [
+      { "nombre": "Fiorentina", "logo": "fiorentina.png" },
+      { "nombre": "AC Milan", "logo": "milan.png" },
+      { "nombre": "Empoli", "logo": "empoli.png" },
+      { "nombre": "Cagliari", "logo": "cagliari.png" }
+    ]
+  },
+  {
+    "nombre": "Inglaterra",
+    "clubs": [
+      { "nombre": "Brighton", "logo": "brighton.png" },
+      { "nombre": "Arsenal", "logo": "arsenal.png" },
+      { "nombre": "Liverpool", "logo": "liverpool.png" }
+    ]
+  },
+  {
+    "nombre": "Alemania",
+    "clubs": [
+      { "nombre": "Borussia Dortmund", "logo": "dortmund.png" },
+      { "nombre": "Bayern Munich", "logo": "bayern.png" }
+    ]
+  },
+  {
+    "nombre": "Francia",
+    "clubs": [
+      { "nombre": "PSG", "logo": "psg.png" }
+    ]
+  },
+  {
+    "nombre": "Turquía",
+    "clubs": [
+      { "nombre": "Galatasaray", "logo": "galatasaray.png" }
+    ]
+  },
+  {
+    "nombre": "Argentina",
+    "clubs": [
+      { "nombre": "Boca Juniors", "logo": "boca_juniors.png" }
+    ]
+  },
+  {
+    "nombre": "Marruecos",
+    "clubs": [
+      { "nombre": "MAS Fez", "logo": "mas_fez.png" },
+      { "nombre": "Wydad AC", "logo": "wydad_ac.png" }
+    ]
+  },
+  {
+    "nombre": "Brasil",
+    "clubs": [
+      { "nombre": "Palmeiras", "logo": "palmeiras.png" },
+      { "nombre": "Botafogo", "logo": "botafogo.png" }
+    ]
+  },
+  {
+    "nombre": "Paraguay",
+    "clubs": [
+      { "nombre": "Cerro Porteño", "logo": "cerro_porteno.png" },
+      { "nombre": "Club Libertad", "logo": "libertad.png" }
+    ]
+  }
 ]
