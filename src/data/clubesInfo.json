@@ -1,24 +1,112 @@
 [
-  { "nombre": "Barcelona", "descripcion": "", "titulos": 0 },
-  { "nombre": "Atlético de Madrid", "descripcion": "", "titulos": 0 },
-  { "nombre": "Atlético Bucaramanga", "descripcion": "", "titulos": 0 },
-  { "nombre": "Atlético Nacional", "descripcion": "", "titulos": 0 },
-  { "nombre": "Fiorentina", "descripcion": "", "titulos": 0 },
-  { "nombre": "AC Milan", "descripcion": "", "titulos": 0 },
-  { "nombre": "Empoli", "descripcion": "", "titulos": 0 },
-  { "nombre": "Cagliari", "descripcion": "", "titulos": 0 },
-  { "nombre": "Brighton", "descripcion": "", "titulos": 0 },
-  { "nombre": "Arsenal", "descripcion": "", "titulos": 0 },
-  { "nombre": "Liverpool", "descripcion": "", "titulos": 0 },
-  { "nombre": "Borussia Dortmund", "descripcion": "", "titulos": 0 },
-  { "nombre": "Bayern Munich", "descripcion": "", "titulos": 0 },
-  { "nombre": "PSG", "descripcion": "", "titulos": 0 },
-  { "nombre": "Galatasaray", "descripcion": "", "titulos": 0 },
-  { "nombre": "Boca Juniors", "descripcion": "", "titulos": 0 },
-  { "nombre": "MAS Fez", "descripcion": "", "titulos": 0 },
-  { "nombre": "Wydad AC", "descripcion": "", "titulos": 0 },
-  { "nombre": "Palmeiras", "descripcion": "", "titulos": 0 },
-  { "nombre": "Botafogo", "descripcion": "", "titulos": 0 },
-  { "nombre": "Cerro Porteño", "descripcion": "", "titulos": 0 },
-  { "nombre": "Club Libertad", "descripcion": "", "titulos": 0 }
+  {
+    "nombre": "Barcelona",
+    "descripcion": "El FC Barcelona, conocido popularmente como el Barça, es uno de los clubes más prestigiosos del mundo. Fundado en 1899, ha conquistado numerosos títulos oficiales, entre ellos varias Ligas españolas, Copas del Rey y competiciones internacionales como la Liga de Campeones de la UEFA. Su época dorada llegó especialmente entre 2008 y 2015, cuando logró múltiples títulos bajo un estilo de juego distintivo basado en la posesión del balón y el juego colectivo. El club es reconocido por su filosofía futbolística, consolidada a través de su academia, La Masía, que ha formado a jugadores emblemáticos que marcaron una era. Figuras como Lionel Messi, Xavi Hernández, Andrés Iniesta y Carles Puyol simbolizan este estilo, caracterizado por la precisión en el pase y la inteligencia táctica. El FC Barcelona disputa sus partidos como local en el Camp Nou, uno de los estadios más emblemáticos del fútbol mundial. A lo largo de su historia, el club ha mantenido una fuerte identidad cultural y deportiva, representada en su lema “Més que un club”, reflejando su impacto tanto dentro como fuera del terreno de juego.",
+    "titulos": 97
+  },
+  {
+    "nombre": "Atlético de Madrid",
+    "descripcion": "El Atlético de Madrid, conocido popularmente como el Atlético o los “colchoneros”, es un competidor habitual al más alto nivel tanto en competiciones nacionales como internacionales. A lo largo de su trayectoria, el club ha destacado por su carácter competitivo y su identidad basada en la intensidad defensiva, el orden táctico y la solidez colectiva. Esta filosofía alcanzó su máxima expresión en la etapa moderna bajo la dirección de Diego Simeone, quien llevó al equipo a competir de igual a igual con las mayores potencias del continente. El Atlético de Madrid disputa sus partidos como local en el Cívitas Metropolitano, un estadio moderno que refleja el crecimiento institucional del club. A lo largo de su historia, han pasado por sus filas grandes figuras como Fernando Torres, Antoine Griezmann y Diego Godín, quienes han contribuido a forjar la identidad y el legado de la institución.",
+    "titulos": 33
+  },
+  {
+    "nombre": "Atlético Bucaramanga",
+    "descripcion": "El Atlético Bucaramanga, conocido como el “Leopardo”, es uno de los clubes tradicionales del fútbol colombiano. Fundado en 1949, ha construido una sólida trayectoria en el balompié nacional, destacándose por su historia, su afición fiel y su identidad regional. A lo largo de los años, el club ha sido reconocido por su estilo competitivo y por su capacidad de formar y proyectar talento en el fútbol colombiano. El Atlético Bucaramanga disputa sus partidos como local en el Estadio Alfonso López, donde cuenta con el respaldo constante de su hinchada. A lo largo de su historia, han pasado por el club jugadores destacados del ámbito nacional, contribuyendo al crecimiento y la identidad de una institución que continúa fortaleciéndose en el fútbol colombiano.",
+    "titulos": 1
+  },
+  {
+    "nombre": "Atlético Nacional",
+    "descripcion": "El Atlético Nacional, conocido como el “Verdolaga”, es uno de los clubes más prestigiosos del fútbol colombiano y sudamericano. Fundado en 1947, Su mayor reconocimiento internacional llegó con la conquista de la Copa Libertadores, convirtiéndose en uno de los pocos equipos colombianos en alcanzar este logro. A lo largo de los años, el club ha sido identificado por su estilo de juego ofensivo y por su apuesta constante al talento nacional, lo que le ha permitido desarrollar generaciones destacadas de futbolistas. El Atlético Nacional disputa sus partidos como local en el Estadio Atanasio Girardot, uno de los escenarios más emblemáticos de Colombia. Por sus filas han pasado grandes figuras como René Higuita, Francisco Maturana y Juan Pablo Ángel, quienes han contribuido a construir la identidad y el legado de uno de los clubes más grandes del continente.",
+    "titulos": 35
+  },
+  {
+    "nombre": "Fiorentina",
+    "descripcion": "La ACF Fiorentina, conocida como la Fiorentina o la “Viola”, es uno de los clubes más representativos del fútbol italiano. Fundada en 1926, El club ha sido reconocido por su estilo de juego elegante y por su fuerte identidad ligada a la ciudad de Florencia. A lo largo de las décadas, ha contado con futbolistas de gran calidad que han dejado huella en el fútbol europeo, consolidando su reputación como un equipo competitivo y formador de talento. La Fiorentina disputa sus partidos como local en el Stadio Artemio Franchi, un escenario emblemático del calcio italiano. Por sus filas han pasado grandes figuras como Gabriel Batistuta, Roberto Baggio y Francesco Toldo, quienes han contribuido a forjar la historia de un club con tradición y relevancia en Italia.",
+    "titulos": 10
+  },
+  {
+    "nombre": "AC Milan",
+    "descripcion": "El AC Milan, conocido como el Milan, es uno de los clubes más prestigiosos y laureados del fútbol mundial. Fundado en 1899, Su mayor éxito internacional se refleja en sus múltiples conquistas de la Liga de Campeones de la UEFA, siendo uno de los equipos más ganadores de esta competición. A lo largo de las décadas, el club ha destacado por su estilo de juego equilibrado, combinando solidez defensiva con gran calidad técnica, especialmente en sus épocas doradas. El AC Milan disputa sus partidos como local en el San Siro, uno de los estadios más emblemáticos del fútbol europeo. Por sus filas han pasado leyendas del deporte como Paolo Maldini, Franco Baresi, Kaká y Marco van Basten, quienes han contribuido a construir la grandeza y el legado histórico de la institución.",
+    "titulos": 50
+  },
+  {
+    "nombre": "Empoli",
+    "descripcion": "El Empoli FC, conocido simplemente como Empoli, es un club italiano con sede en la región de la Toscana. Fundado en 1920, ha desarrollado una trayectoria marcada por su estabilidad en el fútbol profesional italiano, alternando participaciones entre la Serie A y la Serie B. A lo largo de su historia, el club ha sido reconocido principalmente por su labor formativa y su capacidad para desarrollar talento joven, más que por la conquista de títulos. Su estilo de juego suele caracterizarse por el orden táctico, la disciplina y la apuesta por futbolistas emergentes que luego destacan en el fútbol europeo. El Empoli disputa sus partidos como local en el Stadio Carlo Castellani, donde mantiene una estrecha conexión con su afición local. Aunque no cuenta con títulos oficiales de gran relevancia en la élite italiana, su papel dentro del fútbol nacional ha sido importante como club formador y competitivo en las principales categorías del país.",
+    "titulos": 0
+  },
+  {
+    "nombre": "Cagliari",
+    "descripcion": "El Cagliari Calcio, conocido simplemente como Cagliari, es un club italiano con sede en la isla de Cerdeña. Fundado en 1920, ha tenido una trayectoria marcada por su fuerte identidad regional y por momentos históricos de gran relevancia en el fútbol italiano. El Cagliari disputa sus partidos como local en el Unipol Domus. Entre sus figuras más emblemáticas destaca Gigi Riva, considerado el máximo ídolo del club y una de las grandes leyendas del fútbol italiano, símbolo de la época más gloriosa de la institución.",
+    "titulos": 1
+  },
+  {
+    "nombre": "Brighton",
+    "descripcion": "El Brighton & Hove Albion FC, conocido simplemente como Brighton, es un club inglés con sede en la ciudad costera de Brighton. Fundado en 1901, ha crecido de forma notable en el fútbol moderno, consolidándose en la élite del fútbol inglés en la era reciente. El Brighton disputa sus partidos como local en el Amex Stadium, un estadio moderno que simboliza la evolución del club. En su etapa reciente, el equipo ha sido reconocido por un estilo de juego ofensivo y de posesión, con entrenadores como Roberto De Zerbi dejando una fuerte identidad táctica. Entre sus jugadores más destacados recientes se encuentran figuras como Lewis Dunk, capitán e ისტორico del club, además de futbolistas que han pasado por su plantilla y luego han brillado en grandes equipos europeos, consolidando a Brighton como un club formador y competitivo en la Premier League.",
+    "titulos": 0
+  },
+  {
+    "nombre": "Arsenal",
+    "descripcion": "El Arsenal FC, conocido como el Arsenal o los “Gunners”, es uno de los clubes más históricos y prestigiosos del fútbol inglés. El Arsenal disputa sus partidos como local en el Emirates Stadium, uno de los estadios más modernos de Europa. A lo largo de su historia, han pasado por el club grandes figuras como Thierry Henry, máximo goleador histórico del equipo, así como Tony Adams y Dennis Bergkamp, quienes han contribuido a construir su legado en el fútbol inglés y europeo.",
+    "titulos": 48
+  },
+  {
+    "nombre": "Liverpool",
+    "descripcion": "El Liverpool FC, conocido como el Liverpool o los “Reds”, es uno de los clubes más grandes y laureados del fútbol mundial. El club es especialmente reconocido por su legado en competiciones europeas, siendo uno de los equipos con más títulos de la Liga de Campeones de la UEFA, y por su histórica conexión con su afición, que ha convertido su estadio en uno de los más emblemáticos del fútbol mundial. A lo largo de su historia, ha contado con figuras legendarias como Steven Gerrard, símbolo del club, así como Mohamed Salah en la era moderna, y ha sido dirigido recientemente por técnicos influyentes como Jürgen Klopp, quien devolvió al club a la élite europea. Su estilo de juego se ha caracterizado tradicionalmente por la intensidad, la presión alta y el juego ofensivo, lo que ha reforzado su identidad como uno de los clubes más competitivos y respetados del fútbol internacional.",
+    "titulos": 68
+  },
+  {
+    "nombre": "Borussia Dortmund",
+    "descripcion": "El Borussia Dortmund, conocido como el Dortmund o el “BVB”, es uno de los clubes más importantes del fútbol alemán. El club ha sido reconocido por su estilo de juego intenso, vertical y ofensivo, así como por su apuesta constante por el desarrollo de jóvenes talentos que posteriormente han destacado en la élite del fútbol mundial. Su etapa de mayor gloria moderna llegó en la década de 1990 y principios de 2010, cuando logró títulos nacionales e internacionales de gran relevancia. El Borussia Dortmund disputa sus partidos como local en el Signal Iduna Park, uno de los estadios con mayor capacidad y ambiente del fútbol europeo, famoso por su “Muro Amarillo”.",
+    "titulos": 21
+  },
+  {
+    "nombre": "Bayern Munich",
+    "descripcion": "El Bayern Munich, conocido como el Bayern o el “FCB”, es el club más laureado del fútbol alemán y uno de los más grandes del mundo. Fundado en 1900 El club es reconocido por su estructura deportiva sólida, su capacidad de planificación a largo plazo y su estilo de juego eficiente, basado en la presión alta, el control del balón y la intensidad física. Su época moderna de mayor éxito ha consolidado su hegemonía en la Bundesliga y su presencia constante en las fases finales de la Liga de Campeones de la UEFA. El Bayern Munich disputa sus partidos como local en la Allianz Arena, uno de los estadios más modernos y emblemáticos de Europa.",
+    "titulos": 84
+  },
+  {
+    "nombre": "PSG",
+    "descripcion": "El Paris Saint-Germain FC, conocido como el PSG, es uno de los clubes más importantes del fútbol francés y europeo en la era moderna. Fundado en 1970, ha crecido hasta convertirse en la gran potencia del fútbol en Francia, especialmente desde la llegada de fuertes inversiones que le han permitido atraer a algunas de las mayores estrellas del mundo. El club ha dominado el fútbol nacional en las últimas décadas, destacando por su capacidad ofensiva, su talento individual y su impacto mediático global. En el ámbito internacional, ha sido protagonista habitual en las fases finales de la Liga de Campeones de la UEFA, aunque aún busca su primer gran título europeo.",
+    "titulos": 51
+  },
+  {
+    "nombre": "Galatasaray",
+    "descripcion": "El Galatasaray SK es uno de los clubes más importantes y exitosos del fútbol turco. Fundado en 1905 en la ciudad de Estambul, forma parte del histórico “Big Three” del país junto a Fenerbahçe y Beşiktaş, siendo una institución con enorme peso deportivo y social. A lo largo de su historia, el club ha destacado por su dominio en la liga turca y por su gran presencia en competiciones europeas. Su estilo de juego ha combinado tradicionalmente intensidad, carácter competitivo y una fuerte identidad de equipo grande en su país. Uno de sus mayores hitos internacionales fue la conquista de la Copa de la UEFA, convirtiéndose en el primer y único club turco en lograr un título europeo de este nivel. El Galatasaray disputa sus partidos como local en el RAMS Park, conocido por su ambiente extremadamente intenso gracias a una de las aficiones más apasionadas de Europa. A lo largo de los años han pasado por el club figuras importantes como Hakan Şükür, máximo referente histórico del equipo, así como jugadores internacionales de gran nivel que han contribuido a su éxito moderno.",
+    "titulos": 61
+  },
+  {
+    "nombre": "Boca Juniors",
+    "descripcion": "El Boca Juniors es uno de los clubes más grandes y populares del fútbol mundial. Fundado en 1905 en el barrio de La Boca, en la ciudad de Buenos Aires, es una institución histórica del fútbol argentino y sudamericano, reconocida por su enorme masa social y su identidad popular. A lo largo de su historia, el club ha sido protagonista constante en el fútbol argentino, destacándose por su mentalidad competitiva y su capacidad para brillar en los momentos decisivos. En el plano internacional, ha tenido gran éxito en competiciones de clubes de la CONMEBOL, consolidándose como uno de los equipos más laureados del continente. El Boca Juniors disputa sus partidos como local en el emblemático Estadio Alberto J. Armando (La Bombonera), conocido mundialmente por su atmósfera única y su cercanía con el campo. A lo largo de su historia han pasado por el club figuras legendarias como Diego Maradona y Juan Román Riquelme, ídolos máximos de la institución.",
+    "titulos": 74
+  },
+  {
+    "nombre": "MAS Fez",
+    "descripcion": "Fundado en 1946 en la ciudad de Fez, es una institución tradicional del país con una fuerte identidad regional y una afición muy arraigada. A lo largo de su historia, el club ha sido un competidor habitual en el fútbol marroquí, destacando por su capacidad de competir en distintas épocas y por su presencia en torneos nacionales e internacionales. El MAS de Fez disputa sus partidos como local en el Stade de Fès, un complejo deportivo moderno que ha sido escenario de sus principales éxitos. El club es conocido por su estilo competitivo, su disciplina táctica y su importancia dentro del desarrollo del fútbol en Marruecos.",
+    "titulos": 9
+  },
+  {
+    "nombre": "Wydad AC",
+    "descripcion": "Fundado en 1937 en la ciudad de Casablanca, es una institución histórica del fútbol marroquí y una de las más laureadas del continente. A lo largo de su trayectoria, el club ha sido protagonista habitual en competiciones nacionales, destacándose por su regularidad y su capacidad para mantenerse en la élite del fútbol marroquí. En el plano internacional, ha sido un competidor constante en torneos africanos, donde ha logrado varios títulos de gran prestigio, incluyendo la Liga de Campeones de la CAF.",
+    "titulos": 23
+  },
+  {
+    "nombre": "Palmeiras",
+    "descripcion": "Fundado en 1914 en la ciudad de São Paulo por inmigrantes italianos, es una institución histórica con una de las trayectorias más laureadas del continente. A lo largo de su historia, el club ha sido protagonista constante en el fútbol brasileño, destacándose por su regularidad y su capacidad de competir en todas las épocas. En el ámbito internacional, ha logrado múltiples títulos continentales, consolidándose como uno de los equipos más exitosos de la Copa Libertadores en la era moderna.",
+    "titulos": 25
+  },
+  {
+    "nombre": "Botafogo",
+    "descripcion": "Fundado en 1904 en la ciudad de Río de Janeiro, forma parte de los llamados “grandes” del país y cuenta con una fuerte identidad popular y una gran tradición futbolística. A lo largo de su historia, el club ha sido reconocido por su estilo técnico y ofensivo, especialmente en sus épocas doradas, cuando aportó numerosos jugadores a la selección brasileña campeona del mundo. Es considerado uno de los equipos que más ha contribuido al talento histórico del fútbol brasileño, con figuras legendarias que marcaron época. El Botafogo disputa sus partidos como local en el Estádio Nilton Santos, también conocido como Engenhão. Entre sus grandes leyendas destacan Garrincha, uno de los jugadores más icónicos de la historia del fútbol, además de Nilton Santos y Jairzinho.",
+    "titulos": 27
+  },
+  {
+    "nombre": "Cerro Porteño",
+    "descripcion": "Fundado en 1912 en la ciudad de Asunción, es conocido como el “Ciclón de Barrio Obrero” y cuenta con una de las hinchadas más grandes y apasionadas del país. A lo largo de su historia, el club ha sido un protagonista constante del fútbol paraguayo, destacándose por su regularidad en la lucha por los campeonatos nacionales y por su fuerte rivalidad con Olimpia, uno de los clásicos más intensos del continente. Su identidad se basa en la garra, la intensidad competitiva y una gran conexión con su afición.",
+    "titulos": 34
+  },
+  {
+    "nombre": "Club Libertad",
+    "descripcion": "Fundado en 1905 en la ciudad de Asunción, es considerado uno de los grandes del país por su regularidad en la élite y su fuerte estructura deportiva. A lo largo de su historia, el club ha destacado especialmente en el ámbito nacional, donde ha logrado consolidarse como uno de los máximos campeones del fútbol paraguayo en la era moderna. Su crecimiento deportivo en las últimas décadas lo ha convertido en un referente constante tanto en torneos locales como en competiciones continentales.",
+    "titulos": 25
+  }
 ]
