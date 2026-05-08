@@ -1,1 +1,10 @@
-
+.ErrorUiNews {
+  max-width: 800px;
+  margin: 0 auto 40px;
+  padding: 20px;
+  background-color: #ffffff;
+  border-radius: 10px;
+  border: 2px solid #d18989;
+  color: #8d2222;
+  text-align: center;
+}

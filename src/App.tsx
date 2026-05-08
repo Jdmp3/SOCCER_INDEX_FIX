@@ -1,6 +1,4 @@
 import "./index.css";
-import imagenNoticia from "./Components/Images/PartidoHoy.jpeg";
-import imagenHaramball from "./Components/Images/HaramballSimeone.jpeg";
 import SearchBar from "./Components/SearchBar";
 import Navbar from "./Components/Navbar/Navbar";
 import TeamsGrid from "./Components/TeamsGrid/TeamsGrid";
@@ -8,7 +6,7 @@ import PaisSelector from "./Components/PaisSelector";
 import ClubSelector from "./Components/ClubSelector";
 import InfoCard from "./Components/InfoCard";
 import CompetitionsGrid from "./Components/CompetitionsGrid/CompetitionsGrid";
-import NewsCard from "./Components/NewsCard/NewsCard";
+import AsignadorApi from "./Components/AsignadorApi/AsignadorApi";
 import paisesInfo from "./data/paisesInfo.json";
 import clubesInfo from "./data/clubesInfo.json";
 import { useState } from "react";
@@ -72,17 +70,8 @@ function App() {
             [Index creado personalmente por mi sobre equipos, jugadores,
             competiciones e historias sobre el futbol que me gustan mucho]
           </p>
-        </div>
-        <NewsCard
-          title="Máxima Exhibición de Futbol 5-4"
-          description="el dia 28/04/2026 se jugó la semifinal de la UEFA CHAMPIONS LEAGUE el partido del FC Bayern Munich vs Paris Saint Germain, dió una increible demostración de lo que es el máximo nivel en este deporte."
-          image={imagenNoticia}
-        />
-        <NewsCard
-          title="Empate de Mrd"
-          description="Como era de esperarse el partido de Atletico de Madrid vs Arsenal, fué extremadamente aburrido, hubo 6 tiros a puerta nomás, 4 paradas de portero pff y los unicos dos goles del partido fueron de penal, un partido completamente para el olvido y la vuelta va a ser mucho peor."
-          image={imagenHaramball}
-        />
+</div>
+        <AsignadorApi />
         <SearchBar id="buscador" />
         <TeamsGrid />
         <div id="leyendas" className="leyendas-container">
