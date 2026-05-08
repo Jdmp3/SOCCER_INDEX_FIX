@@ -14,7 +14,7 @@ function AsignadorApi() {
 
   useEffect(() => {
     fetch(
-      `https://gnews.io/api/v4/search?q=futbol&token=${import.meta.env.VITE_GNEWS_API_FOOTBALL}&lang=es`
+      `${import.meta.env.VITE_GNEWS_URL}search?q=futbol&token=${import.meta.env.VITE_GNEWS_API_FOOTBALL}&lang=es`,
     )
       .then((res) => res.json())
       .then((data) => {
@@ -32,11 +32,7 @@ function AsignadorApi() {
   }, []);
 
   if (loading) {
-    return (
-      <div className="ErrorUiNews">
-        Cargando noticias...
-      </div>
-    );
+    return <div className="ErrorUiNews">Cargando noticias...</div>;
   }
 
   if (error) {
