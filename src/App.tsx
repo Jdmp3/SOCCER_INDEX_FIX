@@ -1,4 +1,5 @@
 import "./index.css";
+import "./App.css";
 import SearchBar from "./Components/SearchBar";
 import Navbar from "./Components/Navbar/Navbar";
 import TeamsGrid from "./Components/TeamsGrid/TeamsGrid";
@@ -70,7 +71,7 @@ function App() {
             [Index creado personalmente por mi sobre equipos, jugadores,
             competiciones e historias sobre el futbol que me gustan mucho]
           </p>
-</div>
+        </div>
         <AsignadorApi />
         <SearchBar id="buscador" />
         <TeamsGrid />
@@ -124,7 +125,9 @@ function App() {
                 }
               />
             )}
-            {!clubSeleccionado && !paisSeleccionado && <div className="info-panel" />}
+            {!clubSeleccionado && !paisSeleccionado && (
+              <div className="info-panel" />
+            )}
           </div>
         </div>
         <CompetitionsGrid />
