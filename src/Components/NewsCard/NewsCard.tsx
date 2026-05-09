@@ -1,10 +1,23 @@
 interface NewsCardProps {
-  title: string;
-  description: string;
-  image: string;
+  loading?: boolean;
+  title?: string;
+  description?: string;
+  image?: string;
 }
 
-function NewsCard({ title, description, image }: NewsCardProps) {
+function NewsCard({ loading, title, description, image }: NewsCardProps) {
+  if (loading) {
+    return (
+      <div className="skeleton-news">
+        <div className="skeleton-texto">
+          <div className="skeleton-title"></div>
+          <div className="skeleton-desc"></div>
+        </div>
+        <div className="skeleton-img"></div>
+      </div>
+    );
+  }
+
   return (
     <div className="noticia">
       <div className="noticia-texto">
