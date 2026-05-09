@@ -1,13 +1,13 @@
 import "./index.css";
-import imagenNoticia from "./Components/Images/PartidoHoy.jpeg";
-import imagenHaramball from "./Components/Images/HaramballSimeone.jpeg";
+import "./App.css";
 import SearchBar from "./Components/SearchBar";
 import Navbar from "./Components/Navbar/Navbar";
 import TeamsGrid from "./Components/TeamsGrid/TeamsGrid";
 import PaisSelector from "./Components/PaisSelector";
 import ClubSelector from "./Components/ClubSelector";
+import InfoCard from "./Components/InfoCard";
 import CompetitionsGrid from "./Components/CompetitionsGrid/CompetitionsGrid";
-import NewsCard from "./Components/NewsCard/NewsCard";
+import AsignadorApi from "./Components/AsignadorApi/AsignadorApi";
 import paisesInfo from "./data/paisesInfo.json";
 import clubesInfo from "./data/clubesInfo.json";
 import { useState } from "react";
@@ -21,8 +21,8 @@ const buttons = [
 ];
 
 function App() {
-  const [mostrarFenix, setMostrarFenix] = useState(false);
-  const [paisSeleccionado, setPaisSeleccionado] = useState("");
+  const [mostrarFenix, setMostrarFenix] = useState<boolean>(false);
+  const [paisSeleccionado, setPaisSeleccionado] = useState<string>("");
   const [clubSeleccionado, setClubSeleccionado] = useState<string | null>(null);
 
   const handlePaisSelect = (pais: string) => {
@@ -72,16 +72,7 @@ function App() {
             competiciones e historias sobre el futbol que me gustan mucho]
           </p>
         </div>
-        <NewsCard
-          title="Máxima Exhibición de Futbol 5-4"
-          description="el dia 28/04/2026 se jugó la semifinal de la UEFA CHAMPIONS LEAGUE el partido del FC Bayern Munich vs Paris Saint Germain, dió una increible demostración de lo que es el máximo nivel en este deporte."
-          image={imagenNoticia}
-        />
-        <NewsCard
-          title="Empate de Mrd"
-          description="Como era de esperarse el partido de Atletico de Madrid vs Arsenal, fué extremadamente aburrido, hubo 6 tiros a puerta nomás, 4 paradas de portero pff y los unicos dos goles del partido fueron de penal, un partido completamente para el olvido y la vuelta va a ser mucho peor."
-          image={imagenHaramball}
-        />
+        <AsignadorApi />
         <SearchBar id="buscador" />
         <TeamsGrid />
         <div id="leyendas" className="leyendas-container">
@@ -103,48 +94,39 @@ function App() {
             </h3>
             {paisSeleccionado && (
               <ClubSelector
+                key={paisSeleccionado}
                 pais={paisSeleccionado}
                 onSelect={setClubSeleccionado}
               />
             )}
             {clubSeleccionado && (
-              <div className="info-panel">
-                <h3>{clubSeleccionado}</h3>
-                <p>
-                  {
-                    clubesInfo.find((c) => c.nombre === clubSeleccionado)
-                      ?.descripcion
-                  }
-                </p>
-                <p>
-                  Títulos:{" "}
-                  {
-                    clubesInfo.find((c) => c.nombre === clubSeleccionado)
-                      ?.titulos
-                  }
-                </p>
-              </div>
+              <InfoCard
+                titulo={clubSeleccionado}
+                descripcion={
+                  clubesInfo.find((c) => c.nombre === clubSeleccionado)
+                    ?.descripcion || ""
+                }
+                titulos={
+                  clubesInfo.find((c) => c.nombre === clubSeleccionado)
+                    ?.titulos || 0
+                }
+              />
             )}
             {!clubSeleccionado && paisSeleccionado && (
-              <div className="info-panel">
-                <h3>{paisSeleccionado}</h3>
-                <p>
-                  {
-                    paisesInfo.find((p) => p.nombre === paisSeleccionado)
-                      ?.descripcion
-                  }
-                </p>
-                <p>
-                  Títulos:{" "}
-                  {
-                    paisesInfo.find((p) => p.nombre === paisSeleccionado)
-                      ?.titulos
-                  }
-                </p>
-              </div>
+              <InfoCard
+                titulo={paisSeleccionado}
+                descripcion={
+                  paisesInfo.find((p) => p.nombre === paisSeleccionado)
+                    ?.descripcion || ""
+                }
+                titulos={
+                  paisesInfo.find((p) => p.nombre === paisSeleccionado)
+                    ?.titulos || 0
+                }
+              />
             )}
             {!clubSeleccionado && !paisSeleccionado && (
-              <div className="info-panel"></div>
+              <div className="info-panel" />
             )}
           </div>
         </div>
