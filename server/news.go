@@ -50,11 +50,11 @@ type rss struct {
 }
 
 type item struct {
-	Title       string `xml:"title"`
-	Link        string `xml:"link"`
-	Description string `xml:"description"`
-	PubDate     string `xml:"pubDate"`
-	Category    string `xml:"category"`
+	Title       string
+	Link        string
+	Description string
+	PubDate     string
+	Category    string
 	// OJO: en el XML estos elementos aparecen como <media:content> y
 	// <media:thumbnail>, pero para encoding/xml el prefijo es un namespace, no
 	// parte del nombre. El nombre local es "content"/"thumbnail", asi que se
@@ -69,6 +69,87 @@ type media struct {
 }
 
 // ---------- Parseo ----------
+
+
+
+func (it *item) UnmarshalXML(d *xml.Decoder, start xml.StartElement) error {
+	for {
+		tok, err := d.Token()
+		if err == io.EOF {
+			return nil
+		}
+		if err != nil {
+			return err
+		}
+		switch t := tok.(type) {
+		case xml.StartElement:
+			local := t.Name.Local
+			space := t.Name.Space
+			if local == "title" && space == "" {
+				var val string
+				if err := d.DecodeElement(&val, &t); err != nil {
+					return err
+				}
+				it.Title = val
+				continue
+			}
+			if local == "link" {
+				var val string
+				if err := d.DecodeElement(&val, &t); err != nil {
+					return err
+				}
+				it.Link = val
+				continue
+			}
+			if local == "description" {
+				var val string
+				if err := d.DecodeElement(&val, &t); err != nil {
+					return err
+				}
+				it.Description = val
+				continue
+			}
+			if local == "pubDate" {
+				var val string
+				if err := d.DecodeElement(&val, &t); err != nil {
+					return err
+				}
+				it.PubDate = val
+				continue
+			}
+			if local == "category" {
+				var val string
+				if err := d.DecodeElement(&val, &t); err != nil {
+					return err
+				}
+				it.Category = val
+				continue
+			}
+			if local == "content" {
+				var m media
+				if err := d.DecodeElement(&m, &t); err != nil {
+					return err
+				}
+				it.MediaContent = append(it.MediaContent, m)
+				continue
+			}
+			if local == "thumbnail" {
+				var m media
+				if err := d.DecodeElement(&m, &t); err != nil {
+					return err
+				}
+				it.MediaThumb = append(it.MediaThumb, m)
+				continue
+			}
+			d.Skip()
+		case xml.EndElement:
+			if t == start.End() {
+				return nil
+			}
+		}
+	}
+}
+
 
 // primeraImagen recorre los campos de media buscando la primera URL usable.
 //
