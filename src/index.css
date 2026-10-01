@@ -55,6 +55,7 @@ body {
 
 .header-title {
   text-align: center;
+  margin-top: 40px;
   margin-bottom: 40px;
 }
 
@@ -65,6 +66,9 @@ body {
 }
 
 @media (max-width: 600px) {
+  .header-title {
+    margin-top: 20px;
+  }
   .header-title h1 {
     font-size: 1.8rem;
   }
@@ -403,4 +407,27 @@ body {
   border-radius: 8px;
   display: inline-block;
   margin-top: 8px;
+}
+
+.noticia-link {
+  text-decoration: none;
+  color: inherit;
+  display: flex;
+}
+
+.noticia-meta {
+  margin-top: 0.5rem;
+  font-size: 0.8rem;
+  color: #666;
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.noticia-fuente {
+  font-weight: 600;
+}
+
+.noticia-fecha {
+  opacity: 0.85;
 }
