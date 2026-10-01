@@ -4,7 +4,9 @@ import NewsCard from "../NewsCard/NewsCard";
 // Estas son las noticias de nuestra propia API en Go (carpeta server/).
 // El backend consulta los RSS de MARCA y BBC, asi que no hace falta ninguna
 // clave de API ni archivo .env en el frontend.
-const URL_API = "/api/noticias";
+const URL_API = import.meta.env.VITE_API_URL
+  ? `${import.meta.env.VITE_API_URL}/api/noticias`
+  : "/api/noticias";
 
 interface Articulo {
   titulo: string;
@@ -42,14 +44,16 @@ function AsignadorApi() {
         } else {
           // El backend responde 200 con lista vacia y un aviso cuando ninguna
           // fuente tiene noticias; lo mostramos tal cual.
-          setError(data.aviso || "No hay noticias disponibles en este momento.");
+          setError(
+            data.aviso || "No hay noticias disponibles en este momento.",
+          );
         }
       })
       .catch((err: Error) => {
         if (err.name === "AbortError") return;
         console.warn("Error consultando la API de noticias:", err);
         setError(
-          "No se pudo conectar con el servidor de noticias. ¿Está el backend (server/) corriendo?"
+          "No se pudo conectar con el servidor de noticias. ¿Está el backend (server/) corriendo?",
         );
       })
       .finally(() => setLoading(false));
