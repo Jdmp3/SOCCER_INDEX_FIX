@@ -1,6 +1,6 @@
 import "./index.css";
 import "./App.css";
-import SearchBar from "./Components/SearchBar";
+import PlayersSection from "./Components/PlayersGrid";
 import Navbar from "./Components/Navbar/Navbar";
 import TeamsGrid from "./Components/TeamsGrid/TeamsGrid";
 import PaisSelector from "./Components/PaisSelector";
@@ -73,7 +73,7 @@ function App() {
           </p>
         </div>
         <AsignadorApi />
-        <SearchBar id="buscador" />
+        <PlayersSection id="buscador" />
         <TeamsGrid />
         <div id="leyendas" className="leyendas-container">
           <img
