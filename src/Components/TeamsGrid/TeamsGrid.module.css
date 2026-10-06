@@ -11,6 +11,17 @@
   }
 }
 
+.titulo {
+  font-size: 55px;
+  font-weight: bold;
+  color: var(--neon-blue-lt);
+  text-shadow: 0 0 14px var(--glow-blue);
+  text-align: center;
+  margin-bottom: 40px;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+
 /* Recuadro de filtros, encima de la cuadrícula */
 
 .filtersBar {
@@ -317,6 +328,10 @@
 }
 
 @media (max-width: 768px) {
+  .titulo {
+    font-size: 32px;
+    margin-bottom: 20px;
+  }
   .filtersGrid {
     grid-template-columns: 1fr;
     gap: 10px;

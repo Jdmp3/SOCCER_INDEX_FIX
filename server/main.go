@@ -54,6 +54,15 @@ func main() {
 	cache := nuevaCache()
 	mux := http.NewServeMux()
 
+	// Buscador de jugadores: datos propios en memoria (ver jugadores.go).
+	jugadores, errJugadores := cargarJugadores()
+	if errJugadores != nil {
+		logf("jugadores no disponibles: %v", errJugadores)
+	} else {
+		logf("jugadores cargados: %d", len(jugadores))
+	}
+	mux.HandleFunc("/api/jugadores", rutaJugadores(errJugadores, jugadores))
+
 	mux.HandleFunc("/api/health", func(w http.ResponseWriter, r *http.Request) {
 		escribirJSON(w, http.StatusOK, map[string]any{
 			"ok":   true,
@@ -104,6 +113,7 @@ func main() {
 	go func() {
 		logf("escuchando en http://localhost:%s", puerto)
 		logf("prueba: curl localhost:%s/api/noticias", puerto)
+		logf("prueba: curl \"localhost:%s/api/jugadores?q=mesi\"", puerto)
 		if err := srv.ListenAndServe(); err != nil && err != http.ErrServerClosed {
 			log.Fatalf("el servidor fallo: %v", err)
 		}
