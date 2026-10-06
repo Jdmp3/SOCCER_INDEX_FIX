@@ -14,9 +14,10 @@
 /* Recuadro de filtros, encima de la cuadrícula */
 
 .filtersBar {
-  background-color: white;
-  border: 2px solid #ffb347;
+  background-color: var(--panel);
+  border: 2px solid var(--border-neon);
   border-radius: 8px;
+  box-shadow: 0 0 10px rgba(12, 108, 240, 0.18);
   padding: 18px;
   margin-bottom: 20px;
 }
@@ -37,7 +38,7 @@
 .filterLabel {
   font-size: 13px;
   font-weight: bold;
-  color: #cc6600;
+  color: var(--neon-blue-lt);
 }
 
 .filterInput,
@@ -46,9 +47,9 @@
   padding: 10px 12px;
   font-size: 14px;
   font-family: inherit;
-  color: #cc6600;
-  background-color: white;
-  border: 1px solid #ffb347;
+  color: var(--text);
+  background-color: var(--panel-2);
+  border: 1px solid var(--border-neon);
   border-radius: 8px;
   outline: none;
   transition: all 0.3s ease;
@@ -56,13 +57,13 @@
 
 .filterInput:focus,
 .filterSelect:focus {
-  border-color: #cc6600;
-  box-shadow: 0 0 5px rgba(204, 102, 0, 0.3);
+  border-color: var(--neon-blue);
+  box-shadow: 0 0 6px rgba(12, 108, 240, 0.55);
 }
 
 .filterInput::placeholder {
-  color: #cc6600;
-  opacity: 0.7;
+  color: var(--text-dim);
+  opacity: 0.8;
 }
 
 .rangeGroup {
@@ -79,13 +80,13 @@
   gap: 10px;
   margin-top: 18px;
   padding-top: 14px;
-  border-top: 1px solid rgba(255, 179, 71, 0.6);
+  border-top: 1px solid rgba(12, 108, 240, 0.5);
 }
 
 .resultCount {
   font-size: 13px;
-  color: #cc6600;
-  opacity: 0.8;
+  color: var(--text-dim);
+  opacity: 0.9;
 }
 
 .clearButton {
@@ -93,18 +94,19 @@
   font-size: 13px;
   font-weight: bold;
   font-family: inherit;
-  color: #cc6600;
-  background-color: #fff5e6;
-  border: 1px solid #ffb347;
+  color: var(--neon-blue-lt);
+  background-color: var(--panel-2);
+  border: 1px solid var(--border-neon);
   border-radius: 8px;
   cursor: pointer;
   transition: all 0.3s ease;
 }
 
 .clearButton:hover {
-  background-color: #cc6600;
+  background-color: var(--neon-blue);
   color: white;
-  border-color: #cc6600;
+  border-color: var(--neon-blue);
+  box-shadow: 0 0 10px rgba(78, 168, 255, 0.6);
 }
 
 /* Estado sin resultados */
@@ -117,7 +119,7 @@
   gap: 12px;
   padding: 40px 20px;
   font-size: 14px;
-  color: #cc6600;
+  color: var(--text-dim);
   text-align: center;
 }
 
@@ -143,18 +145,19 @@
   justify-content: center;
   font-size: 20px;
   font-family: inherit;
-  color: #cc6600;
-  background-color: white;
-  border: 2px solid #ffb347;
+  color: var(--neon-blue-lt);
+  background-color: var(--panel);
+  border: 2px solid var(--border-neon);
   border-radius: 50%;
   cursor: pointer;
   transition: all 0.3s ease;
 }
 
 .carouselButton:hover:not(:disabled) {
-  background-color: #cc6600;
+  background-color: var(--neon-blue);
   color: white;
-  border-color: #cc6600;
+  border-color: var(--neon-blue);
+  box-shadow: 0 0 10px rgba(78, 168, 255, 0.6);
 }
 
 .carouselButton:disabled {
@@ -163,7 +166,7 @@
 }
 
 .carouselButton:focus-visible {
-  outline: 2px solid #cc6600;
+  outline: 2px solid var(--neon-blue-lt);
   outline-offset: 2px;
 }
 
@@ -174,8 +177,8 @@
 }
 
 .card {
-  background-color: white;
-  border: 2px solid #ffb347;
+  background-color: var(--panel);
+  border: 2px solid var(--border-neon);
   border-radius: 8px;
   overflow: visible;
   transition: all 0.3s ease;
@@ -183,7 +186,7 @@
 }
 
 .card:hover {
-  box-shadow: 0 4px 12px rgba(204, 102, 0, 0.2);
+  box-shadow: 0 0 12px rgba(12, 108, 240, 0.4);
 }
 
 .cardHeader {
@@ -219,15 +222,15 @@
   align-items: center;
   justify-content: center;
   border-radius: 50%;
-  background-color: #fff5e6;
-  border: 2px solid #ffb347;
+  background-color: var(--panel-2);
+  border: 2px solid var(--border-neon);
 }
 
 .logoFallbackText {
   font-size: 22px;
   font-weight: bold;
-  color: #cc6600;
-  opacity: 0.75;
+  color: var(--neon-blue-lt);
+  opacity: 0.85;
   user-select: none;
 }
 
@@ -241,14 +244,14 @@
 .teamName {
   font-size: 14px;
   font-weight: bold;
-  color: #cc6600;
+  color: var(--neon-blue-lt);
   margin-bottom: 4px;
 }
 
 .teamCountry {
   font-size: 12px;
-  color: #cc6600;
-  opacity: 0.7;
+  color: var(--text-dim);
+  opacity: 0.85;
 }
 
 .description {
@@ -257,18 +260,18 @@
   left: -2px;
   right: -2px;
   padding: 12px;
-  background-color: #fff5e6;
-  border: 2px solid #ffb347;
+  background-color: var(--panel-2);
+  border: 2px solid var(--border-neon);
   border-top: none;
   border-radius: 0 0 8px 8px;
   z-index: 10;
   animation: slideDown 0.3s ease;
-  box-shadow: 0 4px 12px rgba(204, 102, 0, 0.3);
+  box-shadow: 0 4px 14px rgba(12, 108, 240, 0.35);
 }
 
 .descriptionText {
   font-size: 13px;
-  color: #cc6600;
+  color: var(--text);
   line-height: 1.5;
   margin: 0;
 }
@@ -282,11 +285,11 @@
   gap: 6px;
   margin: 8px 0 0;
   padding-top: 8px;
-  border-top: 1px solid rgba(255, 179, 71, 0.6);
+  border-top: 1px solid rgba(12, 108, 240, 0.5);
   font-size: 12px;
   font-weight: bold;
-  color: #cc6600;
-  opacity: 0.85;
+  color: var(--neon-blue-lt);
+  opacity: 0.9;
 }
 
 .descriptionMetaDivider {
