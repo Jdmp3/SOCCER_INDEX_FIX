@@ -52,6 +52,7 @@ function TeamsGrid() {
 
   return (
     <div id="equipos" className={styles.container}>
+      <h2 className={styles.titulo}>EQUIPOS</h2>
       <TeamsFilters
         filtros={filtros}
         facets={facets}
