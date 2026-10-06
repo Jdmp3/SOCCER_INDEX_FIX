@@ -2,10 +2,11 @@
   max-width: 800px;
   margin: 0 auto 40px;
   padding: 20px;
-  background-color: #ffffff;
+  background-color: var(--panel);
   border-radius: 10px;
-  border: 2px solid #e57373;
-  color: #c62828;
+  border: 2px solid #ff4d6d;
+  box-shadow: 0 0 10px rgba(255, 77, 109, 0.3);
+  color: #ff808f;
   text-align: center;
 }
 
@@ -16,9 +17,10 @@
   max-width: 800px;
   margin: 0 auto 40px;
   padding: 20px;
-  background-color: #ffffff;
+  background-color: var(--panel);
   border-radius: 10px;
-  border: 2px solid #ffb347;
+  border: 2px solid var(--border-neon);
+  box-shadow: 0 0 10px rgba(12, 108, 240, 0.18);
 }
 
 .skeleton-texto {
@@ -29,7 +31,7 @@
 .skeleton-title,
 .skeleton-desc,
 .skeleton-img {
-  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background: linear-gradient(90deg, #16204a 25%, #1e2c66 50%, #16204a 75%);
   background-size: 200% 100%;
   animation: skeleton-shimmer 1.5s infinite;
   border-radius: 4px;

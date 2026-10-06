@@ -7,7 +7,8 @@
 .titulo {
   font-size: 55px;
   font-weight: bold;
-  color: #cc6600;
+  color: var(--neon-blue-lt);
+  text-shadow: 0 0 14px var(--glow-blue);
   text-align: center;
   margin-bottom: 80px;
   text-transform: uppercase;
@@ -22,8 +23,8 @@
 }
 
 .card {
-  background-color: white;
-  border: 2px solid #ddd;
+  background-color: var(--panel);
+  border: 2px solid var(--border-neon);
   border-radius: 10px;
   padding: 25px 15px;
   cursor: pointer;
@@ -35,31 +36,33 @@
 }
 
 .card:hover {
-  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 0 12px rgba(12, 108, 240, 0.45);
 }
 
 .cardSelected {
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
+  box-shadow: 0 0 18px rgba(78, 168, 255, 0.65);
 }
 
 .cardTitle {
   font-size: 16px;
   font-weight: bold;
   text-align: center;
+  color: var(--text);
 }
 
 .panel {
-  border: 1px solid #cccccc;
+  background-color: var(--panel);
+  border: 1px solid var(--border-neon);
   border-radius: 10px;
   padding: 25px;
   min-height: 300px;
   transition: all 0.3s ease;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 0 12px rgba(12, 108, 240, 0.22);
 }
 
 .panelVacio {
   text-align: center;
-  color: #999;
+  color: var(--text-dim);
   font-size: 50px;
   font-style: italic;
 }
@@ -70,6 +73,8 @@
   margin-bottom: 20px;
   text-align: center;
   text-transform: uppercase;
+  color: var(--neon-blue-lt);
+  text-shadow: 0 0 8px rgba(78, 168, 255, 0.35);
 }
 
 .lista {
@@ -88,7 +93,7 @@
 }
 
 .listaItem:hover {
-  background-color: rgba(255, 255, 255, 0.1);
+  background-color: rgba(78, 168, 255, 0.12);
 }
 
 .listaItem strong {
