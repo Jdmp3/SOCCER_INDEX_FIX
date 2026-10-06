@@ -66,7 +66,9 @@ function App() {
       <Navbar buttons={buttons} onNavClick={handleNavClick} />
       <main className="main-content">
         <div className="header-title">
-          <h1>JDMP3&apos;s INDEX</h1>
+          <h1>
+            <img src="/Images/TitleIndex.png" alt="JDMP3's INDEX" />
+          </h1>
           <p>
             [Index creado personalmente por mi sobre equipos, jugadores,
             competiciones e historias sobre el futbol que me gustan mucho]

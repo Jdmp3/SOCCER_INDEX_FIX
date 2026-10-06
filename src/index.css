@@ -46,7 +46,7 @@ body {
   margin-top: 54px;
   padding: 20px;
   min-height: 100vh;
-  background-color: #ffe0b1;
+  background-color: #fff1dc;
   height: 10000px;
 }
 
@@ -60,6 +60,13 @@ body {
   font-size: 3rem;
   color: #cc6600;
   margin-bottom: 10px;
+}
+
+.header-title h1 img {
+  display: block;
+  margin: 0 auto;
+  width: min(600px, 82vw);
+  height: auto;
 }
 
 @media (max-width: 600px) {
