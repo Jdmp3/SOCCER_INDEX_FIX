@@ -1,159 +1,172 @@
 import { useState } from "react";
+import type { Jugador } from "../services/jugadores";
+import { getIniciales } from "../services/jugadores";
+import useJugadores from "../hooks/useJugadores";
 import styles from "./PlayersGrid.module.css";
-
-interface Jugador {
-  id: number;
-  nombre: string;
-  posicion: string;
-  valorMercado: string;
-  altura: string;
-  edad: number;
-  pais: string;
-  liga: string;
-  equipo: string;
-}
 
 interface PlayersSectionProps {
   id?: string;
 }
 
+/**
+ * Foto del jugador descargada en public/Images/Jugadores/, con fallback a
+ * iniciales cuando no hay imagen (o si falla al cargar), igual que los logos
+ * de los equipos.
+ */
+function JugadorFoto({ jugador }: { jugador: Jugador }) {
+  const [fallo, setFallo] = useState(false);
+
+  if (!jugador.foto || fallo) {
+    return (
+      <div className={styles.fotoFallback} aria-hidden="true">
+        <span className={styles.fotoFallbackText}>{getIniciales(jugador.nombre)}</span>
+      </div>
+    );
+  }
+
+  return (
+    <img
+      className={styles.foto}
+      src={`./${jugador.foto}`}
+      alt={jugador.nombre}
+      onError={() => setFallo(true)}
+    />
+  );
+}
+
+function JugadorCard({ jugador }: { jugador: Jugador }) {
+  return (
+    <article className={styles.jugadorCard}>
+      <JugadorFoto jugador={jugador} />
+      <div className={styles.jugadorInfo}>
+        <h3 className={styles.jugadorNombre}>{jugador.nombre}</h3>
+        <span className={styles.posicion}>{jugador.posicion}</span>
+        <p className={styles.jugadorMeta}>
+          {jugador.edad} años · {jugador.altura} cm ·{" "}
+          {jugador.pais || "País desconocido"}
+        </p>
+        <p className={styles.jugadorClub}>
+          <strong>{jugador.equipo || "Sin equipo"}</strong>
+          {jugador.liga ? <> · {jugador.liga}</> : null}
+        </p>
+      </div>
+    </article>
+  );
+}
+
 function PlayersSection({ id }: PlayersSectionProps) {
-  // Datos temporales (solo para diseño)
-  const jugadores: Jugador[] = [
-    {
-      id: 1,
-      nombre: "David de Gea",
-      posicion: "Portero",
-      valorMercado: "€15M",
-      altura: "1.92m",
-      edad: 35,
-      pais: "España",
-      liga: "Serie A",
-      equipo: "Fiorentina",
-    },
-    {
-      id: 2,
-      nombre: "Moise Kean",
-      posicion: "Delantero",
-      valorMercado: "€40M",
-      altura: "1.83m",
-      edad: 26,
-      pais: "Italia",
-      liga: "Serie A",
-      equipo: "Fiorentina",
-    },
-    {
-      id: 3,
-      nombre: "Harry Kane",
-      posicion: "Delantero",
-      valorMercado: "€90M",
-      altura: "1.88m",
-      edad: 32,
-      pais: "Inglaterra",
-      liga: "Bundesliga",
-      equipo: "Bayern Munich",
-    },
-  ];
+  const {
+    busqueda,
+    setBusqueda,
+    buscar,
+    consulta,
+    jugadores,
+    total,
+    pagina,
+    totalPaginas,
+    rango,
+    cargando,
+    error,
+    irAPagina,
+  } = useJugadores();
 
-  // El array no se usa todavía: el buscador es un scaffold a la espera de
-  // conectar el filtrado. `void` lo referencia en sitio para que no salte
-  // noUnusedLocals (tsc) ni no-unused-vars (ESLint). Quitar al filtrar.
-  void jugadores;
-
-  // Estados para cada criterio de filtrado (beta - solo escritura)
-  const [nombre, setNombre] = useState("");
-  const [posicion, setPosicion] = useState("");
-  const [valorMercado, setValorMercado] = useState("");
-  const [altura, setAltura] = useState("");
-  const [edad, setEdad] = useState("");
-  const [pais, setPais] = useState("");
-  const [liga, setLiga] = useState("");
-  const [equipo, setEquipo] = useState("");
+  const formato = (n: number) => n.toLocaleString("es-ES");
+  const buscando = consulta !== null && cargando && jugadores.length === 0;
 
   return (
     <div id={id} className={styles.container}>
-      <div className={styles.filtersGrid}>
-        <div className={styles.filterItem}>
-          <label className={styles.filterLabel}>Nombre</label>
-          <input
-            type="text"
-            className={styles.filterInput}
-            value={nombre}
-            onChange={(e) => setNombre(e.target.value)}
-            placeholder="Buscar por nombre..."
+      <h2 className={styles.titulo}>Buscar Jugadores</h2>
+
+      {/* Caja tipo Google: la búsqueda se dispara al pulsar Intro */}
+      <form
+        className={styles.searchBox}
+        onSubmit={(e) => {
+          e.preventDefault();
+          buscar();
+        }}
+      >
+        <svg
+          className={styles.searchIcon}
+          viewBox="0 0 24 24"
+          aria-hidden="true"
+        >
+          <path
+            d="M15.5 14h-.79l-.28-.27a6.5 6.5 0 1 0-.7.7l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0A4.5 4.5 0 1 1 14 9.5 4.5 4.5 0 0 1 9.5 14z"
+            fill="currentColor"
           />
-        </div>
-        <div className={styles.filterItem}>
-          <label className={styles.filterLabel}>Posición</label>
-          <input
-            type="text"
-            className={styles.filterInput}
-            value={posicion}
-            onChange={(e) => setPosicion(e.target.value)}
-            placeholder="Buscar por posición..."
-          />
-        </div>
-        <div className={styles.filterItem}>
-          <label className={styles.filterLabel}>Valor de Mercado</label>
-          <input
-            type="text"
-            className={styles.filterInput}
-            value={valorMercado}
-            onChange={(e) => setValorMercado(e.target.value)}
-            placeholder="Ej. €50M..."
-          />
-        </div>
-        <div className={styles.filterItem}>
-          <label className={styles.filterLabel}>Altura</label>
-          <input
-            type="text"
-            className={styles.filterInput}
-            value={altura}
-            onChange={(e) => setAltura(e.target.value)}
-            placeholder="Ej. 1.85m..."
-          />
-        </div>
-        <div className={styles.filterItem}>
-          <label className={styles.filterLabel}>Edad</label>
-          <input
-            type="text"
-            className={styles.filterInput}
-            value={edad}
-            onChange={(e) => setEdad(e.target.value)}
-            placeholder="Buscar por edad..."
-          />
-        </div>
-        <div className={styles.filterItem}>
-          <label className={styles.filterLabel}>País</label>
-          <input
-            type="text"
-            className={styles.filterInput}
-            value={pais}
-            onChange={(e) => setPais(e.target.value)}
-            placeholder="Buscar por país..."
-          />
-        </div>
-        <div className={styles.filterItem}>
-          <label className={styles.filterLabel}>Liga</label>
-          <input
-            type="text"
-            className={styles.filterInput}
-            value={liga}
-            onChange={(e) => setLiga(e.target.value)}
-            placeholder="Buscar por liga..."
-          />
-        </div>
-        <div className={styles.filterItem}>
-          <label className={styles.filterLabel}>Equipo</label>
-          <input
-            type="text"
-            className={styles.filterInput}
-            value={equipo}
-            onChange={(e) => setEquipo(e.target.value)}
-            placeholder="Buscar por equipo..."
-          />
-        </div>
-      </div>
+        </svg>
+        <input
+          type="text"
+          className={styles.searchInput}
+          value={busqueda}
+          onChange={(e) => setBusqueda(e.target.value)}
+          placeholder="Buscar jugadores..."
+          aria-label="Buscar jugadores"
+        />
+      </form>
+
+      <p className={styles.descripcion}>
+        Escribe un dato de tu jugador a buscar: Nombre, Posicion, Altura, Edad,
+        País, Liga y Equipo.
+      </p>
+
+      {consulta !== null && (
+        <section className={styles.resultados} aria-live="polite">
+          {error && !cargando && (
+            <p className={styles.estadoError}>{error}</p>
+          )}
+
+          {buscando && <p className={styles.estado}>Buscando jugadores…</p>}
+
+          {!cargando && !error && consulta !== null && total === 0 && (
+            <p className={styles.estado}>
+              No encontramos jugadores para «{consulta}».
+            </p>
+          )}
+
+          {jugadores.length > 0 && (
+            <>
+              <p className={styles.contador}>
+                {consulta
+                  ? `${formato(total)} jugadores para «${consulta}»`
+                  : `${formato(total)} jugadores en el índice`}
+              </p>
+              <div
+                className={`${styles.grid} ${cargando ? styles.gridCargando : ""}`}
+                aria-busy={cargando}
+              >
+                {jugadores.map((jugador) => (
+                  <JugadorCard key={jugador.id} jugador={jugador} />
+                ))}
+              </div>
+              {totalPaginas > 1 && (
+                <nav className={styles.paginacion} aria-label="Paginación de jugadores">
+                  <button
+                    type="button"
+                    className={styles.botonPagina}
+                    disabled={pagina <= 1}
+                    onClick={() => irAPagina(pagina - 1)}
+                  >
+                    ‹ Anterior
+                  </button>
+                  <span className={styles.paginaTexto}>
+                    Página {pagina} de {totalPaginas} · {rango.desde}-
+                    {rango.hasta} de {formato(total)}
+                  </span>
+                  <button
+                    type="button"
+                    className={styles.botonPagina}
+                    disabled={pagina >= totalPaginas}
+                    onClick={() => irAPagina(pagina + 1)}
+                  >
+                    Siguiente ›
+                  </button>
+                </nav>
+              )}
+            </>
+          )}
+        </section>
+      )}
     </div>
   );
 }

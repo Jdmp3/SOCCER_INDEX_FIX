@@ -2,6 +2,7 @@
   margin: 400px auto 20px;
   width: 80%;
   max-width: 1200px;
+  text-align: center;
 }
 
 @media (min-width: 769px) and (max-width: 1024px) {
@@ -18,72 +19,307 @@
   }
 }
 
-.filtersGrid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  grid-template-rows: repeat(2, 1fr);
-  gap: 15px;
+.titulo {
+  font-size: 55px;
+  font-weight: bold;
+  color: var(--neon-blue-lt);
+  text-shadow: 0 0 14px var(--glow-blue);
+  text-align: center;
+  margin-bottom: 40px;
+  text-transform: uppercase;
+  letter-spacing: 2px;
 }
 
-.filterItem {
+/* Recuadro tipo Google: una sola pastilla con lupa + input */
+.searchBox {
   display: flex;
-  flex-direction: column;
-  gap: 8px;
-  padding: 45px;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  max-width: 680px;
+  margin: 0 auto;
+  padding: 14px 24px;
   background-color: var(--panel);
   border: 1px solid var(--border-neon);
-  border-radius: 8px;
+  border-radius: 999px;
+  box-shadow: 0 0 10px rgba(12, 108, 240, 0.18);
   transition: all 0.3s ease;
 }
 
-.filterItem:hover {
-  box-shadow: 0 0 12px rgba(12, 108, 240, 0.3);
+.searchBox:hover {
+  box-shadow: 0 0 14px rgba(12, 108, 240, 0.3);
 }
 
-.filterLabel {
-  padding: 20px;
-  font-size: 14px;
-  font-weight: bold;
+.searchBox:focus-within {
+  border-color: var(--neon-blue);
+  box-shadow: 0 0 14px rgba(12, 108, 240, 0.55);
+}
+
+.searchIcon {
+  flex-shrink: 0;
+  width: 22px;
+  height: 22px;
   color: var(--neon-blue-lt);
 }
 
-.filterInput {
-  width: 100%;
-  padding: 10px 20px;
-  font-size: 14px;
-  border: 1px solid var(--border-neon);
-  border-radius: 8px;
-  background-color: var(--panel-2);
+.searchInput {
+  flex: 1;
+  min-width: 0;
+  padding: 0;
+  font-size: 16px;
+  font-family: inherit;
   color: var(--text);
+  background: transparent;
+  border: none;
   outline: none;
-  transition: all 0.3s ease;
 }
 
-.filterInput:focus {
-  border-color: var(--neon-blue);
-  box-shadow: 0 0 6px rgba(12, 108, 240, 0.55);
-}
-
-.filterInput::placeholder {
+.searchInput::placeholder {
   color: var(--text-dim);
   opacity: 0.8;
 }
 
-@media (max-width: 1024px) {
-  .filtersGrid {
-    grid-template-columns: repeat(2, 1fr);
-    grid-template-rows: repeat(4, auto);
-  }
+.descripcion {
+  max-width: 680px;
+  margin: 18px auto 0;
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--text-dim);
+}
+
+/* ===== Resultados de la búsqueda ===== */
+
+.resultados {
+  max-width: 900px;
+  margin: 34px auto 0;
+  text-align: left;
+}
+
+.estado {
+  padding: 34px 10px;
+  text-align: center;
+  font-size: 15px;
+  color: var(--text-dim);
+}
+
+.estadoError {
+  padding: 20px;
+  text-align: center;
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--neon-orange);
+  background-color: var(--panel);
+  border: 1px solid rgba(240, 108, 60, 0.5);
+  border-radius: 8px;
+}
+
+.contador {
+  font-size: 13px;
+  color: var(--text-dim);
+  margin-bottom: 14px;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 14px;
+  transition: opacity 0.2s ease;
+}
+
+/* Al paginar se atenúa la cuadrícula en vez de vaciarla, para no parpadear */
+.gridCargando {
+  opacity: 0.45;
+  pointer-events: none;
+}
+
+.jugadorCard {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px;
+  background-color: var(--panel);
+  border: 1px solid var(--border-neon);
+  border-radius: 8px;
+  transition: box-shadow 0.3s ease;
+}
+
+.jugadorCard:hover {
+  box-shadow: 0 0 12px rgba(12, 108, 240, 0.4);
+}
+
+.foto {
+  width: 64px;
+  height: 64px;
+  flex-shrink: 0;
+  object-fit: cover;
+  border-radius: 50%;
+  border: 2px solid var(--border-neon);
+  background-color: var(--panel-2);
+}
+
+/* Fallback sin foto: círculo con las iniciales (mismo estilo que los equipos) */
+.fotoFallback {
+  width: 64px;
+  height: 64px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background-color: var(--panel-2);
+  border: 2px solid var(--border-neon);
+}
+
+.fotoFallbackText {
+  font-size: 20px;
+  font-weight: bold;
+  color: var(--neon-blue-lt);
+  opacity: 0.85;
+  user-select: none;
+}
+
+.jugadorInfo {
+  min-width: 0;
+}
+
+.jugadorNombre {
+  font-size: 15px;
+  font-weight: bold;
+  color: var(--neon-blue-lt);
+  margin-bottom: 6px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.posicion {
+  display: inline-block;
+  font-size: 10.5px;
+  font-weight: bold;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  color: var(--neon-blue-lt);
+  background-color: var(--panel-2);
+  border: 1px solid var(--border-neon);
+  border-radius: 999px;
+  padding: 2px 9px;
+  margin-bottom: 7px;
+}
+
+.jugadorMeta {
+  font-size: 12.5px;
+  color: var(--text-dim);
+  margin-bottom: 3px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.jugadorClub {
+  font-size: 12.5px;
+  color: var(--text);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.jugadorClub strong {
+  font-weight: 600;
+}
+
+/* Paginación */
+
+.paginacion {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 14px;
+  margin-top: 26px;
+}
+
+.botonPagina {
+  font-family: inherit;
+  font-size: 13px;
+  color: var(--neon-blue-lt);
+  background-color: var(--panel);
+  border: 1px solid var(--border-neon);
+  border-radius: 999px;
+  padding: 9px 18px;
+  cursor: pointer;
+  transition: box-shadow 0.25s ease;
+}
+
+.botonPagina:hover:not(:disabled) {
+  box-shadow: 0 0 10px rgba(12, 108, 240, 0.45);
+}
+
+.botonPagina:disabled {
+  opacity: 0.35;
+  cursor: default;
+}
+
+.paginaTexto {
+  font-size: 13px;
+  color: var(--text-dim);
 }
 
 @media (max-width: 768px) {
-  .filtersGrid {
-    grid-template-columns: 1fr;
-    grid-template-rows: repeat(8, auto);
+  .titulo {
+    font-size: 32px;
+    margin-bottom: 25px;
+  }
+
+  .searchBox {
+    padding: 12px 18px;
     gap: 10px;
   }
 
-  .filterItem {
+  .searchInput {
+    font-size: 15px;
+  }
+
+  .descripcion {
+    font-size: 13px;
+    margin-top: 14px;
+  }
+
+  .resultados {
+    margin-top: 26px;
+  }
+
+  .jugadorCard {
     padding: 12px;
+    gap: 12px;
+  }
+
+  .foto,
+  .fotoFallback {
+    width: 56px;
+    height: 56px;
+  }
+
+  .fotoFallbackText {
+    font-size: 17px;
+  }
+
+  .jugadorNombre {
+    font-size: 14px;
+  }
+
+  .paginacion {
+    gap: 10px;
+  }
+
+  .botonPagina {
+    padding: 8px 14px;
+    font-size: 12px;
+  }
+
+  .paginaTexto {
+    font-size: 12px;
+    order: -1;
+    width: 100%;
+    text-align: center;
   }
 }
