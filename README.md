@@ -152,19 +152,48 @@ Soccer Index by: JDMP3 🍊
 
 ```js
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 window.scrollTo( top:numero , left:numero , behavior:string)  🇮🇱 👎
 
 
-
-
-
-```
-
-```js
-
-
-
-Las Pansas
 
 
 
