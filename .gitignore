@@ -27,4 +27,3 @@ dist-ssr
 
 # Datos descargados: se regeneran con scripts/generar-jugadores.mjs
 scripts/datos/
-public/Images/Jugadores/
