@@ -33,7 +33,7 @@ function CompetitionsGrid() {
             key={competicion.id}
             className={`${styles.card} ${competicionSeleccionada?.id === competicion.id ? styles.cardSelected : ""}`}
             style={{
-              borderColor: competicionSeleccionada?.id === competicion.id ? competicion.colorBorde : undefined,
+              borderColor: competicion.colorBorde,
               backgroundColor: competicionSeleccionada?.id === competicion.id ? competicion.color : undefined,
             }}
             onClick={() => seleccionarCompeticion(competicion)}
@@ -41,7 +41,10 @@ function CompetitionsGrid() {
             <span
               className={styles.cardTitle}
               style={{
-                color: competicionSeleccionada?.id === competicion.id ? competicion.colorTexto : competicion.color,
+                color:
+                  competicionSeleccionada?.id === competicion.id
+                    ? competicion.colorTexto
+                    : competicion.colorBorde,
               }}
             >
               {competicion.nombre}
@@ -53,8 +56,8 @@ function CompetitionsGrid() {
       <div
         className={styles.panel}
         style={{
-          backgroundColor: competicionSeleccionada ? competicionSeleccionada.color : "#ffffff",
-          borderColor: competicionSeleccionada ? competicionSeleccionada.colorBorde : "#cccccc",
+          backgroundColor: competicionSeleccionada ? competicionSeleccionada.color : "#0a1330",
+          borderColor: competicionSeleccionada ? competicionSeleccionada.colorBorde : "rgba(12, 108, 240, 0.7)",
           borderWidth: competicionSeleccionada ? "3px" : "1px",
         }}
       >

@@ -3,13 +3,33 @@
   top: 0;
   left: 0;
   right: 0;
-  background: linear-gradient(180deg, #ffcc80 0%, #ffb347 100%);
+  background:
+    url("/Images/BannerParaIndex.png") center top / 100% auto no-repeat,
+    linear-gradient(180deg, #0a1330 0%, #040b27 100%);
+  animation: bannerBob 12s ease-in-out infinite alternate;
   display: flex;
   justify-content: center;
   align-items: center;
   padding: 15px 20px;
   z-index: 1000;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+}
+
+/* El fondo del banner recorre la navbar de arriba abajo: se ve la imagen
+   completa a lo largo del ciclo sin que la barra se mueva. */
+@keyframes bannerBob {
+  from {
+    background-position: center top;
+  }
+  to {
+    background-position: center bottom;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .navbar {
+    animation: none;
+  }
 }
 
 .nav-links {
@@ -19,10 +39,11 @@
 }
 
 .nav-button {
-  background: #fff5e6;
-  border: 2px solid #cc6600;
+  position: relative;
+  background: rgba(16, 26, 61, 0.92);
+  border: 2px solid var(--border-neon);
   border-left: none;
-  color: #cc6600;
+  color: var(--neon-blue-lt);
   padding: 10px 20px;
   margin: 0;
   font-size: 14px;
@@ -31,8 +52,27 @@
   transition: all 0.3s ease;
 }
 
+/* El press responde rapido; el hover y la vuelta atras conservan el 0.3s */
+.nav-button:active {
+  transition: all 0.08s ease;
+}
+
+/* Botones normales: oscurecen el fondo */
+.nav-button:not(.nav-leyendas):active {
+  background-color: #063d8f;
+  border-color: #052f70;
+  color: #cfe6ff;
+}
+
+/* Leyendas: el arcoiris sigue corriendo (animacion), asi que el oscurecimiento
+   se hace con una sombra interior, que no entra en conflicto con la animacion
+   porque arcoiris solo anima background-color y color. */
+.nav-button.nav-leyendas:active {
+  box-shadow: inset 0 0 0 9999px rgba(0, 0, 0, 0.35);
+}
+
 .nav-button:first-child {
-  border-left: 2px solid #cc6600;
+  border-left: 2px solid var(--border-neon);
   border-radius: 5px 0 0 5px;
 }
 
@@ -41,14 +81,14 @@
 }
 
 .nav-button:hover {
-  background-color: #cc6600;
-  color: #ffcc80;
+  background-color: var(--neon-blue);
+  color: #ffffff;
+  box-shadow: 0 0 10px rgba(78, 168, 255, 0.6);
 }
 
 .nav-button.nav-leyendas:hover {
   animation: arcoiris 1.5s infinite;
 }
-
 
 .hamburger {
   display: none;
@@ -58,6 +98,7 @@
   height: 24px;
   background: transparent;
   border: none;
+  color: var(--neon-blue-lt);
   cursor: pointer;
   padding: 0;
   position: absolute;
@@ -67,7 +108,7 @@
 .hamburger-line {
   width: 100%;
   height: 3px;
-  background-color: #cc6600;
+  background-color: var(--neon-blue-lt);
   border-radius: 2px;
   transition: all 0.3s ease;
 }
@@ -90,7 +131,9 @@
     position: absolute;
     top: 100%;
     left: 0;
-    background: linear-gradient(180deg, #ffcc80 0%, #ffb347 100%);
+    background:
+      url("/Images/BannerParaIndex.png") center / 100% 100% no-repeat,
+      linear-gradient(180deg, #0a1330 0%, #040b27 100%);
     padding: 20px 0;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
     z-index: 1001;
@@ -110,7 +153,9 @@
     z-index: 999;
     opacity: 0;
     visibility: hidden;
-    transition: opacity 0.3s ease, visibility 0.3s ease;
+    transition:
+      opacity 0.3s ease,
+      visibility 0.3s ease;
   }
 
   .overlay.visible {
@@ -119,7 +164,7 @@
   }
 
   .nav-button {
-    border-left: 2px solid #cc6600;
+    border-left: 2px solid var(--border-neon);
     border-radius: 5px;
     margin: 5px 20px;
     width: calc(100% - 40px);
