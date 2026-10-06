@@ -3,14 +3,10 @@ import "./App.css";
 import PlayersSection from "./Components/PlayersGrid";
 import Navbar from "./Components/Navbar/Navbar";
 import TeamsGrid from "./Components/TeamsGrid/TeamsGrid";
-import PaisSelector from "./Components/PaisSelector";
-import ClubSelector from "./Components/ClubSelector";
-import InfoCard from "./Components/InfoCard";
 import CompetitionsGrid from "./Components/CompetitionsGrid/CompetitionsGrid";
 import AsignadorApi from "./Components/AsignadorApi/AsignadorApi";
-import paisesInfo from "./data/paisesInfo.json";
-import clubesInfo from "./data/clubesInfo.json";
-import { useState } from "react";
+import LeyendasChispas from "./Components/LeyendasChispas";
+import { useEffect, useRef, useState } from "react";
 
 const buttons = [
   { label: "INICIO", action: "inicio" },
@@ -20,15 +16,31 @@ const buttons = [
   { label: "COMPETICIONES", action: "competiciones" },
 ];
 
-function App() {
-  const [mostrarFenix, setMostrarFenix] = useState<boolean>(false);
-  const [paisSeleccionado, setPaisSeleccionado] = useState<string>("");
-  const [clubSeleccionado, setClubSeleccionado] = useState<string | null>(null);
+const leyendas = [
+  { num: "01", titulo: "El Milagro de Estambul", anio: "2005" },
+  { num: "02", titulo: "La primera Champions del Barça", anio: "1992" },
+  { num: "03", titulo: "Leverkusen Finalista de Champions", anio: "2002" },
+];
 
-  const handlePaisSelect = (pais: string) => {
-    setPaisSeleccionado(pais);
-    setClubSeleccionado(null);
+function App() {
+  const [fuegoLeyendas, setFuegoLeyendas] = useState(false);
+  const fuegoTimer = useRef<number | null>(null);
+
+  // Enciende el efecto y programa su apagado a los 3.2 segundos
+  const encenderFuego = () => {
+    if (fuegoTimer.current) window.clearTimeout(fuegoTimer.current);
+    setFuegoLeyendas(true);
+    fuegoTimer.current = window.setTimeout(
+      () => setFuegoLeyendas(false),
+      3200
+    );
   };
+
+  useEffect(() => {
+    return () => {
+      if (fuegoTimer.current) window.clearTimeout(fuegoTimer.current);
+    };
+  }, []);
 
   const handleNavClick = (action: string) => {
     if (action === "inicio") {
@@ -44,12 +56,14 @@ function App() {
         window.scrollTo({ top: equipos.offsetTop - 100, behavior: "smooth" });
       }
     } else if (action === "leyendas") {
-      const leyendas = document.getElementById("leyendas");
-      if (leyendas) {
-        window.scrollTo({ top: leyendas.offsetTop - 380, behavior: "smooth" });
-        setTimeout(() => setMostrarFenix(true), 700);
-        setTimeout(() => setMostrarFenix(false), 4000);
+      const leyendasSection = document.getElementById("leyendas");
+      if (leyendasSection) {
+        window.scrollTo({
+          top: leyendasSection.offsetTop - 180,
+          behavior: "smooth",
+        });
       }
+      encenderFuego();
     } else if (action === "competiciones") {
       const competiciones = document.getElementById("competiciones");
       if (competiciones) {
@@ -79,57 +93,27 @@ function App() {
         <TeamsGrid />
         <div id="leyendas" className="leyendas-container">
           <img
-            src="/Images/fenixLeyenda.png"
-            alt="Fénix"
-            className={`fenix ${mostrarFenix ? "visible" : ""}`}
+            src="/Images/FenixParaLeyendas.png"
+            alt=""
+            className={`fenix ${fuegoLeyendas ? "visible" : ""}`}
           />
-          <h2 className="leyendas">LEYENDAS</h2>
-          <div className="MiniIndexLeyendas">
-            <h3 className="pais-titulo">
-              Selecciona un país para buscar sus Leyendas:
-            </h3>
-            <PaisSelector onSelect={handlePaisSelect} />
-            <h3
-              className={`pais-titulo ${!paisSeleccionado ? "disabled" : ""}`}
-            >
-              (Opcional) Selecciona Un Club:
-            </h3>
-            {paisSeleccionado && (
-              <ClubSelector
-                key={paisSeleccionado}
-                pais={paisSeleccionado}
-                onSelect={setClubSeleccionado}
-              />
-            )}
-            {clubSeleccionado && (
-              <InfoCard
-                titulo={clubSeleccionado}
-                descripcion={
-                  clubesInfo.find((c) => c.nombre === clubSeleccionado)
-                    ?.descripcion || ""
-                }
-                titulos={
-                  clubesInfo.find((c) => c.nombre === clubSeleccionado)
-                    ?.titulos || 0
-                }
-              />
-            )}
-            {!clubSeleccionado && paisSeleccionado && (
-              <InfoCard
-                titulo={paisSeleccionado}
-                descripcion={
-                  paisesInfo.find((p) => p.nombre === paisSeleccionado)
-                    ?.descripcion || ""
-                }
-                titulos={
-                  paisesInfo.find((p) => p.nombre === paisSeleccionado)
-                    ?.titulos || 0
-                }
-              />
-            )}
-            {!clubSeleccionado && !paisSeleccionado && (
-              <div className="info-panel" />
-            )}
+          <div className={`leyendas-marco${fuegoLeyendas ? " fuego" : ""}`}>
+            <LeyendasChispas activo={fuegoLeyendas} />
+            <h2 className="leyendas">LEYENDAS</h2>
+            <div className="leyendas-grid">
+              {leyendas.map((leyenda) => (
+                <article
+                  key={leyenda.num}
+                  className="leyenda-card"
+                  tabIndex={0}
+                >
+                  <span className="leyenda-num">{leyenda.num}</span>
+                  <h3 className="leyenda-titulo">{leyenda.titulo}</h3>
+                  <span className="leyenda-anio">{leyenda.anio}</span>
+                  <span className="leyenda-linea" />
+                </article>
+              ))}
+            </div>
           </div>
         </div>
         <CompetitionsGrid />
