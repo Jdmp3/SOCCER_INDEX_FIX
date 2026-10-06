@@ -77,7 +77,7 @@
     "pais": "Alemania",
     "liga": "Bundesliga",
     "fundacion": 1900,
-    "descripcion": "Club alemán fundado en 1900, el más exitoso de Alemania con múltiples Champions.",
+    "descripcion": "Club alemán fundado en 1900, el más exitoso de Alemania con 6 Champions en su Palmarés.",
     "logo": "bayern.png"
   },
   {
@@ -140,7 +140,7 @@
     "pais": "España",
     "liga": "La Liga",
     "fundacion": 1902,
-    "descripcion": "Club fundado en 1902, 'Los Blancos', 15 Copas de Europa. El rey de la Champions y del cuadro entero.",
+    "descripcion": "Club fundado en 1902, 'Los Merengues', 15 Copas de Europa. Máximo ganador de Champions.",
     "logo": "real_madrid.png"
   },
   {
@@ -176,7 +176,7 @@
     "pais": "Italia",
     "liga": "Serie A",
     "fundacion": 1908,
-    "descripcion": "Club italiano fundado en 1908, 'L'Inter', el único con tríptico. La franja negra y azul, la más bonita.",
+    "descripcion": "Club italiano fundado en 1908, 'L'Inter', el único con tríptico. La franja negra y azul.",
     "logo": "inter.png"
   }
 ]
