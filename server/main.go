@@ -45,6 +45,10 @@ type respuesta struct {
 }
 
 func main() {
+	// Mascara del mapamundi para los puntos rojos de Competiciones (mask.go).
+	// Se regenera en cada arranque; un fallo aqui nunca corta el servidor.
+	generarMascara()
+
 	// Puerto: PORT (produccion / Vercel / Docker) o 8080 (local).
 	puerto := os.Getenv("PORT")
 	if puerto == "" {
