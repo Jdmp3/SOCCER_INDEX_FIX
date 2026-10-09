@@ -71,13 +71,11 @@ func main() {
 	cache := nuevaCache()
 	mux := http.NewServeMux()
 
-	jugadores, errJugadores := cargarJugadores()
-	if errJugadores != nil {
-		logf("jugadores no disponibles: %v", errJugadores)
-	} else {
-		logf("jugadores cargados: %d", len(jugadores))
-	}
-	mux.HandleFunc("/api/jugadores", rutaJugadores(errJugadores, jugadores))
+	handlers := &handlersAPI{pool: pool}
+
+	mux.Handle("GET /api/jugadores", handlers.rutaJugadores())
+	mux.Handle("GET /api/equipos", handlers.rutaEquipos())
+	mux.Handle("GET /api/leyendas", handlers.rutaLeyendas())
 
 	mux.HandleFunc("/api/health", func(w http.ResponseWriter, r *http.Request) {
 		escribirJSON(w, http.StatusOK, map[string]any{
@@ -126,6 +124,8 @@ func main() {
 		logf("escuchando en http://localhost:%s", puerto)
 		logf("prueba: curl localhost:%s/api/noticias", puerto)
 		logf("prueba: curl \"localhost:%s/api/jugadores?q=mesi\"", puerto)
+		logf("prueba: curl \"localhost:%s/api/equipos?pagina=1&porPagina=20\"", puerto)
+		logf("prueba: curl localhost:%s/api/leyendas", puerto)
 		if err := srv.ListenAndServe(); err != nil && err != http.ErrServerClosed {
 			log.Fatalf("el servidor fallo: %v", err)
 		}
