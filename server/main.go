@@ -10,10 +10,10 @@ import (
 	"strconv"
 	"syscall"
 	"time"
+
+	"github.com/joho/godotenv"
 )
 
-// limitPorDefecto son las noticias que se muestran en la seccion. El diseño
-// original de la seccion es de a dos, asi que 2 es el valor correcto.
 const limitPorDefecto = 2
 
 const (
@@ -21,14 +21,12 @@ const (
 	limitMaximo = 20
 )
 
-// Puerto escucha por defecto. En produccion se sobreescribe con PORT.
 const puertoPorDefecto = "8080"
 
 func logf(formato string, args ...any) {
 	log.Printf("[api] "+formato, args...)
 }
 
-// normalizarLimit acota el valor pedido por el cliente.
 func normalizarLimit(n int) int {
 	if n < limitMinimo {
 		return limitPorDefecto
@@ -45,11 +43,26 @@ type respuesta struct {
 }
 
 func main() {
-	// Mascara del mapamundi para los puntos rojos de Competiciones (mask.go).
-	// Se regenera en cada arranque; un fallo aqui nunca corta el servidor.
+	if err := godotenv.Load(); err != nil {
+		logf("no se encontro .env (se usaran variables del entorno): %v", err)
+	}
+
+	ctxInicial := context.Background()
+
+	pool, errDB := conectarDB(ctxInicial)
+	if errDB != nil {
+		log.Fatalf("error de conexion a base de datos: %v", errDB)
+	}
+	defer pool.Close()
+
+	migrCtx, migrCancel := context.WithTimeout(ctxInicial, 60*time.Second)
+	defer migrCancel()
+	if errMig := ejecutarMigraciones(migrCtx, pool); errMig != nil {
+		log.Fatalf("error al aplicar migraciones: %v", errMig)
+	}
+
 	generarMascara()
 
-	// Puerto: PORT (produccion / Vercel / Docker) o 8080 (local).
 	puerto := os.Getenv("PORT")
 	if puerto == "" {
 		puerto = puertoPorDefecto
@@ -58,7 +71,6 @@ func main() {
 	cache := nuevaCache()
 	mux := http.NewServeMux()
 
-	// Buscador de jugadores: datos propios en memoria (ver jugadores.go).
 	jugadores, errJugadores := cargarJugadores()
 	if errJugadores != nil {
 		logf("jugadores no disponibles: %v", errJugadores)
@@ -91,8 +103,6 @@ func main() {
 		}
 		limit = normalizarLimit(limit)
 
-		// Cada peticion tiene su propio timeout para que una fuente lenta no
-		// pueda retener la conexion indefinidamente.
 		ctx, cancel := context.WithTimeout(r.Context(), 15*time.Second)
 		defer cancel()
 
@@ -109,8 +119,6 @@ func main() {
 		IdleTimeout:       60 * time.Second,
 	}
 
-	// Apagado limpio: en produccion Vercel/Docker mandan SIGTERM y hay que
-	// cerrar los listeners o el proceso se queda colgado.
 	ctx, stop := signal.NotifyContext(context.Background(), os.Interrupt, syscall.SIGTERM)
 	defer stop()
 
@@ -133,10 +141,6 @@ func main() {
 	logf("apagado completo")
 }
 
-// conCORS permite el acceso desde cualquier origen. En desarrollo el frontend
-// corre en el 5173 de Vite, asi que sin esto el navegador lo bloquearia.
-// En produccion el frontend se sirve desde el mismo dominio y la cabecera es
-// inofensiva.
 func conCORS(siguiente http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Access-Control-Allow-Origin", "*")
@@ -150,7 +154,6 @@ func conCORS(siguiente http.Handler) http.Handler {
 	})
 }
 
-// escribirJSON responde siempre en JSON con el content-type correcto.
 func escribirJSON(w http.ResponseWriter, status int, payload any) {
 	w.Header().Set("Content-Type", "application/json; charset=utf-8")
 	w.WriteHeader(status)
