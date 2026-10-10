@@ -7,7 +7,6 @@ interface TeamsFiltersProps {
   facets: TeamFacets;
   hayFiltros: boolean;
   total: number;
-  visibles: number;
   pagina: number;
   totalPaginas: number;
   loading: boolean;
@@ -25,14 +24,13 @@ function TeamsFilters({
   facets,
   hayFiltros,
   total,
-  visibles,
   pagina,
   totalPaginas,
   loading,
   onChange,
   onReset,
 }: TeamsFiltersProps) {
-  const { desde, hasta } = getPageRange(visibles, pagina);
+  const { desde, hasta } = getPageRange(total, pagina);
   return (
     <div className={styles.filtersBar}>
       <div className={styles.filtersGrid}>
@@ -139,9 +137,7 @@ function TeamsFilters({
         <span className={styles.resultCount}>
           {loading
             ? "Cargando equipos..."
-            : `Página ${pagina + 1} de ${totalPaginas} · Mostrando ${desde}-${hasta} de ${
-                hayFiltros ? visibles : total
-              } equipos${hayFiltros ? " filtrados" : ""}`}
+            : `Página ${pagina + 1} de ${totalPaginas} · Mostrando ${desde}-${hasta} de ${total} equipos${hayFiltros ? " filtrados" : ""}`}
         </span>
         {hayFiltros && (
           <button type="button" className={styles.clearButton} onClick={onReset}>

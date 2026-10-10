@@ -6,6 +6,8 @@ import TeamsGrid from "./Components/TeamsGrid/TeamsGrid";
 import CompetitionsGrid from "./Components/CompetitionsGrid/CompetitionsGrid";
 import AsignadorApi from "./Components/AsignadorApi/AsignadorApi";
 import LeyendasChispas from "./Components/LeyendasChispas";
+import { fetchLeyendas } from "./services/leyendas";
+import type { Leyenda } from "./services/leyendas";
 import { useEffect, useRef, useState } from "react";
 
 const buttons = [
@@ -16,24 +18,36 @@ const buttons = [
   { label: "COMPETICIONES", action: "competiciones" },
 ];
 
-const leyendas = [
-  { num: "01", titulo: "El Milagro de Estambul", anio: "2005" },
-  { num: "02", titulo: "La primera Champions del Barça", anio: "1992" },
-  { num: "03", titulo: "Leverkusen Finalista de Champions", anio: "2002" },
-];
-
 function App() {
   const [fuegoLeyendas, setFuegoLeyendas] = useState(false);
   const fuegoTimer = useRef<number | null>(null);
+  const [leyendas, setLeyendas] = useState<Leyenda[]>([]);
+  const [errorLeyendas, setErrorLeyendas] = useState<string | null>(null);
+
+  // Las leyendas vienen del backend; cualquier error se muestra en la sección.
+  useEffect(() => {
+    const controller = new AbortController();
+
+    fetchLeyendas(controller.signal)
+      .then((data) => {
+        setLeyendas(data);
+        setErrorLeyendas(null);
+      })
+      .catch((err: unknown) => {
+        if (controller.signal.aborted) return;
+        setErrorLeyendas(
+          err instanceof Error ? err.message : "Error al cargar las leyendas",
+        );
+      });
+
+    return () => controller.abort();
+  }, []);
 
   // Enciende el efecto y programa su apagado a los 3.2 segundos
   const encenderFuego = () => {
     if (fuegoTimer.current) window.clearTimeout(fuegoTimer.current);
     setFuegoLeyendas(true);
-    fuegoTimer.current = window.setTimeout(
-      () => setFuegoLeyendas(false),
-      3200
-    );
+    fuegoTimer.current = window.setTimeout(() => setFuegoLeyendas(false), 3200);
   };
 
   useEffect(() => {
@@ -100,20 +114,26 @@ function App() {
           <div className={`leyendas-marco${fuegoLeyendas ? " fuego" : ""}`}>
             <LeyendasChispas activo={fuegoLeyendas} />
             <h2 className="leyendas">LEYENDAS</h2>
-            <div className="leyendas-grid">
-              {leyendas.map((leyenda) => (
-                <article
-                  key={leyenda.num}
-                  className="leyenda-card"
-                  tabIndex={0}
-                >
-                  <span className="leyenda-num">{leyenda.num}</span>
-                  <h3 className="leyenda-titulo">{leyenda.titulo}</h3>
-                  <span className="leyenda-anio">{leyenda.anio}</span>
-                  <span className="leyenda-linea" />
-                </article>
-              ))}
-            </div>
+            {errorLeyendas ? (
+              <p className="leyendas-estado">{errorLeyendas}</p>
+            ) : leyendas.length === 0 ? (
+              <p className="leyendas-estado">Cargando leyendas…</p>
+            ) : (
+              <div className="leyendas-grid">
+                {leyendas.map((leyenda) => (
+                  <article
+                    key={leyenda.id}
+                    className="leyenda-card"
+                    tabIndex={0}
+                  >
+                    <span className="leyenda-num">{leyenda.num}</span>
+                    <h3 className="leyenda-titulo">{leyenda.titulo}</h3>
+                    <span className="leyenda-anio">{leyenda.anio}</span>
+                    <span className="leyenda-linea" />
+                  </article>
+                ))}
+              </div>
+            )}
           </div>
         </div>
         <CompetitionsGrid />

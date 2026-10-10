@@ -16,15 +16,14 @@ function TeamsGrid() {
     pagina,
     totalPaginas,
     equiposPagina,
-    visibles,
     setFiltro,
     irAPagina,
     reset,
   } = useTeams();
 
-  const [expandedId, setExpandedId] = useState<number | null>(null);
+  const [expandedId, setExpandedId] = useState<string | null>(null);
 
-  const toggleTeam = (id: number) => {
+  const toggleTeam = (id: string) => {
     setExpandedId(expandedId === id ? null : id);
   };
 
@@ -48,7 +47,7 @@ function TeamsGrid() {
     reset();
   }
 
-  const hayVariasPaginas = !loading && !error && visibles > 0 && totalPaginas > 1;
+  const hayVariasPaginas = !loading && !error && total > 0 && totalPaginas > 1;
 
   return (
     <div id="equipos" className={styles.container}>
@@ -58,7 +57,6 @@ function TeamsGrid() {
         facets={facets}
         hayFiltros={hayFiltros}
         total={total}
-        visibles={visibles}
         pagina={pagina}
         totalPaginas={totalPaginas}
         loading={loading}

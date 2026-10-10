@@ -392,6 +392,14 @@ body {
   gap: 20px;
 }
 
+.leyendas-estado {
+  text-align: center;
+  color: var(--neon-blue-lt);
+  text-shadow: 0 0 10px var(--glow-blue);
+  margin-top: 24px;
+  min-height: 60px;
+}
+
 .leyenda-card {
   display: flex;
   flex-direction: column;
