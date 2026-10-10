@@ -1,28 +1,31 @@
 import { getTeamInitials } from "./teams";
 
 /**
- * Buscador de jugadores contra nuestro backend en Go (server/jugadores.go).
+ * Buscador de jugadores contra nuestro backend en Go (server/handlers.go).
  *
  * Contrato: GET /api/jugadores?q=&pagina=&porPagina=
- * Respuesta: { jugadores: Jugador[], total, pagina, porPagina }
+ * Respuesta: { players: Jugador[], total, pagina, porPagina }
  *
  * La búsqueda es de texto libre: cada palabra debe aparecer en algún campo
  * (nombre, país, liga, equipo o posición) sin importar acentos ni
- * mayúsculas; si la palabra es un número, casa con edad o altura. La edad
- * la calcula el servidor desde la fecha de nacimiento, por eso llega ya
- * resuelta en la respuesta.
+ * mayúsculas; si la palabra es un número, casa con edad o altura.
+ *
+ * `Jugador` es exactamente la forma que devuelve la API (columnas de la
+ * tabla `players` con sus nombres en inglés), incluida la `image_url` tal
+ * cual viene del backend.
  */
 export interface Jugador {
-  id: number;
-  nombre: string;
-  posicion: string;
-  altura: number;
-  edad: number;
-  pais: string;
-  liga: string;
-  equipo: string;
-  /** Ruta relativa a public/, vacía si el jugador no tiene foto descargada. */
-  foto: string;
+  /** UUID que asigna Postgres. */
+  id: string;
+  player_name: string;
+  positions: string | null;
+  age: number | null;
+  height_cm: number | null;
+  country_name: string | null;
+  club_name: string | null;
+  league_name: string | null;
+  /** URL de la foto tal cual la devuelve la API (CDN de sofifa), null si no hay. */
+  image_url: string | null;
 }
 
 export interface RespuestaJugadores {
@@ -33,6 +36,14 @@ export interface RespuestaJugadores {
   aviso?: string;
 }
 
+/** Forma cruda que devuelve el backend (columnas de la tabla `players`). */
+interface RespuestaJugadoresAPI {
+  players: Jugador[];
+  total: number;
+  pagina: number;
+  porPagina: number;
+}
+
 /** Jugadores por página: el backend acota a 50, nosotros pedimos 20. */
 export const JUGADORES_POR_PAGINA = 20;
 
@@ -41,6 +52,14 @@ export const JUGADORES_POR_PAGINA = 20;
 const URL_API = import.meta.env.VITE_API_URL
   ? `${import.meta.env.VITE_API_URL}/api/jugadores`
   : "/api/jugadores";
+
+/**
+ * Los nombres del dataset pueden traer un " -" colgado ("Rodri -"), así que
+ * se limpia al mostrarlos en pantalla.
+ */
+export function limpiarNombre(nombre: string): string {
+  return nombre.replace(/\s*-\s*$/, "").trim();
+}
 
 export async function fetchJugadores(
   q: string,
@@ -63,11 +82,18 @@ export async function fetchJugadores(
     );
   }
 
-  const datos = (await respuesta.json()) as RespuestaJugadores;
-  if (!respuesta.ok || datos.aviso) {
-    throw new Error(datos.aviso || `El servidor respondió ${respuesta.status}`);
+  const datos = (await respuesta.json()) as RespuestaJugadoresAPI & {
+    error?: string;
+  };
+  if (!respuesta.ok) {
+    throw new Error(datos.error || `El servidor respondió ${respuesta.status}`);
   }
-  return datos;
+  return {
+    jugadores: datos.players,
+    total: datos.total,
+    pagina: datos.pagina,
+    porPagina: datos.porPagina,
+  };
 }
 
 /**

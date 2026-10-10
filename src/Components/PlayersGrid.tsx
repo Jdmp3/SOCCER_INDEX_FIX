@@ -1,6 +1,6 @@
 import { useState } from "react";
 import type { Jugador } from "../services/jugadores";
-import { getIniciales } from "../services/jugadores";
+import { getIniciales, limpiarNombre } from "../services/jugadores";
 import useJugadores from "../hooks/useJugadores";
 import styles from "./PlayersGrid.module.css";
 
@@ -9,17 +9,18 @@ interface PlayersSectionProps {
 }
 
 /**
- * Foto del jugador descargada en public/Images/Jugadores/, con fallback a
- * iniciales cuando no hay imagen (o si falla al cargar), igual que los logos
- * de los equipos.
+ * Foto del jugador servida por el backend (image_url tal cual la devuelve
+ * la API), con fallback a iniciales cuando no hay imagen (o si falla al
+ * cargar), igual que los logos de los equipos.
  */
 function JugadorFoto({ jugador }: { jugador: Jugador }) {
   const [fallo, setFallo] = useState(false);
+  const nombre = limpiarNombre(jugador.player_name);
 
-  if (!jugador.foto || fallo) {
+  if (!jugador.image_url || fallo) {
     return (
       <div className={styles.fotoFallback} aria-hidden="true">
-        <span className={styles.fotoFallbackText}>{getIniciales(jugador.nombre)}</span>
+        <span className={styles.fotoFallbackText}>{getIniciales(nombre)}</span>
       </div>
     );
   }
@@ -27,27 +28,28 @@ function JugadorFoto({ jugador }: { jugador: Jugador }) {
   return (
     <img
       className={styles.foto}
-      src={`./${jugador.foto}`}
-      alt={jugador.nombre}
+      src={jugador.image_url}
+      alt={nombre}
       onError={() => setFallo(true)}
     />
   );
 }
 
 function JugadorCard({ jugador }: { jugador: Jugador }) {
+  const nombre = limpiarNombre(jugador.player_name);
   return (
     <article className={styles.jugadorCard}>
       <JugadorFoto jugador={jugador} />
       <div className={styles.jugadorInfo}>
-        <h3 className={styles.jugadorNombre}>{jugador.nombre}</h3>
-        <span className={styles.posicion}>{jugador.posicion}</span>
+        <h3 className={styles.jugadorNombre}>{nombre}</h3>
+        <span className={styles.posicion}>{jugador.positions ?? ""}</span>
         <p className={styles.jugadorMeta}>
-          {jugador.edad} años · {jugador.altura} cm ·{" "}
-          {jugador.pais || "País desconocido"}
+          {jugador.age ?? "?"} años · {jugador.height_cm ?? "?"} cm ·{" "}
+          {jugador.country_name || "País desconocido"}
         </p>
         <p className={styles.jugadorClub}>
-          <strong>{jugador.equipo || "Sin equipo"}</strong>
-          {jugador.liga ? <> · {jugador.liga}</> : null}
+          <strong>{jugador.club_name || "Sin equipo"}</strong>
+          {jugador.league_name ? <> · {jugador.league_name}</> : null}
         </p>
       </div>
     </article>

@@ -29,7 +29,7 @@ function TeamLogo({ team }: TeamLogoProps) {
 
   return (
     <img
-      src={`./Images/Teams/${team.logo}`}
+      src={`${team.logo}`}
       alt={`${team.nombre} logo`}
       className={styles.logo}
       onError={() => setFallo(true)}
