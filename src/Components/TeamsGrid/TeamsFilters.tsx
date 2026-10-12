@@ -134,10 +134,8 @@ function TeamsFilters({
       </div>
 
       <div className={styles.filtersFooter}>
-        <span className="text-body">
-          {loading ? (
-            "Cargando equipos..."
-          ) : (
+        <span className="text-body" aria-live="polite">
+          {!loading && (
             <>
               Página <span className="text-metric">{pagina + 1}</span> de{" "}
               <span className="text-metric">{totalPaginas}</span> · Mostrando{" "}
