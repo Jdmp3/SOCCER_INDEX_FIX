@@ -1,7 +1,6 @@
-import teamsJson from "../data/teams.json";
-
 export interface Team {
-  id: number;
+  /** UUID que asigna Postgres. */
+  id: string;
   nombre: string;
   pais: string;
   liga: string;
@@ -29,6 +28,31 @@ export interface TeamFacets {
   anios: number[];
 }
 
+export interface RespuestaEquipos {
+  teams: Team[];
+  total: number;
+  facets: TeamFacets;
+}
+
+/** Forma cruda que devuelve el backend (columnas de la tabla `teams`). */
+interface TeamAPI {
+  id: string;
+  name: string;
+  country: string | null;
+  league: string | null;
+  founded: number | null;
+  description: string | null;
+  logo: string | null;
+}
+
+interface RespuestaEquiposAPI {
+  teams: TeamAPI[];
+  total: number;
+  pagina: number;
+  porPagina: number;
+  facets: TeamFacets;
+}
+
 export const EMPTY_TEAM_FILTERS: TeamFilters = {
   nombre: "",
   pais: "",
@@ -40,29 +64,31 @@ export const EMPTY_TEAM_FILTERS: TeamFilters = {
 /** Equipos que se muestran por página en el carrusel. */
 export const TEAMS_PAGE_SIZE = 15;
 
-/** Datos locales actuales (temporal, mientras no exista backend). */
-const LOCAL_TEAMS: Team[] = teamsJson as Team[];
+// Mismo patrón que las noticias: en desarrollo Vite hace de proxy hacia el
+// 8080 (ver vite.config.ts), en producción VITE_API_URL apunta al backend.
+const URL_API = import.meta.env.VITE_API_URL
+  ? `${import.meta.env.VITE_API_URL}/api/equipos`
+  : "/api/equipos";
 
-const collator = new Intl.Collator("es", { sensitivity: "base" });
-
-/**
- * Normaliza para comparar sin acentos ni mayúsculas, de forma que "atleti",
- * "atléti" o "ATLETI" találen "Atlético". Para el backend esto equivale a
- * comparar con collation insensible a acentos.
- */
-function normalize(texto: string): string {
-  return texto
-    .normalize("NFD")
-    .replace(/\p{Diacritic}/gu, "")
-    .toLocaleLowerCase("es");
+/** Traduce una fila del backend a la interfaz del frontend. */
+function aTeam(t: TeamAPI): Team {
+  return {
+    id: t.id,
+    nombre: t.name,
+    pais: t.country ?? "",
+    liga: t.league ?? "",
+    fundacion: t.founded ?? 0,
+    descripcion: t.description ?? "",
+    logo: t.logo ?? "",
+  };
 }
 
 /**
- * Traduce los filtros al contrato de query params que consumirá el backend.
+ * Traduce los filtros al contrato de query params del backend.
  * Los criterios sin valor se omiten, para que el endpoint pueda usar sus defaults.
  *
- * Contrato: GET /api/equipos?nombre=&pais=&liga=&fundacionDesde=&fundacionHasta=
- * Todos los criterios se combinan con AND.
+ * Contrato: GET /api/equipos?nombre=&pais=&liga=&fundacionDesde=&fundacionHasta=&pagina=&porPagina=
+ * Todos los criterios se combinan con AND y la paginación la hace el servidor.
  */
 export function toTeamQueryParams(filters: TeamFilters): URLSearchParams {
   const params = new URLSearchParams();
@@ -79,43 +105,41 @@ export function toTeamQueryParams(filters: TeamFilters): URLSearchParams {
 }
 
 /**
- * Filtra la lista de equipos en local. Función pura: sin estado de React,
- * reutilizable y testeable de forma aislada.
+ * Petición de equipos al backend. Los filtros, la paginación y los facets
+ * viven en el servidor; aquí solo se traducen los parámetros y la respuesta.
  *
- * Todos los criterios se combinan con AND. Si `fundacionDesde` es mayor que
- * `fundacionHasta` no hay ningún equipo que cumpla el rango.
+ * `pagina` es 0-based (como la UI); el endpoint trabaja 1-based, así que se
+ * convierte al enviar (`pagina + 1`).
  */
-export function applyTeamFilters(teams: Team[], filters: TeamFilters): Team[] {
-  const busqueda = normalize(filters.nombre.trim());
+export async function fetchTeams(
+  filters: TeamFilters,
+  pagina: number,
+  signal?: AbortSignal,
+): Promise<RespuestaEquipos> {
+  const params = toTeamQueryParams(filters);
+  params.set("pagina", String(pagina + 1));
+  params.set("porPagina", String(TEAMS_PAGE_SIZE));
 
-  return teams.filter((team) => {
-    if (busqueda && !normalize(team.nombre).includes(busqueda)) {
-      return false;
-    }
-    if (filters.pais && team.pais !== filters.pais) return false;
-    if (filters.liga && team.liga !== filters.liga) return false;
-    if (
-      filters.fundacionDesde !== null &&
-      team.fundacion < filters.fundacionDesde
-    ) {
-      return false;
-    }
-    if (
-      filters.fundacionHasta !== null &&
-      team.fundacion > filters.fundacionHasta
-    ) {
-      return false;
-    }
-    return true;
-  });
-}
+  let respuesta: Response;
+  try {
+    respuesta = await fetch(`${URL_API}?${params}`, { signal });
+  } catch (err) {
+    if (err instanceof DOMException && err.name === "AbortError") throw err;
+    throw new Error(
+      "No se pudo conectar con el servidor de equipos. ¿Está el backend corriendo en el puerto 8080?",
+    );
+  }
 
-/** Valores únicos disponibles para poblar los desplegables de los filtros. */
-export function getTeamFacets(teams: Team[]): TeamFacets {
+  const datos = (await respuesta.json()) as RespuestaEquiposAPI & {
+    error?: string;
+  };
+  if (!respuesta.ok) {
+    throw new Error(datos.error || `El servidor respondió ${respuesta.status}`);
+  }
   return {
-    paises: [...new Set(teams.map((team) => team.pais))].sort(collator.compare),
-    ligas: [...new Set(teams.map((team) => team.liga))].sort(collator.compare),
-    anios: [...new Set(teams.map((team) => team.fundacion))].sort((a, b) => a - b),
+    teams: datos.teams.map(aTeam),
+    total: datos.total,
+    facets: datos.facets,
   };
 }
 
@@ -125,17 +149,6 @@ export function getTeamFacets(teams: Team[]): TeamFacets {
  */
 export function getTotalPages(total: number): number {
   return Math.max(1, Math.ceil(total / TEAMS_PAGE_SIZE));
-}
-
-/**
- * Recorta la página pedida (base 0). La última puede ir incompleta: con 20
- * equipos y páginas de 15, la segunda devuelve 5. Una página fuera de rango
- * devuelve lista vacía.
- */
-export function paginateTeams(teams: Team[], pagina: number): Team[] {
-  const inicio = pagina * TEAMS_PAGE_SIZE;
-  if (inicio < 0 || inicio >= teams.length) return [];
-  return teams.slice(inicio, inicio + TEAMS_PAGE_SIZE);
 }
 
 /** Rango que ocupa la página dentro del listado, para el contador "1-15 de 20". */
@@ -163,31 +176,6 @@ export function getTeamInitials(nombre: string): string {
   if (fuente.length === 0) return "?";
   if (fuente.length === 1) return fuente[0].slice(0, 2).toLocaleUpperCase("es");
   return (fuente[0][0] + fuente[1][0]).toLocaleUpperCase("es");
-}
-
-/**
- * Punto único de sustitución del backend.
- *
- * Hoy resuelve contra el JSON local aplicando los filtros en el cliente, y el
- * carrusel pagina ese resultado con `paginateTeams`.
- *
- * Cuando exista el endpoint, la paginación pasa al servidor: los params son
- * `pagina` y `porPagina`, y la respuesta debe traer el total aparte para poder
- * calcular las páginas, porque el cliente ya no tendría la lista completa.
- *
- *   Contrato: GET /api/equipos?nombre=&pais=&liga=&fundacionDesde=&fundacionHasta=&pagina=&porPagina=
- *   Respuesta: { equipos: Team[], total: number }
- *
- * Con esa forma, `useTeams` deja de usar `paginateTeams` y `getTotalPages`
- * (el total viene del servidor); el resto de la UI no cambia. La firma de
- * `fetchTeams` sí, así que se ajusta aquí y en el hook, no en los componentes.
- */
-export async function fetchTeams(
-  filters: TeamFilters,
-  signal?: AbortSignal,
-): Promise<Team[]> {
-  void signal;
-  return applyTeamFilters(LOCAL_TEAMS, filters);
 }
 
 export function hasActiveFilters(filters: TeamFilters): boolean {

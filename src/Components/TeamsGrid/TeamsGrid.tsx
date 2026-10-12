@@ -5,6 +5,16 @@ import TeamLogo from "./TeamLogo";
 import TeamsFilters from "./TeamsFilters";
 import styles from "./TeamsGrid.module.css";
 
+function TeamSkeleton() {
+  return (
+    <div className={styles.skeletonCard} aria-hidden="true">
+      <div className={styles.skeletonLogo} />
+      <div className={`${styles.skeletonLinea} ${styles.skeletonLineaNombre}`} />
+      <div className={`${styles.skeletonLinea} ${styles.skeletonLineaPais}`} />
+    </div>
+  );
+}
+
 function TeamsGrid() {
   const {
     filtros,
@@ -16,15 +26,14 @@ function TeamsGrid() {
     pagina,
     totalPaginas,
     equiposPagina,
-    visibles,
     setFiltro,
     irAPagina,
     reset,
   } = useTeams();
 
-  const [expandedId, setExpandedId] = useState<number | null>(null);
+  const [expandedId, setExpandedId] = useState<string | null>(null);
 
-  const toggleTeam = (id: number) => {
+  const toggleTeam = (id: string) => {
     setExpandedId(expandedId === id ? null : id);
   };
 
@@ -48,17 +57,16 @@ function TeamsGrid() {
     reset();
   }
 
-  const hayVariasPaginas = !loading && !error && visibles > 0 && totalPaginas > 1;
+  const hayVariasPaginas = !loading && !error && total > 0 && totalPaginas > 1;
 
   return (
     <div id="equipos" className={styles.container}>
-      <h2 className={styles.titulo}>EQUIPOS</h2>
+      <h2 className="section-title">EQUIPOS</h2>
       <TeamsFilters
         filtros={filtros}
         facets={facets}
         hayFiltros={hayFiltros}
         total={total}
-        visibles={visibles}
         pagina={pagina}
         totalPaginas={totalPaginas}
         loading={loading}
@@ -70,8 +78,12 @@ function TeamsGrid() {
         <p className={styles.emptyState}>{error}</p>
       ) : (
         <>
-          <div className={styles.grid}>
-            {equiposPagina.map((team) => (
+          <div className={styles.grid} aria-busy={loading}>
+            {loading && equiposPagina.length === 0
+              ? Array.from({ length: 15 }, (_, i) => (
+                  <TeamSkeleton key={`skeleton-${i}`} />
+                ))
+              : equiposPagina.map((team) => (
               <div key={team.id} className={styles.card}>
                 <div
                   className={styles.cardHeader}
@@ -82,16 +94,19 @@ function TeamsGrid() {
                   </div>
                   <div className={styles.teamInfo}>
                     <span className={styles.teamName}>{team.nombre}</span>
-                    <span className={styles.teamCountry}>{team.pais}</span>
+                    <span className="text-body">{team.pais}</span>
                   </div>
                 </div>
                 {expandedId === team.id && (
                   <div className={styles.description}>
-                    <p className={styles.descriptionText}>{team.descripcion}</p>
-                    <p className={styles.descriptionMeta}>
+                    <p className="text-body">{team.descripcion}</p>
+                    <p className={`${styles.descriptionMeta} text-body`}>
                       <span>{team.liga}</span>
                       <span className={styles.descriptionMetaDivider}>·</span>
-                      <span>Fundado en {team.fundacion}</span>
+                      <span>
+                        Fundado en{" "}
+                        <span className="text-metric">{team.fundacion}</span>
+                      </span>
                     </p>
                   </div>
                 )}
