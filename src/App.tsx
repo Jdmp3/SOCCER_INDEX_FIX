@@ -5,6 +5,7 @@ import Navbar from "./Components/Navbar/Navbar";
 import TeamsGrid from "./Components/TeamsGrid/TeamsGrid";
 import CompetitionsGrid from "./Components/CompetitionsGrid/CompetitionsGrid";
 import AsignadorApi from "./Components/AsignadorApi/AsignadorApi";
+import Footer from "./Components/Footer/Footer";
 import LeyendasChispas from "./Components/LeyendasChispas";
 import { fetchLeyendas } from "./services/leyendas";
 import type { Leyenda } from "./services/leyendas";
@@ -97,9 +98,11 @@ function App() {
           <h1>
             <img src="/Images/TitleIndex.png" alt="JDMP3's INDEX" />
           </h1>
-          <p>
-            [Index creado personalmente por mi sobre equipos, jugadores,
-            competiciones e historias sobre el futbol que me gustan mucho]
+          <p className="text-body">
+            Index creado por mi para aprender sobre diferentes jugadores,
+            equipos, leyendas y competiciones del mundo del Fútbol.
+            <br /> En la barra de navegación de arriba podrás desplazarte en la
+            página.
           </p>
         </div>
         <AsignadorApi />
@@ -138,6 +141,7 @@ function App() {
         </div>
         <CompetitionsGrid />
       </main>
+      <Footer />
     </div>
   );
 }

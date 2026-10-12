@@ -13,9 +13,9 @@
 
 /* Paleta neon tomada del banner: navy oscuro + azul electrico + naranja */
 :root {
-  --bg: #0a1029;
-  --panel: #0a1330;
-  --panel-2: #101a3d;
+  --bg: #080e24;
+  --panel: #101f50;
+  --panel-2: #0f1a42;
   --text: #e6ecff;
   --text-dim: #aab6e0;
   --neon-blue: #0c6cf0;
@@ -65,7 +65,7 @@ body {
   padding: 20px;
   min-height: 100vh;
   background-color: var(--bg);
-  height: 10000px;
+  height: auto;
 }
 
 .header-title {
@@ -96,15 +96,51 @@ body {
     font-size: 1.8rem;
   }
   .header-title p {
-    font-size: 12px;
     padding: 0 10px;
   }
 }
 
 .header-title p {
   color: var(--text);
-  font-size: 14px;
   opacity: 0.85;
+}
+
+/* ---- Tipografía unificada (Gestalt: similitud) ---- */
+.section-title {
+  font-size: 55px;
+  font-weight: bold;
+  color: var(--neon-blue-lt);
+  text-shadow: 0 0 14px var(--glow-blue);
+  text-align: center;
+  margin-bottom: 40px;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+
+.text-body {
+  font-size: 15.5px;
+  line-height: 1.6;
+  color: var(--text);
+}
+
+.text-metric {
+  font-size: 16.5px;
+  font-weight: 700;
+  line-height: 1.4;
+  color: var(--neon-blue-lt);
+}
+
+@media (max-width: 768px) {
+  .section-title {
+    font-size: 32px;
+    margin-bottom: 25px;
+  }
+  .text-body {
+    font-size: 14.5px;
+  }
+  .text-metric {
+    font-size: 15.5px;
+  }
 }
 
 .noticia {
@@ -146,12 +182,6 @@ body {
   color: var(--neon-blue-lt);
   text-shadow: 0 0 8px rgba(78, 168, 255, 0.35);
   margin-bottom: 10px;
-}
-
-.noticia-texto p {
-  color: var(--text);
-  line-height: 1.6;
-  font-size: 14px;
 }
 
 .noticia-imagen {

@@ -134,10 +134,19 @@ function TeamsFilters({
       </div>
 
       <div className={styles.filtersFooter}>
-        <span className={styles.resultCount}>
-          {loading
-            ? "Cargando equipos..."
-            : `Página ${pagina + 1} de ${totalPaginas} · Mostrando ${desde}-${hasta} de ${total} equipos${hayFiltros ? " filtrados" : ""}`}
+        <span className="text-body">
+          {loading ? (
+            "Cargando equipos..."
+          ) : (
+            <>
+              Página <span className="text-metric">{pagina + 1}</span> de{" "}
+              <span className="text-metric">{totalPaginas}</span> · Mostrando{" "}
+              <span className="text-metric">{desde}</span>-
+              <span className="text-metric">{hasta}</span> de{" "}
+              <span className="text-metric">{total}</span> equipos
+              {hayFiltros ? " filtrados" : ""}
+            </>
+          )}
         </span>
         {hayFiltros && (
           <button type="button" className={styles.clearButton} onClick={onReset}>

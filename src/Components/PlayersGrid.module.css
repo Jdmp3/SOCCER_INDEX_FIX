@@ -19,17 +19,6 @@
   }
 }
 
-.titulo {
-  font-size: 55px;
-  font-weight: bold;
-  color: var(--neon-blue-lt);
-  text-shadow: 0 0 14px var(--glow-blue);
-  text-align: center;
-  margin-bottom: 40px;
-  text-transform: uppercase;
-  letter-spacing: 2px;
-}
-
 /* Recuadro tipo Google: una sola pastilla con lupa + input */
 .searchBox {
   display: flex;
@@ -82,9 +71,6 @@
 .descripcion {
   max-width: 680px;
   margin: 18px auto 0;
-  font-size: 14px;
-  line-height: 1.6;
-  color: var(--text-dim);
 }
 
 /* ===== Resultados de la búsqueda ===== */
@@ -114,8 +100,6 @@
 }
 
 .contador {
-  font-size: 13px;
-  color: var(--text-dim);
   margin-bottom: 14px;
 }
 
@@ -130,6 +114,64 @@
 .gridCargando {
   opacity: 0.45;
   pointer-events: none;
+}
+
+/* Skeleton de carga con el mismo shimmer que las noticias */
+.skeletonGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 22px;
+  margin-top: -44px;
+}
+
+.skeletonCard {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  padding: 20px;
+  background-color: var(--panel);
+  border: 1px solid var(--border-neon);
+  border-radius: 8px;
+  min-height: 104px;
+}
+
+.skeletonFoto,
+.skeletonLinea {
+  background: linear-gradient(90deg, #16204a 25%, #1e2c66 50%, #16204a 75%);
+  background-size: 200% 100%;
+  animation: skeleton-shimmer 1.5s infinite;
+  border-radius: 4px;
+}
+
+.skeletonFoto {
+  width: 80px;
+  height: 80px;
+  flex-shrink: 0;
+  border-radius: 50%;
+}
+
+.skeletonInfo {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.skeletonLinea {
+  height: 16px;
+}
+
+.skeletonLineaCorta {
+  width: 45%;
+}
+
+.skeletonLineaMedia {
+  width: 70%;
+}
+
+.skeletonLineaLarga {
+  width: 90%;
 }
 
 .jugadorCard {
@@ -207,8 +249,6 @@
 }
 
 .jugadorMeta {
-  font-size: 12.5px;
-  color: var(--text-dim);
   margin-bottom: 3px;
   white-space: nowrap;
   overflow: hidden;
@@ -216,8 +256,6 @@
 }
 
 .jugadorClub {
-  font-size: 12.5px;
-  color: var(--text);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -260,16 +298,10 @@
 }
 
 .paginaTexto {
-  font-size: 13px;
-  color: var(--text-dim);
+  /* tipografía unificada en .text-body / .text-metric */
 }
 
 @media (max-width: 768px) {
-  .titulo {
-    font-size: 32px;
-    margin-bottom: 25px;
-  }
-
   .searchBox {
     padding: 12px 18px;
     gap: 10px;
@@ -280,7 +312,6 @@
   }
 
   .descripcion {
-    font-size: 13px;
     margin-top: 14px;
   }
 
@@ -291,6 +322,23 @@
   .jugadorCard {
     padding: 12px;
     gap: 12px;
+  }
+
+  .skeletonGrid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+    margin-top: -24px;
+  }
+
+  .skeletonCard {
+    padding: 16px;
+    gap: 14px;
+    min-height: 92px;
+  }
+
+  .skeletonFoto {
+    width: 68px;
+    height: 68px;
   }
 
   .foto,
@@ -317,7 +365,6 @@
   }
 
   .paginaTexto {
-    font-size: 12px;
     order: -1;
     width: 100%;
     text-align: center;
