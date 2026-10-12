@@ -59,7 +59,7 @@ function NewsCard({
     <>
       <div className="noticia-texto">
         <h2>{title}</h2>
-        {description && <p>{description}</p>}
+        {description && <p className="text-body">{description}</p>}
         {(fuente || fecha) && (
           <div className="noticia-meta">
             {fuente && <span className="noticia-fuente">{fuente}</span>}

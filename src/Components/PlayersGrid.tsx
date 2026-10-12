@@ -43,14 +43,28 @@ function JugadorCard({ jugador }: { jugador: Jugador }) {
       <div className={styles.jugadorInfo}>
         <h3 className={styles.jugadorNombre}>{nombre}</h3>
         <span className={styles.posicion}>{jugador.positions ?? ""}</span>
-        <p className={styles.jugadorMeta}>
-          {jugador.age ?? "?"} años · {jugador.height_cm ?? "?"} cm ·{" "}
+        <p className={`${styles.jugadorMeta} text-body`}>
+          <span className="text-metric">{jugador.age ?? "?"}</span> años ·{" "}
+          <span className="text-metric">{jugador.height_cm ?? "?"}</span> cm ·{" "}
           {jugador.country_name || "País desconocido"}
         </p>
-        <p className={styles.jugadorClub}>
+        <p className={`${styles.jugadorClub} text-body`}>
           <strong>{jugador.club_name || "Sin equipo"}</strong>
           {jugador.league_name ? <> · {jugador.league_name}</> : null}
         </p>
+      </div>
+    </article>
+  );
+}
+
+function JugadorSkeleton() {
+  return (
+    <article className={styles.skeletonCard} aria-hidden="true">
+      <div className={styles.skeletonFoto} />
+      <div className={styles.skeletonInfo}>
+        <div className={`${styles.skeletonLinea} ${styles.skeletonLineaMedia}`} />
+        <div className={`${styles.skeletonLinea} ${styles.skeletonLineaCorta}`} />
+        <div className={`${styles.skeletonLinea} ${styles.skeletonLineaLarga}`} />
       </div>
     </article>
   );
@@ -77,7 +91,7 @@ function PlayersSection({ id }: PlayersSectionProps) {
 
   return (
     <div id={id} className={styles.container}>
-      <h2 className={styles.titulo}>Buscar Jugadores</h2>
+      <h2 className="section-title">Buscar Jugadores</h2>
 
       {/* Caja tipo Google: la búsqueda se dispara al pulsar Intro */}
       <form
@@ -107,7 +121,7 @@ function PlayersSection({ id }: PlayersSectionProps) {
         />
       </form>
 
-      <p className={styles.descripcion}>
+      <p className={`${styles.descripcion} text-body`}>
         Escribe un dato de tu jugador a buscar: Nombre, Posicion, Altura, Edad,
         País, Liga y Equipo.
       </p>
@@ -118,7 +132,16 @@ function PlayersSection({ id }: PlayersSectionProps) {
             <p className={styles.estadoError}>{error}</p>
           )}
 
-          {buscando && <p className={styles.estado}>Buscando jugadores…</p>}
+          {buscando && (
+            <>
+              <p className={styles.estado}>Buscando jugadores…</p>
+              <div className={styles.skeletonGrid} aria-hidden="true">
+                {Array.from({ length: 20 }, (_, i) => (
+                  <JugadorSkeleton key={`skeleton-${i}`} />
+                ))}
+              </div>
+            </>
+          )}
 
           {!cargando && !error && consulta !== null && total === 0 && (
             <p className={styles.estado}>
@@ -128,10 +151,18 @@ function PlayersSection({ id }: PlayersSectionProps) {
 
           {jugadores.length > 0 && (
             <>
-              <p className={styles.contador}>
-                {consulta
-                  ? `${formato(total)} jugadores para «${consulta}»`
-                  : `${formato(total)} jugadores en el índice`}
+              <p className={`${styles.contador} text-body`}>
+                {consulta ? (
+                  <>
+                    <span className="text-metric">{formato(total)}</span>{" "}
+                    jugadores para «{consulta}»
+                  </>
+                ) : (
+                  <>
+                    <span className="text-metric">{formato(total)}</span>{" "}
+                    jugadores en el índice
+                  </>
+                )}
               </p>
               <div
                 className={`${styles.grid} ${cargando ? styles.gridCargando : ""}`}
@@ -151,9 +182,12 @@ function PlayersSection({ id }: PlayersSectionProps) {
                   >
                     ‹ Anterior
                   </button>
-                  <span className={styles.paginaTexto}>
-                    Página {pagina} de {totalPaginas} · {rango.desde}-
-                    {rango.hasta} de {formato(total)}
+                  <span className={`${styles.paginaTexto} text-body`}>
+                    Página <span className="text-metric">{pagina}</span> de{" "}
+                    <span className="text-metric">{totalPaginas}</span> ·{" "}
+                    <span className="text-metric">{rango.desde}</span>-
+                    <span className="text-metric">{rango.hasta}</span> de{" "}
+                    <span className="text-metric">{formato(total)}</span>
                   </span>
                   <button
                     type="button"
