@@ -133,14 +133,11 @@ function PlayersSection({ id }: PlayersSectionProps) {
           )}
 
           {buscando && (
-            <>
-              <p className={styles.estado}>Buscando jugadores…</p>
-              <div className={styles.skeletonGrid} aria-hidden="true">
-                {Array.from({ length: 20 }, (_, i) => (
-                  <JugadorSkeleton key={`skeleton-${i}`} />
-                ))}
-              </div>
-            </>
+            <div className={styles.skeletonGrid} aria-hidden="true">
+              {Array.from({ length: 20 }, (_, i) => (
+                <JugadorSkeleton key={`skeleton-${i}`} />
+              ))}
+            </div>
           )}
 
           {!cargando && !error && consulta !== null && total === 0 && (
