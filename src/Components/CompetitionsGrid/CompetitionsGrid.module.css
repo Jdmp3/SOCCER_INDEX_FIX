@@ -103,7 +103,7 @@
     0 0 22px rgba(12, 108, 240, 0.9),
     0 0 48px rgba(12, 108, 240, 0.6);
   animation: latidoAzul 2.6s ease-in-out infinite;
-  transition: transform 0.25s ease;
+  transition: transform 0.25s ease, filter 0.25s ease;
 }
 
 .logoRaiz {
@@ -127,6 +127,7 @@
   white-space: nowrap;
   text-shadow: 0 0 8px rgba(78, 168, 255, 0.8);
   box-shadow: 0 0 12px rgba(12, 108, 240, 0.45);
+  transition: border-color 0.2s ease;
 }
 
 .puntoRaizAbierto .puntoRaizNucleo {
@@ -138,16 +139,10 @@
     0 0 60px rgba(78, 168, 255, 0.75);
 }
 
-.puntoRaiz:hover .puntoRaizNucleo {
-  transform: scale(1.15);
-}
-
-.puntoRaizAbierto:hover .puntoRaizNucleo {
-  transform: scale(1.3);
-}
-
 .puntoHijo {
   position: absolute;
+  left: var(--punto-x);
+  top: var(--punto-y);
   transform: translate(-50%, -50%);
   display: flex;
   flex-direction: column;
@@ -174,7 +169,7 @@
     0 0 8px rgba(78, 168, 255, 0.9),
     0 0 24px rgba(12, 108, 240, 0.75),
     0 0 48px rgba(12, 108, 240, 0.45);
-  transition: transform 0.2s ease;
+  transition: transform 0.2s ease, filter 0.2s ease;
 }
 
 .logoFallback {
@@ -187,11 +182,6 @@
   text-shadow: 0 0 8px rgba(78, 168, 255, 0.9);
 }
 
-.puntoHijo:hover .logo,
-.puntoHijo:hover .logoFallback {
-  transform: scale(1.12);
-}
-
 .puntoHijoNombre {
   font-size: 12px;
   font-weight: bold;
@@ -201,6 +191,37 @@
   padding: 2px 8px;
   white-space: nowrap;
   text-shadow: 0 0 6px rgba(78, 168, 255, 0.7);
+  transition: color 0.2s ease;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .puntoRaiz:hover .puntoRaizNucleo,
+  .puntoRaiz:focus-visible .puntoRaizNucleo {
+    animation: none;
+    transform: scale(1.18);
+    filter: brightness(1.2);
+  }
+
+  .puntoRaizAbierto:hover .puntoRaizNucleo,
+  .puntoRaizAbierto:focus-visible .puntoRaizNucleo {
+    transform: scale(1.32);
+  }
+
+  .puntoRaiz:hover .puntoRaizEtiqueta,
+  .puntoRaiz:focus-visible .puntoRaizEtiqueta,
+  .puntoHijo:hover .puntoHijoNombre,
+  .puntoHijo:focus-visible .puntoHijoNombre {
+    color: var(--text);
+    border-color: var(--neon-blue-lt);
+  }
+
+  .puntoHijo:hover .logo,
+  .puntoHijo:hover .logoFallback,
+  .puntoHijo:focus-visible .logo,
+  .puntoHijo:focus-visible .logoFallback {
+    transform: scale(1.18);
+    filter: brightness(1.2);
+  }
 }
 
 .puntoRaiz:focus-visible,
@@ -296,25 +317,30 @@
   }
 
   .puntoRaizNucleo {
-    width: 34px;
-    height: 34px;
+    width: 28px;
+    height: 28px;
   }
 
   .puntoRaizEtiqueta {
-    font-size: 11px;
-    padding: 2px 7px;
+    font-size: 10px;
+    padding: 2px 6px;
     letter-spacing: 0;
   }
 
   .logo,
   .logoFallback {
-    width: 32px;
-    height: 32px;
-    font-size: 12px;
+    width: 25px;
+    height: 25px;
+    font-size: 11px;
   }
 
   .puntoHijoNombre {
-    font-size: 10px;
-    padding: 1px 6px;
+    font-size: 9px;
+    padding: 1px 5px;
+  }
+
+  .puntoHijo {
+    left: var(--punto-x-mobile);
+    top: var(--punto-y-mobile);
   }
 }
