@@ -5,8 +5,8 @@ import NewsCard from "../NewsCard/NewsCard";
 // El backend consulta los RSS de MARCA y BBC, asi que no hace falta ninguna
 // clave de API ni archivo .env en el frontend.
 const URL_API = import.meta.env.VITE_API_URL
-  ? `${import.meta.env.VITE_API_URL}/api/noticias`
-  : "/api/noticias";
+  ? `${import.meta.env.VITE_API_URL}/api/noticias?limit=3`
+  : "/api/noticias?limit=3";
 
 interface Articulo {
   titulo: string;
@@ -61,33 +61,62 @@ function AsignadorApi() {
     return () => controlador.abort();
   }, []);
 
+  const noticiasOrdenadas = [...noticias].sort((a, b) => {
+    const fechaA = Date.parse(a.fecha);
+    const fechaB = Date.parse(b.fecha);
+    if (Number.isNaN(fechaA)) return Number.isNaN(fechaB) ? 0 : 1;
+    if (Number.isNaN(fechaB)) return -1;
+    return fechaB - fechaA;
+  });
+
   if (loading) {
     return (
-      <div>
-        <NewsCard key="skeleton-1" loading />
-        <NewsCard key="skeleton-2" loading />
-      </div>
+      <section className="news-section" aria-labelledby="news-title">
+        <h2 id="news-title" className="section-title news-title">
+          ÚLTIMAS NOTICIAS
+        </h2>
+        <div className="news-list">
+          <NewsCard key="skeleton-1" loading featured />
+          <NewsCard key="skeleton-2" loading />
+          <NewsCard key="skeleton-3" loading />
+        </div>
+      </section>
     );
   }
 
   if (error) {
-    return <div className="ErrorUiNews">{error}</div>;
+    return (
+      <section className="news-section" aria-labelledby="news-title">
+        <h2 id="news-title" className="section-title news-title">
+          ÚLTIMAS NOTICIAS
+        </h2>
+        <div className="ErrorUiNews" role="status">
+          {error}
+        </div>
+      </section>
+    );
   }
 
   return (
-    <div>
-      {noticias.map((noticia) => (
-        <NewsCard
-          key={noticia.link || noticia.titulo}
-          title={noticia.titulo}
-          description={noticia.descripcion}
-          image={noticia.imagen}
-          link={noticia.link}
-          fuente={noticia.fuente}
-          fecha={noticia.fecha}
-        />
-      ))}
-    </div>
+    <section className="news-section" aria-labelledby="news-title">
+      <h2 id="news-title" className="section-title news-title">
+        ÚLTIMAS NOTICIAS
+      </h2>
+      <div className="news-list">
+        {noticiasOrdenadas.map((noticia, index) => (
+          <NewsCard
+            key={noticia.link || noticia.titulo}
+            featured={index === 0}
+            title={noticia.titulo}
+            description={noticia.descripcion}
+            image={noticia.imagen}
+            link={noticia.link}
+            fuente={noticia.fuente}
+            fecha={noticia.fecha}
+          />
+        ))}
+      </div>
+    </section>
   );
 }
 

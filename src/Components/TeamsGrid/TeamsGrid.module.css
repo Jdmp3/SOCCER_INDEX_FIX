@@ -14,11 +14,10 @@
 /* Recuadro de filtros, encima de la cuadrícula */
 
 .filtersBar {
-  background-color: var(--panel);
-  border: 2px solid var(--border-neon);
-  border-radius: 8px;
-  box-shadow: 0 0 10px rgba(12, 108, 240, 0.18);
-  padding: 18px;
+  background-color: var(--panel-2);
+  border: 1px solid var(--border-neon);
+  border-radius: 10px;
+  padding: 20px;
   margin-bottom: 20px;
 }
 
@@ -38,7 +37,9 @@
 .filterLabel {
   font-size: 13px;
   font-weight: bold;
-  color: var(--neon-blue-lt);
+  color: var(--text-dim);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
 }
 
 .filterInput,
@@ -58,7 +59,13 @@
 .filterInput:focus,
 .filterSelect:focus {
   border-color: var(--neon-blue);
-  box-shadow: 0 0 6px rgba(12, 108, 240, 0.55);
+  box-shadow: 0 0 0 3px var(--glow-blue);
+}
+
+.filterInput:focus-visible,
+.filterSelect:focus-visible {
+  outline: 2px solid var(--neon-blue-lt);
+  outline-offset: 2px;
 }
 
 .filterInput::placeholder {
@@ -103,6 +110,11 @@
   box-shadow: 0 0 10px rgba(78, 168, 255, 0.6);
 }
 
+.clearButton:focus-visible {
+  outline: 2px solid var(--neon-blue-lt);
+  outline-offset: 3px;
+}
+
 /* Estado sin resultados */
 
 .emptyState {
@@ -142,7 +154,7 @@
   color: var(--neon-blue-lt);
   background-color: var(--panel);
   border: 2px solid var(--border-neon);
-  border-radius: 50%;
+  border-radius: 10px;
   cursor: pointer;
   transition: all 0.3s ease;
 }
@@ -166,28 +178,41 @@
 
 .grid {
   display: grid;
-  grid-template-columns: repeat(5, 1fr);
-  gap: 15px;
+  grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+  grid-auto-rows: min-content;
+  align-items: start;
+  gap: 14px;
 }
 
 .card {
-  background-color: var(--panel);
-  border: 2px solid var(--border-neon);
-  border-radius: 8px;
-  overflow: visible;
-  transition: all 0.3s ease;
   position: relative;
+  background-color: var(--panel);
+  border: 1px solid var(--border-neon);
+  border-radius: 10px;
+  overflow: visible;
+  align-self: start;
+  transition: border-color 0.2s ease, background-color 0.2s ease;
+  min-width: 0;
+}
+
+.cardExpanded {
+  z-index: 5;
+  background-color: var(--panel-2);
+  border-color: var(--neon-blue-lt);
+  border-bottom-color: transparent;
+  border-radius: 10px 10px 0 0;
 }
 
 .card:hover {
-  box-shadow: 0 0 12px rgba(12, 108, 240, 0.4);
+  border-color: var(--neon-blue-lt);
+  background-color: var(--panel-2);
 }
 
 /* Skeleton de carga con el mismo shimmer que las noticias */
 .skeletonCard {
   background-color: var(--panel);
-  border: 2px solid var(--border-neon);
-  border-radius: 8px;
+  border: 1px solid var(--border-neon);
+  border-radius: 10px;
   padding: 18px 12px;
   display: flex;
   flex-direction: column;
@@ -234,12 +259,40 @@
 }
 
 .cardHeader {
+  position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 15px 10px;
+  justify-content: center;
+  width: 100%;
+  min-height: 188px;
+  padding: 20px 14px 22px;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  font: inherit;
   cursor: pointer;
-  user-select: none;
+  text-align: center;
+}
+
+.cardHeader:focus-visible {
+  outline: 2px solid var(--neon-blue-lt);
+  outline-offset: -4px;
+}
+
+.cardHint {
+  position: absolute;
+  top: 10px;
+  right: 12px;
+  display: grid;
+  place-items: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  color: var(--neon-blue-lt);
+  background: var(--panel-2);
+  font-size: 18px;
+  line-height: 1;
 }
 
 .logoContainer {
@@ -248,7 +301,10 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-bottom: 10px;
+  margin-bottom: 14px;
+  padding: 8px;
+  border-radius: 50%;
+  background: var(--panel-2);
 }
 
 .logo {
@@ -286,25 +342,29 @@
 }
 
 .teamName {
-  font-size: 14px;
+  font-size: 15px;
   font-weight: bold;
-  color: var(--neon-blue-lt);
-  margin-bottom: 4px;
+  color: var(--text);
+  margin-bottom: 5px;
+  line-height: 1.35;
 }
 
 .description {
   position: absolute;
-  top: 100%;
-  left: -2px;
-  right: -2px;
-  padding: 12px;
+  top: calc(100% - 1px);
+  left: -1px;
+  right: -1px;
+  z-index: 6;
+  padding: 0 16px 16px;
   background-color: var(--panel-2);
-  border: 2px solid var(--border-neon);
-  border-top: none;
-  border-radius: 0 0 8px 8px;
-  z-index: 10;
-  animation: slideDown 0.3s ease;
-  box-shadow: 0 4px 14px rgba(12, 108, 240, 0.35);
+  border: 1px solid var(--border-neon);
+  border-top: 0;
+  border-radius: 0 0 10px 10px;
+  animation: slideDown 0.2s ease;
+}
+
+.cardExpanded .description {
+  border-color: var(--neon-blue-lt);
 }
 
 /* Liga y año: va en descripciones (.text-body) */
@@ -358,9 +418,7 @@
   .rangeGroup {
     grid-template-columns: 1fr;
   }
-  .grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
+  .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
   .container {
     width: 95%;
   }
@@ -368,6 +426,9 @@
     width: 60px;
     height: 60px;
   }
+  .cardHeader { min-height: 160px; padding: 18px 8px; }
+  .teamName { font-size: 13px; }
+  .card .text-body { font-size: 13px; }
   .logoFallbackText {
     font-size: 17px;
   }
