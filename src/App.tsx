@@ -124,15 +124,10 @@ function App() {
             ) : (
               <div className="leyendas-grid">
                 {leyendas.map((leyenda) => (
-                  <article
-                    key={leyenda.id}
-                    className="leyenda-card"
-                    tabIndex={0}
-                  >
+                  <article key={leyenda.id} className="leyenda-card">
                     <span className="leyenda-num">{leyenda.num}</span>
                     <h3 className="leyenda-titulo">{leyenda.titulo}</h3>
                     <span className="leyenda-anio">{leyenda.anio}</span>
-                    <span className="leyenda-linea" />
                   </article>
                 ))}
               </div>

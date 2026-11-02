@@ -1,6 +1,6 @@
-import { useMemo, useState } from "react";
+import { useMemo, useState, type CSSProperties } from "react";
 import competitions from "../../data/competitions.json";
-import { PUNTOS_FIJOS } from "../../data/mapPoints";
+import { PUNTOS_FIJOS, type PuntoMapa } from "../../data/mapPoints";
 import { WORLD_MASK } from "../../data/worldMask";
 import styles from "./CompetitionsGrid.module.css";
 
@@ -38,6 +38,43 @@ interface Punto {
   x: number;
   y: number;
   retardo: string;
+}
+
+function estilosPuntoHijo(
+  hijo: PuntoMapa,
+  centro: PuntoMapa | undefined,
+): CSSProperties {
+  const escalaX = 2.5;
+  const escalaY = 1.5;
+  const ajustesMoviles: Record<string, { x: number; y: number }> = {
+    mexico: { x: 0, y: 9 },
+    colombia: { x: -6, y: 0 },
+    brasil: { x: -6, y: 0 },
+    argentina: { x: -10, y: 0 },
+    espana: { x: 4, y: 6 },
+    italia: { x: 4, y: 6 },
+    inglaterra: { x: 4, y: 0 },
+  };
+  const ajuste = ajustesMoviles[hijo.id] ?? { x: 0, y: 0 };
+  const mobileX = centro
+    ? Math.min(
+        90,
+        Math.max(10, centro.x + (hijo.x - centro.x) * escalaX + ajuste.x),
+      )
+    : hijo.x;
+  const mobileY = centro
+    ? Math.min(
+        84,
+        Math.max(10, centro.y + (hijo.y - centro.y) * escalaY + ajuste.y),
+      )
+    : hijo.y;
+
+  return {
+    "--punto-x": `${hijo.x}%`,
+    "--punto-y": `${hijo.y}%`,
+    "--punto-x-mobile": `${mobileX}%`,
+    "--punto-y-mobile": `${mobileY}%`,
+  } as CSSProperties;
 }
 
 /** ¿Esta coordenada (en %) cae sobre tierra según la máscara del mapa? */
@@ -105,9 +142,10 @@ function CompetitionsGrid() {
   const puntos = useMemo(() => generarPuntos(), []);
 
   // Hijos del continente abierto (solo uno a la vez).
-  const hijosVisibles = PUNTOS_FIJOS.filter((punto) => punto.id === continenteActivo).flatMap(
-    (punto) => punto.hijos ?? []
+  const continenteSeleccionado = PUNTOS_FIJOS.find(
+    (punto) => punto.id === continenteActivo,
   );
+  const hijosVisibles = continenteSeleccionado?.hijos ?? [];
 
   return (
     <div id="competiciones" className={styles.container}>
@@ -166,8 +204,7 @@ function CompetitionsGrid() {
               type="button"
               className={styles.puntoHijo}
               style={{
-                left: `${hijo.x}%`,
-                top: `${hijo.y}%`,
+                ...estilosPuntoHijo(hijo, continenteSeleccionado),
                 animationDelay: `${index * 70}ms`,
               }}
               aria-label={hijo.nombre}

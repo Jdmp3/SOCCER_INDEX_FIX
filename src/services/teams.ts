@@ -62,7 +62,7 @@ export const EMPTY_TEAM_FILTERS: TeamFilters = {
 };
 
 /** Equipos que se muestran por página en el carrusel. */
-export const TEAMS_PAGE_SIZE = 15;
+export const TEAMS_PAGE_SIZE = 18;
 
 // Mismo patrón que las noticias: en desarrollo Vite hace de proxy hacia el
 // 8080 (ver vite.config.ts), en producción VITE_API_URL apunta al backend.

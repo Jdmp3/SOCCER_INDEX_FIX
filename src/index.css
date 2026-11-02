@@ -143,58 +143,180 @@ body {
   }
 }
 
-.noticia {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  max-width: 800px;
-  margin: 0 auto 40px;
-  padding: 20px;
-  background-color: var(--panel);
-  border-radius: 10px;
-  border: 2px solid var(--border-neon);
-  box-shadow: 0 0 10px rgba(12, 108, 240, 0.18);
+.news-section {
+  width: min(1100px, 100%);
+  margin: 0 auto 520px;
 }
 
-@media (max-width: 768px) {
-  .noticia {
-    flex-direction: column-reverse;
-    padding: 15px;
+.news-title {
+  margin-bottom: 28px;
+}
+
+.news-section::before {
+  content: "";
+  display: block;
+  width: 98%;
+  height: 2px;
+  margin: 0 auto 36px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    var(--neon-blue-lt),
+    transparent
+  );
+  box-shadow: 0 0 10px var(--glow-blue);
+  animation: news-divider-pulse 2.8s ease-in-out infinite;
+}
+
+@keyframes news-divider-pulse {
+  0%,
+  100% {
+    opacity: 0.65;
+    box-shadow: 0 0 6px var(--glow-blue);
   }
-  .noticia-texto {
-    padding-right: 0;
-    padding-top: 15px;
-    text-align: center;
+  50% {
+    opacity: 1;
+    box-shadow: 0 0 14px var(--glow-blue);
   }
-  .noticia-imagen {
-    width: 100%;
-    max-width: 300px;
-    height: auto;
-  }
+}
+
+.news-list {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 20px;
+}
+
+.noticia {
+  display: flex;
+  min-width: 0;
+  overflow: hidden;
+  background-color: var(--panel);
+  border-radius: 10px;
+  border: 1px solid var(--border-neon);
+  transition: border-color 160ms ease, background-color 160ms ease;
+}
+
+.noticia-destacada {
+  grid-column: 1 / -1;
+  background-color: var(--panel-2);
+}
+
+.noticia:not(.noticia-destacada) .noticia-link {
+  flex-direction: column-reverse;
+}
+
+.noticia-link {
+  display: flex;
+  flex: 1;
+  min-width: 0;
+  color: inherit;
+  text-decoration: none;
+}
+
+.noticia-link:focus-visible {
+  outline: 2px solid var(--neon-blue-lt);
+  outline-offset: -4px;
+  border-radius: 10px;
+}
+
+.noticia:hover {
+  border-color: var(--neon-blue-lt);
 }
 
 .noticia-texto {
   flex: 1;
-  padding-right: 20px;
+  min-width: 0;
+  padding: 20px;
 }
 
-.noticia-texto h2 {
+.noticia-texto h3 {
   color: var(--neon-blue-lt);
-  text-shadow: 0 0 8px rgba(78, 168, 255, 0.35);
+  font-size: 18px;
+  line-height: 1.35;
+  margin-bottom: 8px;
+}
+
+.noticia-destacada .noticia-texto h3 {
+  font-size: clamp(22px, 3vw, 30px);
+}
+
+.noticia-destacada-label {
+  display: inline-block;
   margin-bottom: 10px;
+  color: var(--neon-blue-lt);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
 }
 
 .noticia-imagen {
-  width: 300px;
-  height: 200px;
+  width: 100%;
+  height: 180px;
   object-fit: cover;
   object-position: center top;
-  border-radius: 8px;
   background-color: var(--panel-2);
+}
+
+.noticia-destacada .noticia-imagen {
+  width: 42%;
+  height: 300px;
+}
+
+.noticia .text-body {
+  color: var(--text-dim);
+}
+
+.noticia-meta {
+  margin-top: 14px;
+  font-size: 13px;
+  color: var(--text-dim);
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.noticia-fuente {
+  color: var(--text);
+  font-weight: 600;
+}
+
+.noticia-fecha {
+  opacity: 0.85;
+}
+
+@media (max-width: 768px) {
+  .news-section {
+    margin-bottom: 380px;
+  }
+  .news-title {
+    margin-bottom: 20px;
+  }
+  .news-list {
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
+  .noticia {
+    flex-direction: column-reverse;
+  }
+  .noticia-destacada .noticia-link {
+    flex-direction: column-reverse;
+  }
+  .noticia-imagen,
+  .noticia-destacada .noticia-imagen {
+    width: 100%;
+    height: 190px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .news-section::before {
+    animation: none;
+  }
 }
 
 .leyendas-container {
   position: relative;
+  overflow-x: clip;
   margin-top: 650px;
   padding: 30px;
   text-align: center;
@@ -205,52 +327,24 @@ body {
     margin-top: 400px;
     padding: 15px;
   }
-  .leyendas {
-    font-size: 2rem;
-  }
 }
 
 .leyendas {
   font-family: "Eagle Lake", serif;
   font-size: 3rem;
   text-align: center;
-  border-radius: 15px;
-  text-shadow:
-    2px 2px 4px rgba(0, 0, 0, 0.5),
-    0 0 15px rgba(232, 139, 44, 0.6);
-  animation: brillo 4s ease-in-out infinite alternate;
+  color: var(--neon-blue-lt);
+  text-shadow: 0 0 14px var(--glow-blue);
 }
 
-@keyframes brillo {
-  0% {
-    color: #e98b2c;
-  }
-  50% {
-    color: rgb(252, 123, 91);
-    text-shadow:
-      2px 2px 4px rgba(255, 0, 0, 0.514),
-      0 0 15px rgba(255, 0, 0, 0.6);
-  }
-  100% {
-    color: #f09f4f;
-  }
-}
-
-/* ---- Leyendas: cuadro de rojo neón con tres tarjetas decorativas ---- */
+/* El grupo define el ancho; las tarjetas crean la separación visual. */
 .leyendas-marco {
   position: relative;
   max-width: 1000px;
   margin: 60px auto 40px;
   padding: 35px 30px 40px;
-  background-color: rgba(10, 19, 48, 0.6);
-  border: 2px solid var(--neon-red-lt);
-  border-radius: 15px;
-  box-shadow:
-    0 0 18px rgba(255, 70, 85, 0.45),
-    inset 0 0 30px rgba(255, 45, 63, 0.08);
-  transition:
-    border-color 0.5s ease,
-    box-shadow 0.5s ease;
+  border-radius: 10px;
+  border: 2px solid var(--border-neon);
 }
 
 /* Capa de chispas: salen disparadas desde los costados del cuadro */
@@ -289,12 +383,11 @@ body {
   border-radius: 50%;
   background: radial-gradient(
     circle,
-    #fff7c4 0%,
-    #ffb02e 45%,
-    rgba(255, 60, 20, 0.65) 75%,
-    rgba(255, 60, 20, 0) 100%
+    var(--text) 0%,
+    var(--neon-blue-lt) 48%,
+    transparent 100%
   );
-  box-shadow: 0 0 8px rgba(255, 150, 30, 0.95);
+  box-shadow: 0 0 8px var(--glow-blue);
   opacity: 0;
   transform: translate(0, 0) scale(1);
 }
@@ -330,41 +423,33 @@ body {
   }
 }
 
-/* Resplandor cálido del cuadro mientras dura el efecto */
+/* Resplandor del cuadro mientras dura el efecto */
 .leyendas-marco.fuego::after {
   content: "";
   position: absolute;
-  inset: -6px;
-  border-radius: 19px;
+  inset: -2px;
+  border-radius: 12px;
   pointer-events: none;
-  box-shadow:
-    0 0 22px rgba(255, 120, 0, 0.75),
-    0 0 45px rgba(255, 70, 0, 0.45);
-  animation:
-    flickerFuego 0.55s ease-in-out infinite alternate,
-    apagadoLento 3.2s ease-in both;
+  box-shadow: 0 0 14px var(--glow-blue);
+  animation: glowMarco 3.2s ease-in-out both;
 }
 
-.leyendas-marco.fuego {
-  box-shadow:
-    0 0 24px rgba(255, 110, 20, 0.7),
-    inset 0 0 35px rgba(255, 80, 0, 0.18);
-  border-color: #ff9a00;
-}
-
-/* Parpadeo tipo llama: filter + box-shadow (la opacidad la lleva apagadoLento) */
-@keyframes flickerFuego {
+/* El halo nace junto al borde y se desvanece sin parpadeo. */
+@keyframes glowMarco {
   0% {
-    filter: blur(0.5px);
+    opacity: 0;
+    box-shadow: 0 0 4px var(--glow-blue);
+  }
+  18%,
+  68% {
+    opacity: 1;
     box-shadow:
-      0 0 18px rgba(255, 120, 0, 0.6),
-      0 0 38px rgba(255, 70, 0, 0.35);
+      0 0 12px var(--neon-blue-lt),
+      0 0 32px var(--glow-blue);
   }
   100% {
-    filter: blur(1.5px);
-    box-shadow:
-      0 0 26px rgba(255, 120, 0, 0.85),
-      0 0 52px rgba(255, 70, 0, 0.5);
+    opacity: 0;
+    box-shadow: 0 0 6px var(--glow-blue);
   }
 }
 
@@ -409,6 +494,9 @@ body {
   .fenix.visible {
     animation: none;
   }
+  .leyendas-marco.fuego::after {
+    opacity: 0;
+  }
 }
 .leyendas-marco .leyendas {
   display: inline-block;
@@ -424,8 +512,7 @@ body {
 
 .leyendas-estado {
   text-align: center;
-  color: var(--neon-blue-lt);
-  text-shadow: 0 0 10px var(--glow-blue);
+  color: var(--text-dim);
   margin-top: 24px;
   min-height: 60px;
 }
@@ -433,29 +520,19 @@ body {
 .leyenda-card {
   display: flex;
   flex-direction: column;
+  justify-content: center;
   align-items: center;
-  gap: 14px;
+  gap: 8px;
   min-height: 220px;
   padding: 25px 18px;
-  background-color: var(--panel-2);
-  border: 2px solid rgba(255, 70, 85, 0.35);
-  border-radius: 12px;
-  cursor: pointer;
-  outline: none;
-  transition:
-    transform 0.25s ease,
-    border-color 0.25s ease,
-    box-shadow 0.25s ease;
+  background-color: var(--panel);
+  border-radius: 10px;
 }
 
 .leyenda-num {
   font-family: "Eagle Lake", serif;
   font-size: 1.1rem;
-  color: var(--neon-red-lt);
-  opacity: 0.7;
-  transition:
-    opacity 0.25s ease,
-    text-shadow 0.25s ease;
+  color: var(--text-dim);
 }
 
 .leyenda-titulo {
@@ -463,99 +540,41 @@ body {
   font-size: 1.15rem;
   line-height: 1.45;
   color: var(--text);
-  transition:
-    color 0.25s ease,
-    text-shadow 0.25s ease;
 }
 
 .leyenda-anio {
   font-family: "Eagle Lake", serif;
-  font-size: 1.6rem;
-  color: var(--neon-red-lt);
-  text-shadow: 0 0 10px rgba(255, 70, 85, 0.55);
-  transition:
-    color 0.25s ease,
-    text-shadow 0.25s ease;
-}
-
-.leyenda-linea {
-  width: 60%;
-  height: 2px;
-  margin-top: auto;
-  background: linear-gradient(
-    90deg,
-    transparent,
-    rgba(255, 70, 85, 0.7),
-    transparent
-  );
-  transition: box-shadow 0.25s ease;
-}
-
-.leyenda-card:hover,
-.leyenda-card:focus-visible {
-  transform: translateY(-6px);
-  border-color: var(--neon-red-lt);
-  box-shadow:
-    0 0 18px rgba(255, 70, 85, 0.55),
-    inset 0 0 18px rgba(255, 45, 63, 0.12);
-}
-
-.leyenda-card:hover .leyenda-num,
-.leyenda-card:focus-visible .leyenda-num {
-  opacity: 1;
-  text-shadow: 0 0 10px rgba(255, 70, 85, 0.8);
-}
-
-.leyenda-card:hover .leyenda-titulo,
-.leyenda-card:focus-visible .leyenda-titulo {
-  color: #ffe9ea;
-  text-shadow: 0 0 12px rgba(255, 45, 63, 0.75);
-}
-
-.leyenda-card:hover .leyenda-anio,
-.leyenda-card:focus-visible .leyenda-anio {
-  color: var(--neon-red);
-  text-shadow: 0 0 16px rgba(255, 45, 63, 0.9);
-}
-
-.leyenda-card:hover .leyenda-linea,
-.leyenda-card:focus-visible .leyenda-linea {
-  box-shadow: 0 0 10px rgba(255, 70, 85, 0.8);
+  margin-top: 8px;
+  font-size: 1rem;
+  color: var(--neon-blue-lt);
 }
 
 @media (max-width: 768px) {
+  .leyendas {
+    font-size: clamp(1.5rem, 6vw, 1.75rem);
+  }
   .leyendas-marco {
     width: 95%;
     margin: 40px auto 20px;
     padding: 25px 15px 30px;
   }
+  .leyendas-marco .leyendas {
+    display: block;
+    width: auto;
+    max-width: 100%;
+    padding-right: 0;
+    padding-left: 0;
+  }
   .leyendas-grid {
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
   .leyenda-card {
     min-height: 160px;
   }
 }
 
-.noticia-link {
-  text-decoration: none;
-  color: inherit;
-  display: flex;
-}
-
-.noticia-meta {
-  margin-top: 0.5rem;
-  font-size: 0.8rem;
-  color: var(--text-dim);
-  display: flex;
-  gap: 0.5rem;
-  flex-wrap: wrap;
-}
-
-.noticia-fuente {
-  font-weight: 600;
-}
-
-.noticia-fecha {
-  opacity: 0.85;
+@media (max-width: 480px) {
+  .leyendas-grid {
+    grid-template-columns: 1fr;
+  }
 }

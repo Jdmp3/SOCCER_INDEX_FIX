@@ -1,5 +1,6 @@
 interface NewsCardProps {
   loading?: boolean;
+  featured?: boolean;
   title?: string;
   description?: string;
   image?: string;
@@ -34,6 +35,7 @@ function formatearFecha(iso: string): string {
 
 function NewsCard({
   loading,
+  featured = false,
   title,
   description,
   image,
@@ -43,7 +45,9 @@ function NewsCard({
 }: NewsCardProps) {
   if (loading) {
     return (
-      <div className="skeleton-news">
+      <div
+        className={`skeleton-news${featured ? " skeleton-news-featured" : ""}`}
+      >
         <div className="skeleton-texto">
           <div className="skeleton-title"></div>
           <div className="skeleton-desc"></div>
@@ -58,7 +62,8 @@ function NewsCard({
   const contenido = (
     <>
       <div className="noticia-texto">
-        <h2>{title}</h2>
+        {featured && <span className="noticia-destacada-label">DESTACADA</span>}
+        <h3>{title}</h3>
         {description && <p className="text-body">{description}</p>}
         {(fuente || fecha) && (
           <div className="noticia-meta">
@@ -77,18 +82,24 @@ function NewsCard({
 
   if (link) {
     return (
-      <a
-        className="noticia noticia-link"
-        href={link}
-        target="_blank"
-        rel="noopener noreferrer"
-      >
-        {contenido}
-      </a>
+      <article className={`noticia${featured ? " noticia-destacada" : ""}`}>
+        <a
+          className="noticia-link"
+          href={link}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          {contenido}
+        </a>
+      </article>
     );
   }
 
-  return <div className="noticia">{contenido}</div>;
+  return (
+    <article className={`noticia${featured ? " noticia-destacada" : ""}`}>
+      {contenido}
+    </article>
+  );
 }
 
 export default NewsCard;

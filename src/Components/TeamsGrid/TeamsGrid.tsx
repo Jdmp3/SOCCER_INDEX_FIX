@@ -1,6 +1,6 @@
 import { useState } from "react";
 import useTeams from "../../hooks/useTeams";
-import type { TeamFilters } from "../../services/teams";
+import { TEAMS_PAGE_SIZE, type TeamFilters } from "../../services/teams";
 import TeamLogo from "./TeamLogo";
 import TeamsFilters from "./TeamsFilters";
 import styles from "./TeamsGrid.module.css";
@@ -80,14 +80,20 @@ function TeamsGrid() {
         <>
           <div className={styles.grid} aria-busy={loading}>
             {loading && equiposPagina.length === 0
-              ? Array.from({ length: 15 }, (_, i) => (
+              ? Array.from({ length: TEAMS_PAGE_SIZE }, (_, i) => (
                   <TeamSkeleton key={`skeleton-${i}`} />
                 ))
               : equiposPagina.map((team) => (
-              <div key={team.id} className={styles.card}>
-                <div
+              <article
+                key={team.id}
+                className={`${styles.card} ${expandedId === team.id ? styles.cardExpanded : ""}`}
+              >
+                <button
+                  type="button"
                   className={styles.cardHeader}
                   onClick={() => toggleTeam(team.id)}
+                  aria-expanded={expandedId === team.id}
+                  aria-label={`${expandedId === team.id ? "Ocultar" : "Ver"} información de ${team.nombre}`}
                 >
                   <div className={styles.logoContainer}>
                     <TeamLogo team={team} />
@@ -96,7 +102,10 @@ function TeamsGrid() {
                     <span className={styles.teamName}>{team.nombre}</span>
                     <span className="text-body">{team.pais}</span>
                   </div>
-                </div>
+                  <span className={styles.cardHint} aria-hidden="true">
+                    {expandedId === team.id ? "−" : "+"}
+                  </span>
+                </button>
                 {expandedId === team.id && (
                   <div className={styles.description}>
                     <p className="text-body">{team.descripcion}</p>
@@ -110,7 +119,7 @@ function TeamsGrid() {
                     </p>
                   </div>
                 )}
-              </div>
+              </article>
             ))}
 
             {!loading && equiposPagina.length === 0 && (
