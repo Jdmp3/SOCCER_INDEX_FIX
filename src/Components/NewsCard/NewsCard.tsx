@@ -49,8 +49,10 @@ function NewsCard({
         className={`skeleton-news${featured ? " skeleton-news-featured" : ""}`}
       >
         <div className="skeleton-texto">
+          {featured && <div className="skeleton-label"></div>}
           <div className="skeleton-title"></div>
           <div className="skeleton-desc"></div>
+          {featured && <div className="skeleton-meta"></div>}
         </div>
         <div className="skeleton-img"></div>
       </div>
