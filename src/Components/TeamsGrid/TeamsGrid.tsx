@@ -99,8 +99,8 @@ function TeamsGrid() {
                     <TeamLogo team={team} />
                   </div>
                   <div className={styles.teamInfo}>
-                    <span className={styles.teamName}>{team.nombre}</span>
-                    <span className="text-body">{team.pais}</span>
+                    <span className={styles.teamName} title={team.nombre}>{team.nombre}</span>
+                    <span className={`${styles.teamCountry} text-body`} title={team.pais}>{team.pais}</span>
                   </div>
                   <span className={styles.cardHint} aria-hidden="true">
                     {expandedId === team.id ? "−" : "+"}

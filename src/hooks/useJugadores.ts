@@ -24,7 +24,8 @@ interface Resultado {
  */
 function useJugadores() {
   const [busqueda, setBusqueda] = useState("");
-  const [consulta, setConsulta] = useState<string | null>(null);
+  // Consulta vacía: el API devuelve la primera página al abrir la sección.
+  const [consulta, setConsulta] = useState<string | null>("");
   const [pagina, setPagina] = useState(1);
   const [resultado, setResultado] = useState<Resultado | null>(null);
   const [error, setError] = useState<string | null>(null);
