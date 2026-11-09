@@ -349,6 +349,10 @@
   line-height: 1.35;
 }
 
+.teamCountry {
+  max-width: 100%;
+}
+
 .description {
   position: absolute;
   top: calc(100% - 1px);
@@ -426,7 +430,21 @@
     width: 60px;
     height: 60px;
   }
-  .cardHeader { min-height: 160px; padding: 18px 8px; }
+  .cardHeader {
+    box-sizing: border-box;
+    height: 190px;
+    min-height: 0;
+    padding: 16px 8px;
+  }
+  .logoContainer { margin-bottom: 10px; }
+  .teamInfo { width: 100%; }
+  .teamName,
+  .teamCountry {
+    display: -webkit-box;
+    overflow: hidden;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+  }
   .teamName { font-size: 13px; }
   .card .text-body { font-size: 13px; }
   .logoFallbackText {

@@ -99,6 +99,10 @@ function PlayersSection({ id }: PlayersSectionProps) {
         onSubmit={(e) => {
           e.preventDefault();
           buscar();
+          const buscador = id ? document.getElementById(id) : null;
+          if (buscador) {
+            window.scrollTo({ top: buscador.offsetTop - 100, behavior: "smooth" });
+          }
         }}
       >
         <svg
