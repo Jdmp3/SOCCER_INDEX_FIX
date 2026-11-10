@@ -1,6 +1,23 @@
+import type {
+  FocusEvent as ReactFocusEvent,
+  KeyboardEvent as ReactKeyboardEvent,
+  PointerEvent as ReactPointerEvent,
+} from "react";
 import type { TeamFacets, TeamFilters } from "../../services/teams";
 import { getPageRange } from "../../services/teams";
 import styles from "./TeamsGrid.module.css";
+
+type FilterControl = HTMLInputElement | HTMLSelectElement;
+
+function marcarFocoDePuntero(event: ReactPointerEvent<FilterControl>) {
+  event.currentTarget.dataset.pointerFocused = "true";
+}
+
+function limpiarFocoDePuntero(
+  event: ReactKeyboardEvent<FilterControl> | ReactFocusEvent<FilterControl>,
+) {
+  delete event.currentTarget.dataset.pointerFocused;
+}
 
 interface TeamsFiltersProps {
   filtros: TeamFilters;
@@ -44,6 +61,9 @@ function TeamsFilters({
             className={styles.filterInput}
             value={filtros.nombre}
             onChange={(e) => onChange("nombre", e.target.value)}
+            onPointerDown={marcarFocoDePuntero}
+            onKeyDown={limpiarFocoDePuntero}
+            onBlur={limpiarFocoDePuntero}
             placeholder="Buscar por nombre..."
           />
         </div>
@@ -57,6 +77,9 @@ function TeamsFilters({
             className={styles.filterSelect}
             value={filtros.pais}
             onChange={(e) => onChange("pais", e.target.value)}
+            onPointerDown={marcarFocoDePuntero}
+            onKeyDown={limpiarFocoDePuntero}
+            onBlur={limpiarFocoDePuntero}
           >
             <option value="">Todos los países</option>
             {facets.paises.map((pais) => (
@@ -76,6 +99,9 @@ function TeamsFilters({
             className={styles.filterSelect}
             value={filtros.liga}
             onChange={(e) => onChange("liga", e.target.value)}
+            onPointerDown={marcarFocoDePuntero}
+            onKeyDown={limpiarFocoDePuntero}
+            onBlur={limpiarFocoDePuntero}
           >
             <option value="">Todas las ligas</option>
             {facets.ligas.map((liga) => (
@@ -94,6 +120,9 @@ function TeamsFilters({
               className={styles.filterSelect}
               value={filtros.fundacionDesde ?? ""}
               onChange={(e) => onChange("fundacionDesde", parseYear(e.target.value))}
+              onPointerDown={marcarFocoDePuntero}
+              onKeyDown={limpiarFocoDePuntero}
+              onBlur={limpiarFocoDePuntero}
             >
               <option value="">Desde</option>
               {/* Solo años <= al "Hasta": hace inalcanzable un rango invertido. */}
@@ -114,6 +143,9 @@ function TeamsFilters({
               className={styles.filterSelect}
               value={filtros.fundacionHasta ?? ""}
               onChange={(e) => onChange("fundacionHasta", parseYear(e.target.value))}
+              onPointerDown={marcarFocoDePuntero}
+              onKeyDown={limpiarFocoDePuntero}
+              onBlur={limpiarFocoDePuntero}
             >
               <option value="">Hasta</option>
               {/* Espejo del anterior: solo años >= al "Desde". */}

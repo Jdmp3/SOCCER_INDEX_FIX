@@ -56,16 +56,23 @@
   transition: all 0.3s ease;
 }
 
-.filterInput:focus,
-.filterSelect:focus {
+.filterInput:focus-visible:not([data-pointer-focused="true"]),
+.filterSelect:focus-visible:not([data-pointer-focused="true"]) {
   border-color: var(--neon-blue);
   box-shadow: 0 0 0 3px var(--glow-blue);
-}
-
-.filterInput:focus-visible,
-.filterSelect:focus-visible {
   outline: 2px solid var(--neon-blue-lt);
   outline-offset: 2px;
+}
+
+.filterInput:hover:not(:focus-visible),
+.filterSelect:hover:not(:focus-visible),
+.filterInput:hover[data-pointer-focused="true"],
+.filterSelect:hover[data-pointer-focused="true"] {
+  border-color: var(--neon-blue-lt);
+}
+
+.filterSelect {
+  cursor: pointer;
 }
 
 .filterInput::placeholder {

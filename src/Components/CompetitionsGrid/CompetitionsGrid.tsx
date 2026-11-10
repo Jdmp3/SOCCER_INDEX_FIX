@@ -1,4 +1,4 @@
-import { useMemo, useState, type CSSProperties } from "react";
+import { useState, type CSSProperties } from "react";
 import competitions from "../../data/competitions.json";
 import { PUNTOS_FIJOS, type PuntoMapa } from "../../data/mapPoints";
 import { WORLD_MASK } from "../../data/worldMask";
@@ -25,7 +25,7 @@ interface Competition {
 /** Poner en true para volver a mostrar la información interna (ganadores). */
 const MOSTRAR_INFO: boolean = false;
 
-/** Cantidad de puntos rojos sobre el mapa. */
+/** Cantidad de puntos naranjas sobre el mapa. */
 const NUM_PUNTOS = 14;
 /** Separación mínima entre puntos, en % del ancho del mapa. */
 const SEPARACION_MIN = 7;
@@ -88,23 +88,53 @@ function esTierra(x: number, y: number): boolean {
   return fila[gx] === "1";
 }
 
-/** Elige posiciones aleatorias SOLO sobre zonas de tierra del mapamundi. */
-function generarPuntos(): Punto[] {
-  const puntos: Punto[] = [];
+/** Busca una posición segura separada de los demás puntos. */
+function buscarPosicionSegura(
+  puntos: Punto[],
+  indiceIgnorado = -1,
+): { x: number; y: number } | null {
+  const ancho = WORLD_MASK[0]?.length ?? 0;
+  const alto = WORLD_MASK.length;
   let intentos = 0;
 
-  while (puntos.length < NUM_PUNTOS && intentos < INTENTOS_MAX) {
+  while (intentos < INTENTOS_MAX) {
     intentos++;
-    const x = Math.random() * 100;
-    const y = Math.random() * 100;
+    if (ancho === 0 || alto === 0) return null;
+
+    // La máscara valida el centro de cada celda; usar ese mismo centro evita
+    // que un punto aleatorio dentro de la celda se acerque de más a la costa.
+    const gx = Math.floor(Math.random() * ancho);
+    const gy = Math.floor(Math.random() * alto);
+    const x = ((gx + 0.5) / ancho) * 100;
+    const y = ((gy + 0.5) / alto) * 100;
     if (!esTierra(x, y)) continue;
 
+    const anterior = puntos[indiceIgnorado];
+    if (anterior && anterior.x === x && anterior.y === y) continue;
+
     const demasiadoCerca = puntos.some(
-      (p) => Math.hypot(p.x - x, (p.y - y) * ASPECTO) < SEPARACION_MIN
+      (punto, indice) =>
+        indice !== indiceIgnorado &&
+        Math.hypot(punto.x - x, (punto.y - y) * ASPECTO) < SEPARACION_MIN,
     );
     if (demasiadoCerca) continue;
 
-    puntos.push({ x, y, retardo: `${(Math.random() * 2.4).toFixed(2)}s` });
+    return { x, y };
+  }
+
+  return null;
+}
+
+/** Elige posiciones aleatorias SOLO sobre zonas seguras de tierra. */
+function generarPuntos(): Punto[] {
+  const puntos: Punto[] = [];
+  while (puntos.length < NUM_PUNTOS) {
+    const posicion = buscarPosicionSegura(puntos);
+    if (!posicion) break;
+    puntos.push({
+      ...posicion,
+      retardo: `${(Math.random() * 2.4).toFixed(2)}s`,
+    });
   }
 
   if (puntos.length === 0) {
@@ -138,8 +168,18 @@ function CompetitionsGrid() {
     setLogosRotos((prev) => (prev.includes(id) ? prev : [...prev, id]));
   };
 
-  // Nuevas posiciones en cada montaje (cada recarga de la página).
-  const puntos = useMemo(() => generarPuntos(), []);
+  // Las posiciones cambian cuando termina el pulso individual de cada punto.
+  const [puntos, setPuntos] = useState<Punto[]>(generarPuntos);
+
+  const moverPunto = (indice: number) => {
+    setPuntos((actuales) => {
+      const posicion = buscarPosicionSegura(actuales, indice);
+      if (!posicion) return actuales;
+      return actuales.map((punto, i) =>
+        i === indice ? { ...punto, ...posicion } : punto,
+      );
+    });
+  };
 
   // Hijos del continente abierto (solo uno a la vez).
   const continenteSeleccionado = PUNTOS_FIJOS.find(
@@ -167,6 +207,7 @@ function CompetitionsGrid() {
                 top: `${punto.y}%`,
                 animationDelay: punto.retardo,
               }}
+              onAnimationIteration={() => moverPunto(index)}
             />
           ))}
         </div>
