@@ -6,9 +6,9 @@ package main
 //
 // Se ejecuta automaticamente al arrancar el servidor:  go run .
 //
-// La imagen es un mapamundi con fondo azul oscuro (oceano) y continentes en
-// tonos ambar/naranja (tierra), asi que se clasifica por matiz (HSV):
-// tierra = matiz calido (<= 55º o >= 330º) con saturacion y brillo suficientes.
+// La imagen es un mapamundi de contornos naranjas sobre fondo azul oscuro.
+// El contorno se detecta por matiz (HSV), se inunda el océano desde el borde
+// y se conserva el interior cerrado con un margen respecto de la costa.
 
 import (
 	"image"
@@ -28,9 +28,13 @@ const (
 	mascaraAncho = 120
 	mascaraAlto  = 90
 
-	// Umbrales de clasificacion (ajustables si el mapa cambia de estilo).
+	// Umbrales de deteccion del trazo naranja (ajustables si cambia el mapa).
 	mascaraMinSaturacion = 0.30
 	mascaraMinBrillo     = 0.20
+	// Compensa pequeños cortes del trazo por antialiasing/JPEG antes del relleno.
+	mascaraCierreTrazo = 3
+	// Margen interior Manhattan en píxeles para mantener el punto dentro del borde.
+	mascaraMargenInterior = 9
 )
 
 // generarMascara escribe src/data/worldMask.ts. Cualquier error solo se
@@ -52,28 +56,76 @@ func generarMascara() {
 	b := src.Bounds()
 	ancho, alto := b.Dx(), b.Dy()
 
+	// El mapa dibuja los continentes con contornos naranjas; sus interiores
+	// tienen el mismo color oscuro que el océano. Se bloquean los trazos y se
+	// inunda desde los bordes para distinguir océano conectado de tierra cerrada.
+	trazo := make([]bool, ancho*alto)
+	for y := 0; y < alto; y++ {
+		for x := 0; x < ancho; x++ {
+			r, g, bl, _ := src.At(b.Min.X+x, b.Min.Y+y).RGBA()
+			trazo[y*ancho+x] = mascaraEsTrazo(float64(r>>8), float64(g>>8), float64(bl>>8))
+		}
+	}
+	trazo = cerrarCortesTrazo(trazo, ancho, alto, mascaraCierreTrazo)
+	oceano := make([]bool, ancho*alto)
+	cola := make([]int, 0, ancho*alto/2)
+	encolar := func(x, y int) {
+		i := y*ancho + x
+		if !trazo[i] && !oceano[i] {
+			oceano[i] = true
+			cola = append(cola, i)
+		}
+	}
+	for x := 0; x < ancho; x++ {
+		encolar(x, 0)
+		encolar(x, alto-1)
+	}
+	for y := 0; y < alto; y++ {
+		encolar(0, y)
+		encolar(ancho-1, y)
+	}
+	for cabeza := 0; cabeza < len(cola); cabeza++ {
+		i := cola[cabeza]
+		x, y := i%ancho, i/ancho
+		if x > 0 {
+			encolar(x-1, y)
+		}
+		if x+1 < ancho {
+			encolar(x+1, y)
+		}
+		if y > 0 {
+			encolar(x, y-1)
+		}
+		if y+1 < alto {
+			encolar(x, y+1)
+		}
+	}
+
+	interior := make([]bool, ancho*alto)
+	for i := range interior {
+		interior[i] = !trazo[i] && !oceano[i]
+	}
+	distancia := distanciaAlBordeInterior(interior, ancho, alto)
+
 	filas := make([]string, 0, mascaraAlto)
 	tierra := 0
 
 	for gy := 0; gy < mascaraAlto; gy++ {
-		y0 := b.Min.Y + gy*alto/mascaraAlto
-		y1 := b.Min.Y + (gy+1)*alto/mascaraAlto
-		if y1 <= y0 {
-			y1 = y0 + 1
-		}
-
 		var sb strings.Builder
 		sb.Grow(mascaraAncho)
 
 		for gx := 0; gx < mascaraAncho; gx++ {
-			x0 := b.Min.X + gx*ancho/mascaraAncho
-			x1 := b.Min.X + (gx+1)*ancho/mascaraAncho
-			if x1 <= x0 {
-				x1 = x0 + 1
+			// Muestrear el centro de cada celda evita que un trazo costero
+			// etiquete como tierra una celda cuyo interior sigue siendo océano.
+			x := (gx*2 + 1) * ancho / (mascaraAncho * 2)
+			y := (gy*2 + 1) * alto / (mascaraAlto * 2)
+			if x >= ancho {
+				x = ancho - 1
 			}
-
-			r, g, bl := mascaraPromedio(src, x0, y0, x1, y1)
-			if mascaraEsTierra(r, g, bl) {
+			if y >= alto {
+				y = alto - 1
+			}
+			if interior[y*ancho+x] && distancia[y*ancho+x] >= mascaraMargenInterior {
 				sb.WriteByte('1')
 				tierra++
 			} else {
@@ -109,31 +161,69 @@ func generarMascara() {
 	logf("mascara del mapa actualizada: %dx%d, tierra %.1f%% -> %s", mascaraAncho, mascaraAlto, pct, mascaraSalida)
 }
 
-// mascaraPromedio devuelve el color RGB medio (0-255) de un bloque de píxeles.
-func mascaraPromedio(img image.Image, x0, y0, x1, y1 int) (float64, float64, float64) {
-	paso := 1
-	if ancho := x1 - x0; ancho > 8 {
-		paso = ancho / 8
-	}
-
-	var sr, sg, sb, n float64
-	for y := y0; y < y1; y += paso {
-		for x := x0; x < x1; x += paso {
-			r, g, b, _ := img.At(x, y).RGBA()
-			sr += float64(r >> 8)
-			sg += float64(g >> 8)
-			sb += float64(b >> 8)
-			n++
+// cerrarCortesTrazo expande ligeramente las líneas naranjas para que pequeños
+// huecos de compresión no conecten el interior de los continentes con el mar.
+func cerrarCortesTrazo(trazo []bool, ancho, alto, radio int) []bool {
+	cerrado := make([]bool, len(trazo))
+	for y := 0; y < alto; y++ {
+		for x := 0; x < ancho; x++ {
+			if !trazo[y*ancho+x] {
+				continue
+			}
+			for dy := -radio; dy <= radio; dy++ {
+				for dx := -radio; dx <= radio; dx++ {
+					nx, ny := x+dx, y+dy
+					if nx >= 0 && nx < ancho && ny >= 0 && ny < alto {
+						cerrado[ny*ancho+nx] = true
+					}
+				}
+			}
 		}
 	}
-	if n == 0 {
-		return 0, 0, 0
-	}
-	return sr / n, sg / n, sb / n
+	return cerrado
 }
 
-// mascaraEsTierra clasifica un color como tierra (tono calido) u oceano.
-func mascaraEsTierra(r, g, b float64) bool {
+// distanciaAlBordeInterior calcula en píxeles la distancia Manhattan desde
+// cada píxel de tierra al contorno u océano más cercano.
+func distanciaAlBordeInterior(interior []bool, ancho, alto int) []int {
+	distancia := make([]int, len(interior))
+	for i := range distancia {
+		distancia[i] = -1
+	}
+	cola := make([]int, 0, ancho*alto/4)
+	for y := 0; y < alto; y++ {
+		for x := 0; x < ancho; x++ {
+			i := y*ancho + x
+			if !interior[i] {
+				continue
+			}
+			if x == 0 || y == 0 || x == ancho-1 || y == alto-1 ||
+				!interior[i-1] || !interior[i+1] || !interior[i-ancho] || !interior[i+ancho] {
+				distancia[i] = 0
+				cola = append(cola, i)
+			}
+		}
+	}
+	for cabeza := 0; cabeza < len(cola); cabeza++ {
+		i := cola[cabeza]
+		x, y := i%ancho, i/ancho
+		vecinos := [4]int{i - 1, i + 1, i - ancho, i + ancho}
+		for direccion, vecino := range vecinos {
+			if (direccion == 0 && x == 0) || (direccion == 1 && x == ancho-1) ||
+				(direccion == 2 && y == 0) || (direccion == 3 && y == alto-1) {
+				continue
+			}
+			if interior[vecino] && distancia[vecino] == -1 {
+				distancia[vecino] = distancia[i] + 1
+				cola = append(cola, vecino)
+			}
+		}
+	}
+	return distancia
+}
+
+// mascaraEsTrazo detecta los tonos cálidos del contorno naranja.
+func mascaraEsTrazo(r, g, b float64) bool {
 	h, s, v := rgbAHsv(r, g, b)
 	calido := h <= 55 || h >= 330
 	return calido && s > mascaraMinSaturacion && v > mascaraMinBrillo
@@ -153,9 +243,9 @@ func rgbAHsv(r, g, b float64) (float64, float64, float64) {
 	case max == rn:
 		h = 60 * math.Mod((gn-bn)/d, 6)
 	case max == gn:
-		h = 60*((bn-rn)/d + 2)
+		h = 60 * ((bn-rn)/d + 2)
 	default:
-		h = 60*((rn-gn)/d + 4)
+		h = 60 * ((rn-gn)/d + 4)
 	}
 	if h < 0 {
 		h += 360
