@@ -7,8 +7,6 @@ import CompetitionsGrid from "./Components/CompetitionsGrid/CompetitionsGrid";
 import AsignadorApi from "./Components/AsignadorApi/AsignadorApi";
 import Footer from "./Components/Footer/Footer";
 import LeyendasChispas from "./Components/LeyendasChispas";
-import { fetchLeyendas } from "./services/leyendas";
-import type { Leyenda } from "./services/leyendas";
 import { useEffect, useRef, useState } from "react";
 
 const buttons = [
@@ -20,41 +18,23 @@ const buttons = [
 ];
 
 function App() {
-  const [fuegoLeyendas, setFuegoLeyendas] = useState(false);
-  const fuegoTimer = useRef<number | null>(null);
-  const [leyendas, setLeyendas] = useState<Leyenda[]>([]);
-  const [errorLeyendas, setErrorLeyendas] = useState<string | null>(null);
-
-  // Las leyendas vienen del backend; cualquier error se muestra en la sección.
-  useEffect(() => {
-    const controller = new AbortController();
-
-    fetchLeyendas(controller.signal)
-      .then((data) => {
-        setLeyendas(data);
-        setErrorLeyendas(null);
-      })
-      .catch((err: unknown) => {
-        if (controller.signal.aborted) return;
-        setErrorLeyendas(
-          err instanceof Error ? err.message : "Error al cargar las leyendas",
-        );
-      });
-
-    return () => controller.abort();
-  }, []);
-
-  // Enciende el efecto y programa su apagado a los 3.2 segundos
-  const encenderFuego = () => {
-    if (fuegoTimer.current) window.clearTimeout(fuegoTimer.current);
-    setFuegoLeyendas(true);
-    fuegoTimer.current = window.setTimeout(() => setFuegoLeyendas(false), 3200);
-  };
+  const [leyendasVisible, setLeyendasVisible] = useState(false);
+  const [leyendasParticulasActivas, setLeyendasParticulasActivas] = useState(false);
+  const leyendasRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
-    return () => {
-      if (fuegoTimer.current) window.clearTimeout(fuegoTimer.current);
-    };
+    const section = leyendasRef.current;
+    if (!section) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        setLeyendasVisible(entry.isIntersecting);
+        if (!entry.isIntersecting) setLeyendasParticulasActivas(false);
+      },
+      { threshold: 0.15 },
+    );
+    observer.observe(section);
+    return () => observer.disconnect();
   }, []);
 
   const handleNavClick = (action: string) => {
@@ -73,12 +53,18 @@ function App() {
     } else if (action === "leyendas") {
       const leyendasSection = document.getElementById("leyendas");
       if (leyendasSection) {
+        const sectionTop =
+          leyendasSection.getBoundingClientRect().top + window.scrollY;
+        const navbarHeight =
+          document.querySelector(".navbar")?.getBoundingClientRect().height ?? 0;
+        const visibleHeight = window.innerHeight - navbarHeight;
+        const centeredTop =
+          sectionTop - navbarHeight - (visibleHeight - leyendasSection.offsetHeight) / 2;
         window.scrollTo({
-          top: leyendasSection.offsetTop - 180,
+          top: centeredTop,
           behavior: "smooth",
         });
       }
-      encenderFuego();
     } else if (action === "competiciones") {
       const competiciones = document.getElementById("competiciones");
       if (competiciones) {
@@ -108,32 +94,35 @@ function App() {
         <AsignadorApi />
         <PlayersSection id="buscador" />
         <TeamsGrid />
-        <div id="leyendas" className="leyendas-container">
-          <img
-            src="/Images/FenixParaLeyendas.png"
-            alt=""
-            className={`fenix ${fuegoLeyendas ? "visible" : ""}`}
-          />
-          <div className={`leyendas-marco${fuegoLeyendas ? " fuego" : ""}`}>
-            <LeyendasChispas activo={fuegoLeyendas} />
-            <h2 className="leyendas">LEYENDAS</h2>
-            {errorLeyendas ? (
-              <p className="leyendas-estado">{errorLeyendas}</p>
-            ) : leyendas.length === 0 ? (
-              <p className="leyendas-estado">Cargando leyendas…</p>
-            ) : (
-              <div className="leyendas-grid">
-                {leyendas.map((leyenda) => (
-                  <article key={leyenda.id} className="leyenda-card">
-                    <span className="leyenda-num">{leyenda.num}</span>
-                    <h3 className="leyenda-titulo">{leyenda.titulo}</h3>
-                    <span className="leyenda-anio">{leyenda.anio}</span>
-                  </article>
-                ))}
-              </div>
-            )}
+        <section
+          id="leyendas"
+          ref={leyendasRef}
+          className={`leyendas-container${leyendasVisible ? " visible" : ""}${leyendasParticulasActivas ? " particulas-activas" : ""}`}
+          aria-label="Leyendas"
+        >
+          <LeyendasChispas />
+          <div
+            className="leyendas-lineas"
+            aria-hidden="true"
+            onTransitionEnd={(event) => {
+              const terminoSeparacion =
+                event.propertyName === "gap" || event.propertyName === "row-gap";
+              if (
+                event.target === event.currentTarget &&
+                terminoSeparacion &&
+                leyendasVisible
+              ) {
+                setLeyendasParticulasActivas(true);
+              }
+            }}
+          >
+            <span className="leyendas-linea leyendas-linea-superior" />
+            <span className="leyendas-linea leyendas-linea-inferior" />
           </div>
-        </div>
+          <p className="leyendas-mensaje" aria-live="polite">
+            Trabajo en Progreso :)
+          </p>
+        </section>
         <CompetitionsGrid />
       </main>
       <Footer />
