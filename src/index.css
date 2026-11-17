@@ -193,7 +193,9 @@ body {
   background-color: var(--panel);
   border-radius: 10px;
   border: 1px solid var(--border-neon);
-  transition: border-color 160ms ease, background-color 160ms ease;
+  transition:
+    border-color 160ms ease,
+    background-color 160ms ease;
 }
 
 .noticia-destacada {
@@ -316,265 +318,174 @@ body {
 
 .leyendas-container {
   position: relative;
-  overflow-x: clip;
-  margin-top: 650px;
-  padding: 30px;
-  text-align: center;
+  width: 100vw;
+  height: 320px;
+  margin: 520px 0 480px calc(50% - 50vw);
+  display: grid;
+  place-items: center;
+  isolation: isolate;
 }
 
-@media (max-width: 768px) {
-  .leyendas-container {
-    margin-top: 400px;
-    padding: 15px;
-  }
-}
-
-.leyendas {
-  font-family: "Eagle Lake", serif;
-  font-size: 3rem;
-  text-align: center;
-  color: var(--neon-blue-lt);
-  text-shadow: 0 0 14px var(--glow-blue);
-}
-
-/* El grupo define el ancho; las tarjetas crean la separación visual. */
-.leyendas-marco {
-  position: relative;
-  max-width: 1000px;
-  margin: 60px auto 40px;
-  padding: 35px 30px 40px;
-  border-radius: 10px;
-  border: 2px solid var(--border-neon);
-}
-
-/* Capa de chispas: salen disparadas desde los costados del cuadro */
-.chispas {
+.leyendas-lineas {
   position: absolute;
   inset: 0;
-  pointer-events: none;
-  opacity: 0;
-  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: center;
+  gap: 0;
+  transition: gap 1s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
-.chispas.activo {
-  opacity: 1;
-  animation: apagadoLento 3.2s ease-in both;
+.leyendas-container.visible .leyendas-lineas {
+  gap: 240px;
 }
 
-.chispa-columna {
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  width: 0;
+.leyendas-linea {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 3px;
+  transform: rotate(1.8deg);
+  background: linear-gradient(90deg, #7cc4ff, #a8dcff 50%, #7cc4ff);
+  background-size: 200% 100%;
+  box-shadow:
+    0 0 8px #7cc4ff,
+    0 0 20px rgba(78, 168, 255, 0.9),
+    0 0 42px rgba(78, 168, 255, 0.55);
+  animation:
+    leyendas-fuego 2.2s linear infinite,
+    leyendas-latido 1.1s ease-in-out infinite;
 }
 
-.chispa-izq {
-  left: 0;
-}
-
-.chispa-der {
-  right: 0;
-}
-
-.chispa {
-  position: absolute;
-  width: 7px;
-  height: 7px;
-  border-radius: 50%;
-  background: radial-gradient(
-    circle,
-    var(--text) 0%,
-    var(--neon-blue-lt) 48%,
-    transparent 100%
-  );
-  box-shadow: 0 0 8px var(--glow-blue);
-  opacity: 0;
-  transform: translate(0, 0) scale(1);
-}
-
-.chispas.activo .chispa {
-  animation-name: volarChispa;
-  animation-timing-function: cubic-bezier(0.15, 0.6, 0.4, 1);
-  animation-fill-mode: both;
-}
-
-@keyframes volarChispa {
-  0% {
-    transform: translate(0, 0) scale(1);
-    opacity: 0;
-  }
-  12% {
-    opacity: 1;
-  }
-  100% {
-    transform: translate(var(--dx), var(--dy)) scale(0.3);
-    opacity: 0;
-  }
-}
-
-/* El efecto entero se desvanece despacio hacia el final */
-@keyframes apagadoLento {
-  0%,
-  72% {
-    opacity: 1;
-  }
-  100% {
-    opacity: 0;
-  }
-}
-
-/* Resplandor del cuadro mientras dura el efecto */
-.leyendas-marco.fuego::after {
+.leyendas-linea::after {
   content: "";
   position: absolute;
-  inset: -2px;
-  border-radius: 12px;
-  pointer-events: none;
-  box-shadow: 0 0 14px var(--glow-blue);
-  animation: glowMarco 3.2s ease-in-out both;
+  inset: -5px 0;
+  background: inherit;
+  filter: blur(7px);
+  opacity: 0.75;
 }
 
-/* El halo nace junto al borde y se desvanece sin parpadeo. */
-@keyframes glowMarco {
-  0% {
-    opacity: 0;
-    box-shadow: 0 0 4px var(--glow-blue);
-  }
-  18%,
-  68% {
-    opacity: 1;
-    box-shadow:
-      0 0 12px var(--neon-blue-lt),
-      0 0 32px var(--glow-blue);
-  }
-  100% {
-    opacity: 0;
-    box-shadow: 0 0 6px var(--glow-blue);
-  }
-}
-
-/* Fénix: aparece, flota hacia arriba y se desvanece (un vuelo, 1.5 s) */
-.fenix {
-  position: absolute;
-  top: 0;
-  left: 50%;
-  height: 90px;
-  width: auto;
+.leyendas-mensaje {
+  position: relative;
+  z-index: 1;
+  padding: 12px 22px;
+  color: #d9efff;
+  font-size: clamp(1.2rem, 4vw, 2.1rem);
+  font-weight: 700;
+  text-shadow:
+    0 0 10px var(--glow-blue),
+    0 0 24px var(--neon-blue-lt);
   opacity: 0;
-  transform: translateX(-50%);
-  z-index: 2;
+  transform: scale(0.75);
+  transition:
+    opacity 220ms ease 450ms,
+    transform 550ms cubic-bezier(0.34, 1.56, 0.64, 1) 350ms;
   pointer-events: none;
 }
 
-.fenix.visible {
-  animation: fenixFloat 1.5s ease-in-out 0.7s;
+.leyendas-container.visible .leyendas-mensaje {
+  opacity: 1;
+  transform: scale(1);
 }
 
-@keyframes fenixFloat {
+.leyendas-particulas {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.leyendas-particulas-superior,
+.leyendas-particulas-inferior {
+  position: absolute;
+  left: 0;
+  width: 100%;
+  height: 6%;
+  overflow: hidden;
+}
+
+.leyendas-particulas-superior {
+  top: 0;
+}
+
+.leyendas-particulas-inferior {
+  bottom: 0;
+}
+
+.leyendas-particula {
+  position: absolute;
+  bottom: 0;
+  width: 3px;
+  height: 3px;
+  border-radius: 50%;
+  background: #b7e2ff;
+  box-shadow:
+    0 0 7px 2px #4ea8ff,
+    0 0 16px #0c6cf0;
+  opacity: 0;
+}
+
+.leyendas-container.particulas-activas .leyendas-particula {
+  animation-name: leyendas-chispa;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: infinite;
+}
+
+.leyendas-particulas-inferior .leyendas-particula {
+  top: 0;
+  bottom: auto;
+}
+
+@keyframes leyendas-fuego {
+  to {
+    background-position: -200% 0;
+  }
+}
+
+@keyframes leyendas-latido {
+  50% {
+    filter: brightness(1.5);
+  }
+}
+
+@keyframes leyendas-chispa {
   0% {
     opacity: 0;
-    transform: translateX(-50%) translateY(0) scale(1);
+    transform: translateY(0) scale(0.5);
   }
-  1% {
-    opacity: 0.1;
-  }
-  15% {
-    opacity: 0.5;
+  18% {
+    opacity: 0.9;
   }
   100% {
     opacity: 0;
-    transform: translateX(-50%) translateY(-80px) scale(1);
+    transform: translateY(var(--deriva)) scale(0);
+  }
+}
+
+@media (max-width: 600px) {
+  .leyendas-container {
+    height: 280px;
+    margin-top: 300px;
+    margin-bottom: 300px;
+  }
+  .leyendas-container.visible .leyendas-lineas {
+    gap: 200px;
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .chispas.activo .chispa,
-  .chispas.activo,
-  .leyendas-marco.fuego::after,
-  .fenix.visible {
+  .leyendas-linea,
+  .leyendas-particula {
     animation: none;
   }
-  .leyendas-marco.fuego::after {
-    opacity: 0;
+  .leyendas-lineas,
+  .leyendas-mensaje {
+    transition-duration: 1ms;
   }
-}
-.leyendas-marco .leyendas {
-  display: inline-block;
-  padding: 4px 30px;
-  margin-bottom: 35px;
-}
-
-.leyendas-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 20px;
-}
-
-.leyendas-estado {
-  text-align: center;
-  color: var(--text-dim);
-  margin-top: 24px;
-  min-height: 60px;
-}
-
-.leyenda-card {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  gap: 8px;
-  min-height: 220px;
-  padding: 25px 18px;
-  background-color: var(--panel);
-  border-radius: 10px;
-}
-
-.leyenda-num {
-  font-family: "Eagle Lake", serif;
-  font-size: 1.1rem;
-  color: var(--text-dim);
-}
-
-.leyenda-titulo {
-  font-family: "Eagle Lake", serif;
-  font-size: 1.15rem;
-  line-height: 1.45;
-  color: var(--text);
-}
-
-.leyenda-anio {
-  font-family: "Eagle Lake", serif;
-  margin-top: 8px;
-  font-size: 1rem;
-  color: var(--neon-blue-lt);
-}
-
-@media (max-width: 768px) {
-  .leyendas {
-    font-size: clamp(1.5rem, 6vw, 1.75rem);
-  }
-  .leyendas-marco {
-    width: 95%;
-    margin: 40px auto 20px;
-    padding: 25px 15px 30px;
-  }
-  .leyendas-marco .leyendas {
-    display: block;
-    width: auto;
-    max-width: 100%;
-    padding-right: 0;
-    padding-left: 0;
-  }
-  .leyendas-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-  .leyenda-card {
-    min-height: 160px;
-  }
-}
-
-@media (max-width: 480px) {
-  .leyendas-grid {
-    grid-template-columns: 1fr;
+  .leyendas-container.particulas-activas .leyendas-particula {
+    opacity: 0.45;
   }
 }
