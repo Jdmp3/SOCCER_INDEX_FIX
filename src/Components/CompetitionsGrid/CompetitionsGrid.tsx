@@ -1,7 +1,6 @@
 import { useState, type CSSProperties } from "react";
 import competitions from "../../data/competitions.json";
 import { PUNTOS_FIJOS, type PuntoMapa } from "../../data/mapPoints";
-import { WORLD_MASK } from "../../data/worldMask";
 import styles from "./CompetitionsGrid.module.css";
 
 // JSON de competiciones conservado para cuando se reactive la información interna.
@@ -24,21 +23,6 @@ interface Competition {
 
 /** Poner en true para volver a mostrar la información interna (ganadores). */
 const MOSTRAR_INFO: boolean = false;
-
-/** Cantidad de puntos naranjas sobre el mapa. */
-const NUM_PUNTOS = 14;
-/** Separación mínima entre puntos, en % del ancho del mapa. */
-const SEPARACION_MIN = 7;
-/** Intentos máximos de muestreo antes de rendirse. */
-const INTENTOS_MAX = 5000;
-/** Relación de aspecto del mapa (1200x896) para medir distancias reales. */
-const ASPECTO = 896 / 1200;
-
-interface Punto {
-  x: number;
-  y: number;
-  retardo: string;
-}
 
 function estilosPuntoHijo(
   hijo: PuntoMapa,
@@ -77,75 +61,6 @@ function estilosPuntoHijo(
   } as CSSProperties;
 }
 
-/** ¿Esta coordenada (en %) cae sobre tierra según la máscara del mapa? */
-function esTierra(x: number, y: number): boolean {
-  const ancho = WORLD_MASK[0]?.length ?? 0;
-  if (ancho === 0) return false; // máscara aún no generada
-  const gx = Math.floor((x / 100) * ancho);
-  const gy = Math.floor((y / 100) * WORLD_MASK.length);
-  const fila = WORLD_MASK[gy];
-  if (!fila || gx < 0 || gx >= fila.length) return false;
-  return fila[gx] === "1";
-}
-
-/** Busca una posición segura separada de los demás puntos. */
-function buscarPosicionSegura(
-  puntos: Punto[],
-  indiceIgnorado = -1,
-): { x: number; y: number } | null {
-  const ancho = WORLD_MASK[0]?.length ?? 0;
-  const alto = WORLD_MASK.length;
-  let intentos = 0;
-
-  while (intentos < INTENTOS_MAX) {
-    intentos++;
-    if (ancho === 0 || alto === 0) return null;
-
-    // La máscara valida el centro de cada celda; usar ese mismo centro evita
-    // que un punto aleatorio dentro de la celda se acerque de más a la costa.
-    const gx = Math.floor(Math.random() * ancho);
-    const gy = Math.floor(Math.random() * alto);
-    const x = ((gx + 0.5) / ancho) * 100;
-    const y = ((gy + 0.5) / alto) * 100;
-    if (!esTierra(x, y)) continue;
-
-    const anterior = puntos[indiceIgnorado];
-    if (anterior && anterior.x === x && anterior.y === y) continue;
-
-    const demasiadoCerca = puntos.some(
-      (punto, indice) =>
-        indice !== indiceIgnorado &&
-        Math.hypot(punto.x - x, (punto.y - y) * ASPECTO) < SEPARACION_MIN,
-    );
-    if (demasiadoCerca) continue;
-
-    return { x, y };
-  }
-
-  return null;
-}
-
-/** Elige posiciones aleatorias SOLO sobre zonas seguras de tierra. */
-function generarPuntos(): Punto[] {
-  const puntos: Punto[] = [];
-  while (puntos.length < NUM_PUNTOS) {
-    const posicion = buscarPosicionSegura(puntos);
-    if (!posicion) break;
-    puntos.push({
-      ...posicion,
-      retardo: `${(Math.random() * 2.4).toFixed(2)}s`,
-    });
-  }
-
-  if (puntos.length === 0) {
-    console.warn(
-      "[CompetitionsGrid] Máscara vacía o sin tierra. Generarla arrancando el servidor: cd server && go run ."
-    );
-  }
-
-  return puntos;
-}
-
 function CompetitionsGrid() {
   const [competicionSeleccionada, setCompeticionSeleccionada] = useState<Competition | null>(null);
 
@@ -168,19 +83,6 @@ function CompetitionsGrid() {
     setLogosRotos((prev) => (prev.includes(id) ? prev : [...prev, id]));
   };
 
-  // Las posiciones cambian cuando termina el pulso individual de cada punto.
-  const [puntos, setPuntos] = useState<Punto[]>(generarPuntos);
-
-  const moverPunto = (indice: number) => {
-    setPuntos((actuales) => {
-      const posicion = buscarPosicionSegura(actuales, indice);
-      if (!posicion) return actuales;
-      return actuales.map((punto, i) =>
-        i === indice ? { ...punto, ...posicion } : punto,
-      );
-    });
-  };
-
   // Hijos del continente abierto (solo uno a la vez).
   const continenteSeleccionado = PUNTOS_FIJOS.find(
     (punto) => punto.id === continenteActivo,
@@ -197,20 +99,50 @@ function CompetitionsGrid() {
           src="/Images/AtlasNeon.jpeg"
           alt="Mapa mundial Atlas Neon"
         />
-        <div className={styles.puntos}>
-          {puntos.map((punto, index) => (
-            <span
-              key={index}
-              className={styles.punto}
-              style={{
-                left: `${punto.x}%`,
-                top: `${punto.y}%`,
-                animationDelay: punto.retardo,
-              }}
-              onAnimationIteration={() => moverPunto(index)}
-            />
+        <svg
+          className={styles.rutas}
+          viewBox="0 0 1200 800"
+          preserveAspectRatio="none"
+          aria-hidden="true"
+        >
+          {[
+            { d: "M -160 0 C 280 180 920 180 1360 0", dur: "28s" },
+            { d: "M -160 145 C 280 325 920 325 1360 145", dur: "25s" },
+            { d: "M -160 290 C 280 470 920 470 1360 290", dur: "22s" },
+            { d: "M -160 435 C 280 615 920 615 1360 435", dur: "19s" },
+            { d: "M -160 580 C 280 760 920 760 1360 580", dur: "16s" },
+          ].map((ruta, index) => (
+            <g key={ruta.d}>
+              <path className={styles.rutaBase} d={ruta.d} />
+              <path
+                className={styles.rutaMovimiento}
+                d={ruta.d}
+                pathLength="1000"
+                style={{ animationDuration: ruta.dur, animationDelay: `${index * -5}s` }}
+              />
+            </g>
           ))}
-        </div>
+          {[
+            { d: "M 240 -100 C 40 200 40 600 240 900", dur: "27s", centro: false },
+            { d: "M 400 -100 C 310 200 310 600 400 900", dur: "24s", centro: false },
+            { d: "M 600 -100 L 600 900", dur: "21s", centro: true },
+            { d: "M 800 -100 C 890 200 890 600 800 900", dur: "24s", centro: false },
+            { d: "M 960 -100 C 1160 200 1160 600 960 900", dur: "27s", centro: false },
+          ].map((linea, index) => (
+            <g
+              key={linea.d}
+              className={linea.centro ? styles.meridianoCentro : undefined}
+            >
+              <path className={styles.rutaBase} d={linea.d} />
+              <path
+                className={styles.rutaMovimiento}
+                d={linea.d}
+                pathLength="1000"
+                style={{ animationDuration: linea.dur, animationDelay: `${index * -4}s` }}
+              />
+            </g>
+          ))}
+        </svg>
 
         {/* Puntos fijos: Europa y América siempre; sus países al pulsar. */}
         <div className={styles.fijos}>
